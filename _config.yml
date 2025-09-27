@@ -1,0 +1,15 @@
+# Jekyll Configuration File for GitHub Pages
+
+# Site settings
+title: Dr. Adel Marzban | Tissue Innovation & Biomedical AI
+email: your.email@example.com
+description: >-
+  Advancing Medicine Through Tissue Innovation, Data Science, and Digital Health.
+baseurl: "" # The subpath of your site (e.g., /blog)
+url: "https://adelmarzban.github.io"
+
+# Build settings
+markdown: kramdown
+theme: minima # You can change this later, but minima is a safe default
+plugins:
+  - jekyll-feed
