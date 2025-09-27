@@ -1,10 +1,8 @@
 ---
-layout: page
-title: Publications
-permalink: /publications/
+title: "Publications"
+layout: single
+author_profile: true
 ---
 
-- **Title**, Authors, *Journal* (Year). DOI: …
-- Preprints / posters / talks can go here too.
-
-> Also add your [Google Scholar](https://scholar.google.com/) and ORCID links.
+- **Title**, *Journal* (Year). DOI: …  
+- Add Google Scholar link and PDFs when available.
