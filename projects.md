@@ -26,7 +26,7 @@ Workflow validated against standard reference materials.
 AI for Biomedical Engineering: Predictive Modeling {#ai-biomed}
 Keywords: Deep Learning, Release Kinetics, Tissue Engineering, Data Analytics
 
-This work applies Deep Learning models to solve complex problems in biomaterials. Models are trained on experimental data to predict material behavior, such as drug release kinetics, without the need for extensive laboratory testing. This accelerates the design and optimization of tissue engineering scaffolds and drug carriers.
+This work applies Deep Learning models to solve complex problems in biomaterials. Models are trained on experimental data to predict material behavior, suchs as drug release kinetics, without the need for extensive laboratory testing. This accelerates the design and optimization of tissue engineering scaffolds and drug carriers.
 
 Key Outcomes
 Developed a Convolutional Neural Network (CNN) for image-based tissue classification.
