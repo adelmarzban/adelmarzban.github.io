@@ -42,7 +42,7 @@ body {
     border: 1px solid var(--glass-border-color);
     border-radius: 12px;
     
-    /* Sticky Positioning */
+    /* Sticky Positioning and Layout */
     position: sticky;
     top: 1rem; 
     z-index: 100;
@@ -61,6 +61,7 @@ body {
 }
 
 /* --- 5. FEATURE CARDS & MAIN CONTENT --- */
+// Layout fix for the homepage feature row
 .feature__wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -98,4 +99,21 @@ body {
         background-color: darken(var(--primary-link-color), 10%) !important;
         box-shadow: 0 0 10px rgba(11, 114, 133, 0.7); 
     }
+}
+
+/* --- 7. DATATABLES STYLING OVERRIDES (For Publications page) --- */
+.dataTables_wrapper {
+    color: #E0E0E0;
+    /* Optional: Apply the glass look to the wrapper for consistency */
+    background: var(--glass-bg-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border-color);
+}
+
+.dataTables_filter input, .dataTables_length select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border-color);
+    color: #E0E0E0;
 }
