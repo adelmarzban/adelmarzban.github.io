@@ -15,7 +15,7 @@ google_analytics: "G-QB4QBB5MNY"
 # ----------------------------------------------------
 # Theme & appearance
 # ----------------------------------------------------
-minimal_mistakes_skin: dark   # options: default, air, contrast, dark, etc.
+minimal_mistakes_skin: default   # options: default, air, contrast, dark, etc.
 logo: /assets/img/avatar.png  # add your profile image here
 
 # ----------------------------------------------------
