@@ -101,3 +101,32 @@ a {
         box-shadow: 0 0 10px rgba($primary-link-color, 0.7); // Glow effect on hover
     }
 }
+
+
+
+// -----------------------------------------------------------
+// 4. Sticky Navigation and Z-Index Fix (New Code)
+// -----------------------------------------------------------
+
+// Ensure the masthead sticks to the top and stays above other content.
+.masthead {
+    position: sticky;
+    top: 1rem; /* Aligns the sticky nav below the top margin set in section 3.D */
+    z-index: 100; /* Ensures it layers above everything else on scroll */
+    width: auto;
+    left: 1rem;
+    right: 1rem;
+    
+    // Adjust the internal structure for better glass rendering
+    .masthead__inner-wrap {
+        border-radius: 12px;
+        overflow: hidden; /* Prevents internal elements from spilling over rounded corners */
+    }
+}
+
+// Fix margin collision with body content right below the nav
+.layout--splash {
+    .page__header + .archive {
+        margin-top: 0;
+    }
+}
