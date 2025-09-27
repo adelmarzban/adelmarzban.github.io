@@ -10,13 +10,13 @@
 h1, h2, h3, h4 {
   font-family: "Segoe UI", Roboto, sans-serif;
   font-weight: 700;
-  color: #FAFAFA !important; 
+  color: #FAFAFA !important; /* Ensure all headings are bright white */
 }
 
 .page__content {
   font-size: 1.05rem;
   line-height: 1.7;
-  color: #E0E0E0;
+  color: #E0E0E0; /* Ensure general content text is light */
 }
 
 // Global Variables
@@ -47,8 +47,6 @@ body {
     top: 1rem; 
     z-index: 100;
     margin: 1rem 1rem 0 1rem; 
-    width: auto;
-    padding: 0 1.5rem;
     
     .site-title, .masthead__menu a {
         color: #FFFFFF !important;
@@ -60,13 +58,24 @@ body {
     }
 }
 
-/* --- 5. FEATURE CARDS & MAIN CONTENT --- */
-// Layout fix for the homepage feature row
+/* --- 5. MAIN CONTENT WRAPPER FIX (Layout Issue) --- */
+/* This targets the main content area below the hero and resets the padding */
+.page__main {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0 !important; /* Resets padding that causes vertical alignment issues */
+    
+    /* Apply a subtle margin to the *entire* content wrapper below the hero for separation */
+    margin: 1rem auto;
+    max-width: 1300px; /* Constraints based on typical Minimal Mistakes max width */
+}
+
+/* --- 6. FEATURE CARDS (.feature__item) - Visibility & Equal Spacing --- */
+
 .feature__wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 1rem;
+    /* Ensures the row itself uses the full width of the padded container */
+    margin: 0 -1rem; 
+    padding: 1rem 0; 
 }
 
 .feature__item {
@@ -78,16 +87,15 @@ body {
     border: 1px solid var(--glass-border-color);
     border-radius: 12px;
     padding: 1.5em; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; 
-    min-height: 350px; 
-    margin-bottom: 0;
-
-    p { color: #D0D0D0; }
+    
+    /* Fix: Ensure text on the dark card is clearly legible */
+    p { 
+        color: #C0C0C0; /* Slightly brighter contrast */
+    }
 }
 
-/* --- 6. BUTTON STYLING --- */
+
+/* --- 7. BUTTON STYLING --- */
 .btn, .btn--primary {
     transition: all 0.2s ease;
 }
@@ -101,19 +109,8 @@ body {
     }
 }
 
-/* --- 7. DATATABLES STYLING OVERRIDES (For Publications page) --- */
-.dataTables_wrapper {
-    color: #E0E0E0;
-    /* Optional: Apply the glass look to the wrapper for consistency */
-    background: var(--glass-bg-color);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--glass-border-color);
-}
-
-.dataTables_filter input, .dataTables_length select {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--glass-border-color);
-    color: #E0E0E0;
+/* --- 8. FIX: Ensure header text in Hero Banner is visible (It looks a bit dark in the screenshot) */
+.page__header h1, .page__header .page__subtitle {
+    color: #FFFFFF !important;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Adds contrast against dark hero banner */
 }
