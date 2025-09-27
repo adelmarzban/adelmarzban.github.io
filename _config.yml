@@ -1,33 +1,58 @@
+# ----------------------------------------------------
+# Site
+# ----------------------------------------------------
 title: "Adel Marzban"
 description: "Biomedical Engineering • AI • Tissue Engineering • Drug Delivery"
 remote_theme: mmistakes/minimal-mistakes@4.24.0
-
-# Basics
 url: "https://adelmarzban.github.io"
-baseurl: ""  # keep empty for user site
+baseurl: ""            # keep empty for user sites
 locale: en
 markdown: kramdown
 
-# Navigation (from _data/navigation.yml)
-collections:
-  posts:
-    output: true
+# Optional: paste your code from Google Search Console
+# google_site_verification: "PASTE_VERIFICATION_CODE"
 
+# ----------------------------------------------------
+# Theme & appearance
+# ----------------------------------------------------
+minimal_mistakes_skin: dark   # options: default, air, contrast, dark, dirt, neon, etc.
+logo: /assets/img/avatar.png  # add your image to this path
+
+# ----------------------------------------------------
+# Plugins supported on GitHub Pages
+# ----------------------------------------------------
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-include-cache
 
-# Google verification (optional)
-# google_site_verification: "PASTE_CODE_FROM_SEARCH_CONSOLE"
+sass:
+  style: compressed
 
-# Theme settings
-minimal_mistakes_skin: dark  # "default", "air", "dark", "contrast", etc.
-logo: /assets/img/avatar.png  # add your image later
+# ----------------------------------------------------
+# Navigation (define in _data/navigation.yml)
+# ----------------------------------------------------
+# Example file to create: _data/navigation.yml
+# main:
+#   - title: "Home"
+#     url: /
+#   - title: "Projects"
+#     url: /projects/
+#   - title: "Publications"
+#     url: /publications/
+#   - title: "CV"
+#     url: /cv/
+#   - title: "Contact"
+#     url: /contact/
+
+# ----------------------------------------------------
+# Author profile (shows in sidebar/header)
+# ----------------------------------------------------
 author:
   name: "Adel Marzban"
-  bio: "AI × Biomaterials. Hydrogels • MOFs • Drug Delivery."
+  avatar: /assets/img/avatar.png
+  bio: "AI × Biomaterials — Smart Hydrogels • MOFs • Drug Delivery."
   links:
     - label: "GitHub"
       icon: "fab fa-github"
@@ -42,7 +67,6 @@ author:
       icon: "fas fa-envelope"
       url: "mailto:AdelMarzban@gmail.com"
 
-# Footer links
 footer:
   links:
     - label: "Google Scholar"
@@ -52,9 +76,25 @@ footer:
       icon: "ai ai-orcid"
       url: "https://orcid.org/"
 
-# Defaults for pages
+# ----------------------------------------------------
+# Collections & defaults
+# ----------------------------------------------------
+collections:
+  posts:
+    output: true
+
 defaults:
-  - scope: { path: "" , type: "pages" }
+  - scope:
+      path: ""
+      type: "pages"
     values:
       layout: single
       author_profile: true
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: false
