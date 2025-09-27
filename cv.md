@@ -1,16 +1,13 @@
 ---
-layout: page
-title: CV
-permalink: /cv/
+title: "CV"
+layout: single
+author_profile: true
 ---
 
-- Download PDF: [CV.pdf](/assets/CV.pdf)
+[Download PDF](/assets/CV.pdf)
 
-**Education**
+### Education
 - …
 
-**Skills**
-- Python, MATLAB, TensorFlow; SEM imaging; hydrogel synthesis; data analysis.
-
-**Awards / Grants**
-- …
+### Skills
+- Python, MATLAB, TensorFlow; SEM; hydrogel synthesis; analytics.
