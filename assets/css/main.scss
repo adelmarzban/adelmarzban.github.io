@@ -1,132 +1,101 @@
 ---
 ---
 
-// 1. Import the theme and skin (MUST match the skin set in _config.yml)
-@import "minimal-mistakes/skins/default";
+// 1. Import the theme and skin (MUST match the 'default' skin in _config.yml)
+@import "minimal-mistakes/skins/default"; 
 @import "minimal-mistakes";
 
 
-// 2. Custom Tweak: Global Typography (Your existing rules)
-h1, h2, h3 {
+// 2. Custom Tweak: Global Typography & Colors
+h1, h2, h3, h4 {
   font-family: "Segoe UI", Roboto, sans-serif;
   font-weight: 700;
-  // ENSURE HEADINGS ARE BRIGHT
   color: #FAFAFA !important; 
 }
 
 .page__content {
   font-size: 1.05rem;
   line-height: 1.7;
+  color: #E0E0E0;
 }
 
-// -----------------------------------------------------------
-// 3. Glassmorphism & Custom Dark Theme Implementation (Improved)
-// -----------------------------------------------------------
+// Global Variables
+:root {
+    --glass-bg-color: rgba(255, 255, 255, 0.08);
+    --glass-border-color: rgba(255, 255, 255, 0.2);
+    --primary-link-color: #0b7285; 
+    --background-color: #1a1a1a;
+}
 
-// A. Variables
-$glass-bg-color: rgba(255, 255, 255, 0.08); 
-$glass-border-color: rgba(255, 255, 255, 0.2); // Slightly stronger border for definition
-$primary-text-color: #E0E0E0; // Standard text
-$primary-link-color: #0b7285; // Your teal/cyan color
-$text-on-glass: #FFFFFF; // White text for highest contrast on glass elements
-
-// B. Global Dark Background
+/* --- 3. GLOBAL DARK BACKGROUND --- */
 body {
-    background-color: #121212 !important;
+    background-color: var(--background-color) !important;
 }
 
-// C. Apply Glass effect to main content containers
-.masthead,
-.page__header,
-.page__footer,
-.page__wrapper,
-.archive,
-.feature__wrapper {
-    background-color: transparent !important;
-}
-
-// D. Glassmorphism Styling for Containers (Nav Bar, Content Wrapper, Cards)
-.page__wrapper,
-.masthead,
-.feature__item {
-    background: $glass-bg-color;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); // Stronger shadow for more depth
-    backdrop-filter: blur(8px); // Increased blur for better separation
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid $glass-border-color;
-    border-radius: 12px; // Slightly more rounded
-    margin: 1rem;
-}
-
-// E. Text and Link Colors (Accessibility/Contrast Fixes)
-// Apply bright color to all text inside glass areas
-.page__wrapper, .masthead {
-    color: $primary-text-color !important;
-}
-
-// Target standard Markdown links for a clear look
-a {
-    color: $primary-link-color;
-    &:hover {
-        color: lighten($primary-link-color, 15%);
-        text-decoration: underline; // Ensure clear hover state
-    }
-}
-
-// F. Feature Card (Homepage Projects) Improvements
-.feature__item {
-    // Override the default image float to put the image clearly on the card
-    .feature__img {
-        border-radius: 8px; 
-        margin-bottom: 1em;
-    }
-    // Remove default image and button classes to simplify styling
-    .feature__item .btn--inverse {
-        background-color: transparent;
-        color: $primary-link-color !important;
-        border-color: $primary-link-color;
-    }
-}
-
-
-// G. Button Styling (Polished Look)
-.btn--primary {
-    background-color: $primary-link-color !important;
-    color: #ffffff !important;
-    border: 1px solid lighten($primary-link-color, 10%); // Subtle shine border
-    border-radius: 5px;
-    transition: background-color 0.2s ease;
-    &:hover {
-        background-color: darken($primary-link-color, 10%) !important;
-        box-shadow: 0 0 10px rgba($primary-link-color, 0.7); // Glow effect on hover
-    }
-}
-
-
-
-// -----------------------------------------------------------
-// 4. Sticky Navigation and Z-Index Fix (New Code)
-// -----------------------------------------------------------
-
-// Ensure the masthead sticks to the top and stays above other content.
+/* --- 4. NAVIGATION BAR (MASTHEAD) - Glass Effect & Sticky --- */
 .masthead {
-    position: sticky;
-    top: 1rem; /* Aligns the sticky nav below the top margin set in section 3.D */
-    z-index: 100; /* Ensures it layers above everything else on scroll */
-    width: auto;
-    left: 1rem;
-    right: 1rem;
+    /* Glassmorphism/Floating effect */
+    background: var(--glass-bg-color) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border-color);
+    border-radius: 12px;
     
-    // Adjust the internal structure for better glass rendering
-    .masthead__inner-wrap {
-        border-radius: 12px;
-        overflow: hidden; /* Prevents internal elements from spilling over rounded corners */
+    /* Sticky Positioning */
+    position: sticky;
+    top: 1rem; 
+    z-index: 100;
+    margin: 1rem 1rem 0 1rem; 
+    width: auto;
+    padding: 0 1.5rem;
+    
+    .site-title, .masthead__menu a {
+        color: #FFFFFF !important;
+        font-weight: 600;
+        transition: color 0.2s;
+        &:hover {
+          color: var(--primary-link-color) !important;
+        }
     }
 }
 
-// Fix margin collision with body content right below the nav
-.layout--splash {
-    .page__header + .archive {
-        margin-top: 0;
+/* --- 5. FEATURE CARDS & MAIN CONTENT --- */
+.feature__wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.feature__item {
+    /* Glassmorphism card */
+    background: var(--glass-bg-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px); 
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid var(--glass-border-color);
+    border-radius: 12px;
+    padding: 1.5em; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    min-height: 350px; 
+    margin-bottom: 0;
+
+    p { color: #D0D0D0; }
+}
+
+/* --- 6. BUTTON STYLING --- */
+.btn, .btn--primary {
+    transition: all 0.2s ease;
+}
+.btn--primary {
+    background-color: var(--primary-link-color) !important;
+    color: #ffffff !important;
+    border: 1px solid color-mix(in srgb, var(--primary-link-color) 85%, white);
+    &:hover {
+        background-color: darken(var(--primary-link-color), 10%) !important;
+        box-shadow: 0 0 10px rgba(11, 114, 133, 0.7); 
     }
 }
