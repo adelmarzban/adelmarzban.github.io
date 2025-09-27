@@ -7,7 +7,6 @@ title: "Hi, I'm Adel Marzban"
 
 I’m **Adel Marzban**, a biomedical engineer exploring the intersection of **artificial intelligence, tissue engineering, and drug delivery systems**.  
 
-
 ---
 
 ## 🔬 Research Interests
