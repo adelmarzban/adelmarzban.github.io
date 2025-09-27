@@ -10,24 +10,33 @@
 h1, h2, h3, h4 {
   font-family: "Segoe UI", Roboto, sans-serif;
   font-weight: 700;
-  color: #FAFAFA !important; /* Ensure all headings are bright white */
+  color: #FFFFFF !important; /* Clean White for Headings */
 }
 
 .page__content {
   font-size: 1.05rem;
   line-height: 1.7;
-  color: #E0E0E0; /* Ensure general content text is light */
+  color: #F1F5F9; /* Soft Sand/Near White for general content */
 }
 
-// Global Variables
+// Global Variables (Using Your Color Palette)
 :root {
-    --glass-bg-color: rgba(255, 255, 255, 0.08);
+    --deep-navy: #0A192F;
+    --clean-white: #FFFFFF;
+    --teal-blue: #14B8A6;
+    --sky-blue: #38BDF8;
+    --warm-coral: #F87171;
+    --soft-sand: #F1F5F9;
+    --slate-gray: #475569;
+
+    /* Primary Glassmorphism variables based on the palette */
+    --glass-bg-color: rgba(255, 255, 255, 0.08); /* White with low opacity for the frosted effect */
     --glass-border-color: rgba(255, 255, 255, 0.2);
-    --primary-link-color: #0b7285; 
-    --background-color: #1a1a1a;
+    --primary-link-color: var(--teal-blue); 
+    --background-color: var(--deep-navy);
 }
 
-/* --- 3. GLOBAL DARK BACKGROUND --- */
+/* --- 3. GLOBAL DARK BACKGROUND (Deep Navy Foundation) --- */
 body {
     background-color: var(--background-color) !important;
 }
@@ -36,9 +45,9 @@ body {
 .masthead {
     /* Glassmorphism/Floating effect */
     background: var(--glass-bg-color) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px); /* Slightly increased blur */
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth against dark background */
     border: 1px solid var(--glass-border-color);
     border-radius: 12px;
     
@@ -49,11 +58,11 @@ body {
     margin: 1rem 1rem 0 1rem; 
     
     .site-title, .masthead__menu a {
-        color: #FFFFFF !important;
+        color: var(--clean-white) !important;
         font-weight: 600;
         transition: color 0.2s;
         &:hover {
-          color: var(--primary-link-color) !important;
+          color: var(--primary-link-color) !important; /* Teal Blue hover */
         }
     }
 }
@@ -91,27 +100,27 @@ body {
     
     /* Fix: Ensure text on the dark card is clearly legible */
     p { 
-        color: #C0C0C0; /* Slightly brighter contrast */
+        color: var(--soft-sand); /* Soft Sand contrast */
     }
 }
 
 
-/* --- 7. BUTTON STYLING --- */
+/* --- 7. BUTTON STYLING (Teal Blue Accent) --- */
 .btn, .btn--primary {
     transition: all 0.2s ease;
 }
 .btn--primary {
-    background-color: var(--primary-link-color) !important;
-    color: #ffffff !important;
-    border: 1px solid color-mix(in srgb, var(--primary-link-color) 85%, white);
+    background-color: var(--primary-link-color) !important; /* Teal Blue */
+    color: var(--clean-white) !important;
+    border: 1px solid var(--primary-link-color);
     &:hover {
-        background-color: darken(var(--primary-link-color), 10%) !important;
-        box-shadow: 0 0 10px rgba(11, 114, 133, 0.7); 
+        background-color: color-mix(in srgb, var(--primary-link-color) 80%, black) !important; 
+        box-shadow: 0 0 10px rgba(20, 184, 166, 0.7); /* Teal Blue glow */
     }
 }
 
-/* --- 8. FIX: Ensure header text in Hero Banner is visible (It looks a bit dark in the screenshot) */
+/* --- 8. FIX: Ensure header text in Hero Banner is visible (Now bright white) */
 .page__header h1, .page__header .page__subtitle {
-    color: #FFFFFF !important;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Adds contrast against dark hero banner */
+    color: var(--clean-white) !important;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
