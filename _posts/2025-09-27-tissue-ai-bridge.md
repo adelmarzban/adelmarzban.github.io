@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "My First Daily Insight"
-author: Dr. Adel Marzban
+author: Adel Marzban
 categories: [AI, Data Science]
 ---
 
