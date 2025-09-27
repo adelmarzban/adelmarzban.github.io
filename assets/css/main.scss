@@ -1,9 +1,9 @@
 ---
 ---
 
-// 1. Import the theme and skin
-@import "minimal-mistakes/skins/dark";  // your skin
-@import "minimal-mistakes";             // load theme
+// 1. Import the theme and skin (MUST match the skin set in _config.yml)
+@import "minimal-mistakes/skins/default"; // We are starting with 'default'
+@import "minimal-mistakes";               // load theme
 
 
 // 2. Custom Tweak: Global Typography (Your existing rules)
@@ -17,37 +17,91 @@ h1, h2, h3 {
   line-height: 1.7;
 }
 
+// -----------------------------------------------------------
+// 3. Glassmorphism & Custom Dark Theme Implementation
+// -----------------------------------------------------------
 
-// 3. Custom Tweak: Feature Row Enhancements (New Code)
-
-// A. Make Feature Card Titles bolder and larger
-.feature__item h4 {
-    font-size: 1.4rem; /* Increase size of main project title */
-    font-weight: 800; /* Make it extra bold */
-    margin-top: 0.5em; /* Add a little space above the title */
-    margin-bottom: 0.5em; /* Add space below the title */
+// A. Global Dark Background
+body {
+    // A subtle dark background for the "depth" effect
+    background-color: #121212 !important;
 }
 
-// B. Style the Buttons (Overrides the 'btn--inverse' you used)
-// We are targeting the primary button style to make it a bit more prominent
-.btn--primary {
-    background-color: #0b7285; /* This color matches the one you used in 'index.md' for the hero banner overlay_color */
-    color: #ffffff !important; /* Ensure text is white */
-    border-color: #0b7285;
+// B. Apply Glass effect to main content containers (navbar and main page)
+// Use !important to ensure the theme's dark/light styles are overridden.
+.masthead,
+.page__header,
+.page__footer,
+.page__wrapper,
+.archive,
+.feature__wrapper {
+    background-color: transparent !important;
+}
+
+
+// C. Glassmorphism Styling for Containers (Nav Bar, Content Wrapper, Cards)
+
+$glass-bg-color: rgba(255, 255, 255, 0.08); // Very light, subtle transparency
+$glass-border-color: rgba(255, 255, 255, 0.15); // Light border for definition
+$primary-text-color: #E0E0E0;
+$primary-link-color: #0b7285; // Your teal/cyan color
+
+// Apply Glass effect to the main site structure
+.page__wrapper,
+.masthead,
+.feature__item {
+    // Core Glassmorphism properties
+    background: $glass-bg-color;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px); // KEY: Frosted glass effect
+    -webkit-backdrop-filter: blur(5px); // For Safari support
+    border: 1px solid $glass-border-color;
+    border-radius: 10px; // Subtle rounded corners
+
+    // Add margin/padding to prevent elements from touching the window edges
+    margin: 1rem;
+}
+
+// D. Text and Link Colors (Dark Mode Overrides)
+.page__wrapper,
+.masthead,
+h1, h2, h3, h4, h5, h6, p, li {
+    color: $primary-text-color !important;
+}
+
+a {
+    color: $primary-link-color;
     &:hover {
-        background-color: darken(#0b7285, 10%) !important;
-        border-color: darken(#0b7285, 10%);
+        color: lighten($primary-link-color, 10%);
     }
 }
 
-// C. Improve Feature Card Spacing
+// E. Feature Card Specific Tweaks (Homepage Projects)
 .feature__item {
-    padding-left: 1.5em;
-    padding-right: 1.5em;
+    margin-bottom: 2rem;
+    padding: 1.5em; // Added inner padding
+}
+.feature__item h4 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
-// D. Add more space around the entire feature row section
-.feature__wrapper {
-    padding-top: 3em;
-    padding-bottom: 3em;
+// F. Button Styling (Match your primary color)
+.btn--primary {
+    background-color: $primary-link-color !important;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 5px;
+    &:hover {
+        background-color: darken($primary-link-color, 10%) !important;
+    }
+}
+
+// G. Footer and Other elements
+.page__footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border: none; // Remove default footer border
 }
