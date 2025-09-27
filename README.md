@@ -8,7 +8,6 @@ This repository hosts my **personal academic website** built with [GitHub Pages]
 
 ## 👤 About Me
 I’m **Adel Marzban**, a biomedical engineer exploring the intersection of **AI, tissue engineering, and drug delivery systems**.  
-My work focuses on **smart hydrogels, nanomaterials (Ce-UIO-66 MOFs)**, and **AI-driven biomedical applications**.
 
 ---
 
