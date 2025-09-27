@@ -2,14 +2,16 @@
 ---
 
 // 1. Import the theme and skin (MUST match the skin set in _config.yml)
-@import "minimal-mistakes/skins/default"; // We are starting with 'default'
-@import "minimal-mistakes";               // load theme
+@import "minimal-mistakes/skins/default";
+@import "minimal-mistakes";
 
 
 // 2. Custom Tweak: Global Typography (Your existing rules)
 h1, h2, h3 {
   font-family: "Segoe UI", Roboto, sans-serif;
   font-weight: 700;
+  // ENSURE HEADINGS ARE BRIGHT
+  color: #FAFAFA !important; 
 }
 
 .page__content {
@@ -18,17 +20,22 @@ h1, h2, h3 {
 }
 
 // -----------------------------------------------------------
-// 3. Glassmorphism & Custom Dark Theme Implementation
+// 3. Glassmorphism & Custom Dark Theme Implementation (Improved)
 // -----------------------------------------------------------
 
-// A. Global Dark Background
+// A. Variables
+$glass-bg-color: rgba(255, 255, 255, 0.08); 
+$glass-border-color: rgba(255, 255, 255, 0.2); // Slightly stronger border for definition
+$primary-text-color: #E0E0E0; // Standard text
+$primary-link-color: #0b7285; // Your teal/cyan color
+$text-on-glass: #FFFFFF; // White text for highest contrast on glass elements
+
+// B. Global Dark Background
 body {
-    // A subtle dark background for the "depth" effect
     background-color: #121212 !important;
 }
 
-// B. Apply Glass effect to main content containers (navbar and main page)
-// Use !important to ensure the theme's dark/light styles are overridden.
+// C. Apply Glass effect to main content containers
 .masthead,
 .page__header,
 .page__footer,
@@ -38,70 +45,59 @@ body {
     background-color: transparent !important;
 }
 
-
-// C. Glassmorphism Styling for Containers (Nav Bar, Content Wrapper, Cards)
-
-$glass-bg-color: rgba(255, 255, 255, 0.08); // Very light, subtle transparency
-$glass-border-color: rgba(255, 255, 255, 0.15); // Light border for definition
-$primary-text-color: #E0E0E0;
-$primary-link-color: #0b7285; // Your teal/cyan color
-
-// Apply Glass effect to the main site structure
+// D. Glassmorphism Styling for Containers (Nav Bar, Content Wrapper, Cards)
 .page__wrapper,
 .masthead,
 .feature__item {
-    // Core Glassmorphism properties
     background: $glass-bg-color;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px); // KEY: Frosted glass effect
-    -webkit-backdrop-filter: blur(5px); // For Safari support
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); // Stronger shadow for more depth
+    backdrop-filter: blur(8px); // Increased blur for better separation
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid $glass-border-color;
-    border-radius: 10px; // Subtle rounded corners
-
-    // Add margin/padding to prevent elements from touching the window edges
+    border-radius: 12px; // Slightly more rounded
     margin: 1rem;
 }
 
-// D. Text and Link Colors (Dark Mode Overrides)
-.page__wrapper,
-.masthead,
-h1, h2, h3, h4, h5, h6, p, li {
+// E. Text and Link Colors (Accessibility/Contrast Fixes)
+// Apply bright color to all text inside glass areas
+.page__wrapper, .masthead {
     color: $primary-text-color !important;
 }
 
+// Target standard Markdown links for a clear look
 a {
     color: $primary-link-color;
     &:hover {
-        color: lighten($primary-link-color, 10%);
+        color: lighten($primary-link-color, 15%);
+        text-decoration: underline; // Ensure clear hover state
     }
 }
 
-// E. Feature Card Specific Tweaks (Homepage Projects)
+// F. Feature Card (Homepage Projects) Improvements
 .feature__item {
-    margin-bottom: 2rem;
-    padding: 1.5em; // Added inner padding
-}
-.feature__item h4 {
-    font-size: 1.4rem;
-    font-weight: 800;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    // Override the default image float to put the image clearly on the card
+    .feature__img {
+        border-radius: 8px; 
+        margin-bottom: 1em;
+    }
+    // Remove default image and button classes to simplify styling
+    .feature__item .btn--inverse {
+        background-color: transparent;
+        color: $primary-link-color !important;
+        border-color: $primary-link-color;
+    }
 }
 
-// F. Button Styling (Match your primary color)
+
+// G. Button Styling (Polished Look)
 .btn--primary {
     background-color: $primary-link-color !important;
     color: #ffffff !important;
-    border: none;
+    border: 1px solid lighten($primary-link-color, 10%); // Subtle shine border
     border-radius: 5px;
+    transition: background-color 0.2s ease;
     &:hover {
         background-color: darken($primary-link-color, 10%) !important;
+        box-shadow: 0 0 10px rgba($primary-link-color, 0.7); // Glow effect on hover
     }
-}
-
-// G. Footer and Other elements
-.page__footer {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border: none; // Remove default footer border
 }
