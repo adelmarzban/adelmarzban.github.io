@@ -12,7 +12,7 @@ title: "Publications" layout: single author_profile: true classes: wide
 </tr>
 </thead>
 <tbody>
-<!-- Publication 1 -->
+<!-- Publication 1: Ensure you replace placeholder links/info with real data -->
 <tr>
 <td>2024</td>
 <td>
@@ -26,7 +26,7 @@ Dual-network PNIPAm–Gelatin Hydrogels for Controlled Release
 <td>Hydrogels, Drug Delivery, Shape Memory</td>
 <td>
 <a href="https://scholar.google.com/" target="_blank"><i class="ai ai-google-scholar"></i> Scholar</a>
-<a href="/assets/pdf/paper1.pdf" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+<a href="https://www.google.com/search?q=/assets/CV.pdf" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
 </td>
 </tr>
 <!-- Publication 2 -->
@@ -65,6 +65,8 @@ ImageJ Workflows for Porosity Analysis in Biocompatible Scaffolds
 </tbody>
 </table>
 
+<script type="text/javascript" src="https://www.google.com/search?q=https://cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
+
 <script>
 // Initialize DataTables after the table has loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -74,7 +76,7 @@ paging: true,
 searching: true,
 ordering: true,
 info: true,
-order: [[0, 'desc']] // Sort by Year (column 0) descending
+order: [[0, 'desc']] // Default sort by Year (column 0) descending
 });
 }
 });
