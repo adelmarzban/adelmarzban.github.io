@@ -59,15 +59,16 @@ body {
 }
 
 /* --- 5. MAIN CONTENT WRAPPER FIX (Layout Issue) --- */
-/* This targets the main content area below the hero and resets the padding */
+/* This targets the main content area below the hero, ensuring it centers correctly */
 .page__main {
     padding-left: 1rem;
     padding-right: 1rem;
-    padding-top: 0 !important; /* Resets padding that causes vertical alignment issues */
+    padding-top: 0 !important; 
     
-    /* Apply a subtle margin to the *entire* content wrapper below the hero for separation */
+    /* ENFORCING CENTERING: Need full width for auto margin to work */
+    width: 100%; 
     margin: 1rem auto;
-    max-width: 1300px; /* Constraints based on typical Minimal Mistakes max width */
+    max-width: 1300px; 
 }
 
 /* --- 6. FEATURE CARDS (.feature__item) - Visibility & Equal Spacing --- */
