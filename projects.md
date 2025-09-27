@@ -1,14 +1,18 @@
 ---
-layout: page
-title: Projects
-permalink: /projects/
+title: "Projects"
+layout: single
+author_profile: true
+toc: true
+toc_sticky: true
 ---
 
-### Smart Hydrogel (Shape-Memory) for Wound Dressings
-Short description of goals, materials (PNIPAm/MBAA + Gelatin/GA), **Ce-UIO-66** nanoparticles, and drug delivery (Diclofenac).
+## Smart Hydrogel for Wound Dressings {#smart-hydrogel}
+**Keywords:** PNIPAm, Gelatin, Ce-UIO-66 MOF, Diclofenac, Shape Memory  
+- Designed a dual-network hydrogel with shape-memory behavior.  
+- In-situ Ce-MOF loading; optimized pore size for release.  
 
-- Repo / Paper / Demo: [link]
+## SEM Image Analysis Toolkit {#sem-analysis}
+- ImageJ macros for pore-size distribution and morphology.  
 
-### SEM Image Analysis Toolkit (ImageJ)
-Notes, macros, and workflows for SEM analysis of hydrogels.
-- Repo: [link]
+## AI for Biomedical Engineering {#ai-biomed}
+- Deep learning models to predict release kinetics and assist design.
