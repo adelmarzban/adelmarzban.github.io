@@ -1,25 +1,27 @@
 # ----------------------------------------------------
+# 1. SITE CONFIGURATION
+# ----------------------------------------------------
 title: "Adel Marzban"
-description: "Biomedical Engineering • AI • Tissue Engineering • Drug Delivery"
-remote_theme: mmistakes/minimal-mistakes@4.24.0
+description: "AI × Biomaterials — Smart Hydrogels • MOFs • Drug Delivery"
+remote_theme: mmistakes/minimal-mistakes@4.27.3
 url: "https://adelmarzban.github.io"
-baseurl: ""   # keep empty for user sites
-locale: en
+baseurl: ""   # Keep empty for user sites
+locale: en-US
 markdown: kramdown
 
-# Google Search Console verification
+# SEO and Analytics
 google_site_verification: "dJf9dpvqDFl7Bcx51htQD0Kfk6zAma9IKcppB1YtI5E"
 google_analytics: "G-QB4QBB5MNY"
-
-
-# ----------------------------------------------------
-# Theme & appearance
-# ----------------------------------------------------
-minimal_mistakes_skin: default   # UPDATED for Glassmorphism SCSS overrides
-logo: /assets/img/avatar.png  # add your profile image here
+search: true # Enable built-in search functionality
 
 # ----------------------------------------------------
-# Plugins supported on GitHub Pages
+# 2. THEME & APPEARANCE
+# ----------------------------------------------------
+minimal_mistakes_skin: "default"   # IMPORTANT: Set to 'default' for custom SCSS override
+logo: /assets/img/avatar.png  
+
+# ----------------------------------------------------
+# 3. PLUGINS (GitHub Pages Compatible)
 # ----------------------------------------------------
 plugins:
   - jekyll-feed
@@ -31,7 +33,7 @@ sass:
   style: compressed
 
 # ----------------------------------------------------
-# Author profile
+# 4. AUTHOR, FOOTER, COLLECTIONS & DEFAULTS
 # ----------------------------------------------------
 author:
   name: "Adel Marzban"
@@ -39,16 +41,16 @@ author:
   bio: "AI × Biomaterials — Smart Hydrogels • MOFs • Drug Delivery."
   links:
     - label: "GitHub"
-      icon: "fab fa-github"
+      icon: "fab fa-fw fa-github"
       url: "https://github.com/adelmarzban"
     - label: "LinkedIn"
-      icon: "fab fa-linkedin"
+      icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/adelmarzban"
     - label: "Telegram"
-      icon: "fab fa-telegram"
+      icon: "fab fa-fw fa-telegram"
       url: "https://t.me/adelmarzban"
     - label: "Email"
-      icon: "fas fa-envelope"
+      icon: "fas fa-fw fa-envelope"
       url: "mailto:AdelMarzban@gmail.com"
 
 footer:
@@ -60,12 +62,10 @@ footer:
       icon: "ai ai-orcid"
       url: "https://orcid.org/"
 
-# ----------------------------------------------------
-# Collections & defaults
-# ----------------------------------------------------
 collections:
   posts:
     output: true
+    permalink: /:year/:month/:title/
 
 defaults:
   - scope:
