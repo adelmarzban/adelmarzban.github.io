@@ -9,11 +9,8 @@ baseurl: ""            # keep empty for user sites
 locale: en
 markdown: kramdown
 
-# Optional: paste your code from Google Search Console
-# google_site_verification: "PASTE_VERIFICATION_CODE"
-google-site-verification=1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI
+# Google Search Console verification (ONE line only)
 google_site_verification: "1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI"
-google_site_verification: 1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI
 
 # ----------------------------------------------------
 # Theme & appearance
