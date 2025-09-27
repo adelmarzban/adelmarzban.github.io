@@ -1,10 +1,12 @@
 ---
 ---
 
+// 1. Import the theme and skin
 @import "minimal-mistakes/skins/dark";  // your skin
 @import "minimal-mistakes";             // load theme
 
-// custom tweaks
+
+// 2. Custom Tweak: Global Typography (Your existing rules)
 h1, h2, h3 {
   font-family: "Segoe UI", Roboto, sans-serif;
   font-weight: 700;
@@ -13,4 +15,39 @@ h1, h2, h3 {
 .page__content {
   font-size: 1.05rem;
   line-height: 1.7;
+}
+
+
+// 3. Custom Tweak: Feature Row Enhancements (New Code)
+
+// A. Make Feature Card Titles bolder and larger
+.feature__item h4 {
+    font-size: 1.4rem; /* Increase size of main project title */
+    font-weight: 800; /* Make it extra bold */
+    margin-top: 0.5em; /* Add a little space above the title */
+    margin-bottom: 0.5em; /* Add space below the title */
+}
+
+// B. Style the Buttons (Overrides the 'btn--inverse' you used)
+// We are targeting the primary button style to make it a bit more prominent
+.btn--primary {
+    background-color: #0b7285; /* This color matches the one you used in 'index.md' for the hero banner overlay_color */
+    color: #ffffff !important; /* Ensure text is white */
+    border-color: #0b7285;
+    &:hover {
+        background-color: darken(#0b7285, 10%) !important;
+        border-color: darken(#0b7285, 10%);
+    }
+}
+
+// C. Improve Feature Card Spacing
+.feature__item {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+// D. Add more space around the entire feature row section
+.feature__wrapper {
+    padding-top: 3em;
+    padding-bottom: 3em;
 }
