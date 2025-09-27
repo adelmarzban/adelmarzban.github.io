@@ -1,61 +1,170 @@
-layout: splash
-title: "Hi, I'm Adel Marzban"
-subtitle: "AI × Biomaterials — Smart Hydrogels • MOFs • Drug Delivery"
-header:
-overlay_color: "#0b7285"
-overlay_filter: 0.4
-overlay_image: /assets/img/hero.jpg   # Ensure this path is correct
-actions:
-- label: "View Projects"
-url: "/projects/"
-class: "btn btn--primary"
-- label: "Get My CV"
-url: "/cv/"
-class: "btn"
-feature_row:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adel Marzban | Physician, Scientist, Data Scientist</title>
+  <style>
+    /* ===== BRAND COLORS ===== */
+    :root {
+      --teal: #006D77;
+      --cyan: #00B4D8;
+      --coral: #FF6B6B;
+      --gray: #2E2E2E;
+      --silver: #E0E0E0;
+      --white: #FFFFFF;
+    }
 
-image_path: /assets/img/hydrogel.jpg
-alt: "Shape-Memory Hydrogels"
-title: "Shape-Memory Hydrogels"
-excerpt: "Dual-network PNIPAm–Gelatin with Ce-UIO-66 for controlled diclofenac release. Focus on responsive, dynamic materials."
-url: "/projects/#smart-hydrogel"
-btn_label: "Learn more"
-btn_class: "btn--primary"
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: var(--white);
+      color: var(--gray);
+      line-height: 1.6;
+    }
 
-image_path: /assets/img/sem.jpg
-alt: "SEM Image Analysis"
-title: "SEM Image Analysis"
-excerpt: "ImageJ workflows for pore-size quantification and morphology metrics in biomaterials research."
-url: "/projects/#sem-analysis"
-btn_label: "Learn more"
-btn_class: "btn--primary"
+    header {
+      background: var(--teal);
+      color: var(--white);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-image_path: /assets/img/ai.jpg
-alt: "AI for Biomedical Engineering"
-title: "AI for Biomed"
-excerpt: "Deep learning models applied to analyze and predict drug release kinetics and interpret complex tissue engineering data sets efficiently."
-url: "/projects/#ai-biomed"
-btn_label: "Learn more"
-btn_class: "btn--primary"
+    nav a {
+      color: var(--white);
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
 
-{% include feature_row %}
+    nav a:hover {
+      color: var(--cyan);
+    }
 
-🔬 Research Interests
-Biomedical Engineering & AI
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4rem 2rem;
+      background: var(--teal);
+      color: var(--white);
+    }
 
-Tissue Engineering
+    .hero h1 { font-size: 2.5rem; }
+    .hero p { font-size: 1.2rem; }
 
-Drug Delivery Systems
+    .btn-primary {
+      background: var(--cyan);
+      color: var(--white);
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .btn-primary:hover { background: var(--coral); }
 
-Artificial Intelligence & Deep Learning
+    section {
+      padding: 4rem 2rem;
+    }
 
-Business Analytics
+    .section-alt { background: var(--silver); }
 
-🌐 Connect
-GitHub
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
 
-LinkedIn
+    .card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
 
-Telegram
+    footer {
+      background: var(--gray);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <h2>Adel Marzban</h2>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#datasci">Data Science</a>
+      <a href="#blog">Blog</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-Email
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <h1>Physician, Scientist, Data Scientist</h1>
+      <p>Innovating at the intersection of tissue engineering and data science.</p>
+      <a href="#about" class="btn-primary">Explore My Work</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I am a physician, researcher, and data scientist with expertise in tissue engineering, allograft processing, and healthcare innovation. My passion lies in bridging science with practical solutions for patient recovery while also applying data-driven methods to accelerate healthcare advancements.</p>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research" class="section-alt">
+    <h2>Research & Healthcare Projects</h2>
+    <div class="grid">
+      <div class="card"><h3>Skin Allograft Processing</h3><p>Innovative preparation and clinical application studies.</p></div>
+      <div class="card"><h3>Acellular Dermis Membranes</h3><p>Development of biocompatible scaffolds for wound care and maxillofacial surgery.</p></div>
+      <div class="card"><h3>Collagen-Based Biomaterials</h3><p>Injectable fillers and powders designed for regenerative medicine.</p></div>
+    </div>
+  </section>
+
+  <!-- DATA SCIENCE -->
+  <section id="datasci">
+    <h2>Data Science & Coding</h2>
+    <div class="grid">
+      <div class="card"><h3>Predictive Models</h3><p>Machine learning for healthcare risk assessment.</p></div>
+      <div class="card"><h3>GitHub Projects</h3><p>Open-source tools in Python, ML, and healthcare data analysis.</p></div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog" class="section-alt">
+    <h2>Blog</h2>
+    <div class="grid">
+      <div class="card"><h3>First Blog Post</h3><p>Welcome to my research and coding journey.</p></div>
+      <div class="card"><h3>Tissue Banking Insights</h3><p>Exploring challenges and innovations in graft preparation.</p></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Let’s connect — research, collaboration, or innovation.</p>
+    <p>
+      <a href="https://linkedin.com" class="btn-primary">LinkedIn</a>
+      <a href="https://github.com" class="btn-primary">GitHub</a>
+      <a href="mailto:your-email@example.com" class="btn-primary">Email</a>
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Adel Marzban | All Rights Reserved</p>
+  </footer>
+</body>
+</html>
