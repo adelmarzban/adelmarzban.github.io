@@ -1,243 +1,153 @@
 ---
-layout: default
-title: "Adel Marzban | Tissue Innovation & Biomedical AI"
+layout: null
+Title: Home
+permalink: /
 ---
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tissue Innovation × Biomedical AI</title>
+  <meta name="description" content="Translating research into safer allografts, smarter QC, and data‑driven clinical outcomes.">
+  <meta name="theme-color" content="#006D77">
+  <link rel="icon" href="{{ '/assets/img/favicon.ico' | relative_url }}">
 
-<!-- HERO -->
-<section id="home" class="relative overflow-hidden py-24 md:py-32 lg:py-48 text-white">
-  <div class="absolute inset-0 bg-deep-teal/90"></div>
-  <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image:url('{{ site.baseurl }}/assets/img/hero-background.jpg');"></div>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
-  <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-4">
-      Advancing Medicine Through <span class="text-bright-cyan">Tissue Innovation</span>, <span class="text-warm-coral">Data Science</span>, and Digital Health.
-    </h1>
+  <!-- Tailwind (CDN). If it fails, the fallback CSS below keeps layout readable. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { 'deep-teal':'#006D77','bright-cyan':'#00B4D8','warm-coral':'#FF6B6B','graphite-gray':'#2E2E2E','soft-silver':'#E0E0E0' } } } }
+  </script>
 
-    <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 bg-white/25 border border-white/40 rounded-2xl backdrop-blur p-4 shadow-lg">
-      Adel Marzban is a multipotential scientist, physician, and entrepreneur bridging regenerative medicine with the transformative power of AI and digital technologies.
-    </p>
-
-    <div class="space-x-4">
-      <a href="#data-ai" class="inline-block bg-bright-cyan hover:bg-deep-teal text-graphite-gray font-bold py-3 px-8 rounded-xl transition shadow-lg">
-        Explore AI Projects <i class="fas fa-arrow-right ml-2"></i>
+  <!-- Fallback CSS (in case Tailwind doesn't load) -->
+  <style>
+    :root{ --teal:#006D77; --cyan:#00B4D8; --silver:#E0E0E0; --graphite:#2E2E2E; }
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--graphite);margin:0}
+    .container{max-width:1120px;margin:0 auto;padding:0 1rem}
+    .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+    .btn{display:inline-block;padding:12px 16px;border-radius:14px;text-decoration:none}
+    .btn-primary{background:var(--cyan);color:#fff}
+    .btn-ghost{border:1px solid #fff;color:#fff}
+    header{position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(6px);border-bottom:1px solid #edf0f2;z-index:50}
+    .hero{position:relative;height:70vh;min-height:440px}
+    .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .hero .overlay{position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.25), rgba(255,255,255,0))}
+    .card{border:1px solid #edf0f2;border-radius:22px;padding:24px}
+    .grid{display:grid;gap:24px}
+    @media(min-width:768px){.grid-3{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <!-- NAVBAR (simple, self-contained) -->
+  <header>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
+      <a href="{{ '/' | relative_url }}" style="display:flex;gap:12px;align-items:center;text-decoration:none;color:inherit">
+        <img src="{{ '/assets/img/avatar.png' | relative_url }}" alt="Avatar" width="40" height="40" style="border-radius:999px">
+        <strong>Adel Marzban</strong>
       </a>
-      <a href="#tissue-eng" class="inline-block border-2 border-bright-cyan text-white hover:text-bright-cyan font-bold py-3 px-8 rounded-xl transition">
-        View Tissue Innovations
-      </a>
+      <nav style="display:flex;gap:18px">
+        <a href="{{ '/' | relative_url }}" style="text-decoration:none;color:inherit">Home</a>
+        <a href="{{ '/blog/' | relative_url }}" style="text-decoration:none;color:inherit">Blog</a>
+        <a href="{{ '/contact/' | relative_url }}" style="text-decoration:none;color:inherit">Contact</a>
+        <a href="{{ '/assets/pdfs/latest-publication.pdf' | relative_url }}" class="btn" style="background:var(--teal);color:#fff;border-radius:12px">Latest Publication</a>
+      </nav>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- ABOUT -->
-<section id="about" class="py-16 md:py-24 container mx-auto px-4 sm:px-6 lg:px-8">
-  <div class="max-w-6xl mx-auto bg-white/75 border border-soft-silver rounded-2xl backdrop-blur p-8 md:p-12 shadow">
-    <h2 class="text-4xl md:text-5xl font-extrabold mb-10 text-deep-teal border-b border-soft-silver pb-4 text-center">
-      About Adel Marzban
-    </h2>
+  <!-- HERO -->
+  <section class="hero">
+    <img src="{{ '/assets/img/hero-background.jpg' | relative_url }}" alt="Biomedical abstract" width="1920" height="1080"/>
+    <div class="overlay"></div>
+    <div class="container" style="position:relative;z-index:1;height:100%;display:flex;align-items:center">
+      <div class="glass" style="max-width:760px;border-radius:26px;padding:28px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.2)">
+        <h1 style="font-size:42px;line-height:1.15;margin:0 0 10px">Tissue Innovation × Biomedical AI</h1>
+        <p style="font-size:18px;opacity:.95;margin:8px 0 18px">Translating research into safer allografts, smarter QC, and data‑driven clinical outcomes.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="{{ '/blog/' | relative_url }}" class="btn btn-primary">Explore Insights</a>
+          <a href="{{ '/contact/' | relative_url }}" class="btn" style="background:#fff;color:var(--graphite);border:1px solid #e5e7eb">Collaborate</a>
+          <a href="{{ '/assets/pdfs/latest-publication.pdf' | relative_url }}" class="btn btn-ghost">Latest Publication</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div class="grid md:grid-cols-3 gap-12 items-start">
-      <!-- Left: portrait -->
-      <div class="md:col-span-1 flex flex-col items-center md:sticky md:top-24">
-        <img src="{{ site.baseurl }}/assets/img/avatar.png" alt="Adel Marzban Profile"
-             class="w-48 h-48 rounded-full object-cover mb-6 border-4 border-bright-cyan shadow-xl">
-        <div class="w-full text-center p-4 rounded-xl bg-deep-teal text-white shadow">
-          <h4 class="text-lg font-bold mb-3">Multipotential Identity</h4>
-          <div class="space-y-2 text-sm">
-            <p><i class="fas fa-user-md mr-1"></i> Physician → Scientist</p>
-            <p class="text-warm-coral font-semibold border-y border-white/30 py-1"><i class="fas fa-lightbulb mr-1"></i> Innovator & Entrepreneur</p>
-            <p><i class="fas fa-code mr-1"></i> AI Engineer & Data Scientist</p>
+  <!-- VALUE CARDS -->
+  <section class="container" style="padding:56px 16px">
+    <div class="grid grid-3">
+      <article class="card">
+        <div style="color:var(--teal);font-weight:600;font-size:12px;letter-spacing:.08em">01 — Tissue Banking</div>
+        <h2 style="margin:8px 0 6px;font-size:22px">Process Optimization & QA</h2>
+        <p>Designing robust workflows for procurement, processing, and validation of allografts with measurable quality metrics.</p>
+      </article>
+      <article class="card">
+        <div style="color:var(--teal);font-weight:600;font-size:12px;letter-spacing:.08em">02 — Computational</div>
+        <h2 style="margin:8px 0 6px;font-size:22px">Model‑Driven Graft Design</h2>
+        <p>From hydrogel microstructure to release kinetics—using data and modeling to shorten iteration cycles.</p>
+      </article>
+      <article class="card">
+        <div style="color:var(--teal);font-weight:600;font-size:12px;letter-spacing:.08em">03 — Translation</div>
+        <h2 style="margin:8px 0 6px;font-size:22px">Clinical Impact & Policy</h2>
+        <p>Bridging lab insights with standards, safety, and adoption in real clinical environments.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- FEATURED PROJECT -->
+  <section class="container" style="padding:0 16px 16px">
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="grid grid-2" style="align-items:stretch">
+        <figure style="position:relative;min-height:280px">
+          <img src="{{ '/assets/img/hydrogel.jpg' | relative_url }}" alt="Hydrogel microstructure" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+        </figure>
+        <div style="padding:28px">
+          <h2 style="font-size:24px;margin:4px 0 10px">Featured: Hydrogel Microstructure for Drug Delivery</h2>
+          <p>Exploring double‑network hydrogels reinforced with Ce‑MOF nanoparticles to enable programmable release and improved mechanical integrity.</p>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="{{ '/assets/pdfs/latest-publication.pdf' | relative_url }}" class="btn" style="background:var(--teal);color:#fff">Read the PDF</a>
+            <a href="{{ '/contact/' | relative_url }}" class="btn" style="border:1px solid #e5e7eb">Discuss Collaboration</a>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Right: text -->
-      <div class="md:col-span-2 space-y-8">
-        <h3 class="text-2xl text-bright-cyan font-semibold border-b border-soft-silver pb-2">
-          My Mission: Bridging Biology and the Digital Future
-        </h3>
-
-        <p class="text-xl italic mb-3 text-graphite-gray">
-          "How can science and technology work together to restore lives and improve patient care?"
-        </p>
-        <p class="text-lg text-gray-700">
-          I am Adel Marzban, a physician, scientist, and entrepreneur with a deep commitment to advancing both tissue engineering
-          and digital health innovation. My journey has always been guided by this single question.
-        </p>
-
-        <h4 class="text-xl font-bold text-deep-teal mb-3 flex items-center">
-          <i class="fas fa-hand-holding-heart mr-2 text-warm-coral"></i> Foundation in Regenerative Medicine
-        </h4>
-        <p class="text-lg text-gray-700">
-          Over the past decade, I have built a strong foundation in <strong>tissue banking and regenerative medicine</strong>.
-          My work includes developing acellular dermis membranes, innovating allograft processing techniques, and creating
-          collagen-based biomaterials. As the manager of an allograft product manufacturing company, I’ve guided the approval
-          and delivery of high-quality tissue products to surgeons.
-        </p>
-
-        <h4 class="text-xl font-bold text-deep-teal mb-3 flex items-center">
-          <i class="fas fa-brain mr-2 text-bright-cyan"></i> Future in Biomedical AI
-        </h4>
-        <p class="text-lg text-gray-700">
-          I’m deeply engaged in data science and coding, building skills in <strong>Python, ML, deep learning, SQL/NoSQL, and big data</strong>.
-          My vision is to apply these tools in biomedical AI and digital health systems — from predictive modeling to intelligent
-          platforms that support patient monitoring and secure clinical workflows.
-        </p>
+  <!-- LATEST POSTS -->
+  <section style="background:#f9fbfc;border-top:1px solid #edf0f2;border-bottom:1px solid #edf0f2">
+    <div class="container" style="padding:48px 16px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px">
+        <h2 style="font-size:22px;margin:0">Latest from the Blog</h2>
+        <a href="{{ '/blog/' | relative_url }}" style="color:var(--teal);text-decoration:none">View all →</a>
+      </div>
+      <div class="grid grid-3">
+        {% for post in site.posts limit:3 %}
+        <article class="card" style="transition:transform .2s, box-shadow .2s">
+          <h3 style="margin:0 0 4px;font-size:18px"><a href="{{ post.url | relative_url }}" style="text-decoration:none;color:inherit">{{ post.title }}</a></h3>
+          <p style="margin:0 0 8px;font-size:13px;opacity:.7">{{ post.date | date: "%B %d, %Y" }}</p>
+          {% if post.excerpt %}<p style="margin:0">{{ post.excerpt | strip_html | truncate: 140 }}</p>{% endif %}
+        </article>
+        {% endfor %}
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- TISSUE ENGINEERING -->
-<section id="tissue-eng" class="py-16 md:py-24 bg-deep-teal/10">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="text-4xl font-extrabold mb-12 text-center text-deep-teal">
-      Tissue Engineering & Allograft Innovations
-    </h2>
-
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-6 shadow hover:shadow-xl transition">
-        <i class="fas fa-microscope text-3xl text-bright-cyan mb-4"></i>
-        <h3 class="text-2xl font-bold text-graphite-gray mb-3">Acellular Dermis Membranes</h3>
-        <p class="text-gray-700 mb-4">
-          Development and testing of advanced dermis membranes for maxillofacial, dental, and complex wound healing.
-        </p>
-        <a href="{{ site.baseurl }}/assets/pdfs/latest-publication.pdf"
-           class="text-warm-coral hover:underline font-semibold" target="_blank" rel="noopener">
-          Download Case Study <i class="fas fa-file-pdf ml-1"></i>
-        </a>
-      </div>
-
-      <div class="bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-6 shadow hover:shadow-xl transition">
-        <i class="fas fa-flask text-3xl text-bright-cyan mb-4"></i>
-        <h3 class="text-2xl font-bold text-graphite-gray mb-3">Allograft Processing Methods</h3>
-        <p class="text-gray-700 mb-4">
-          Innovations in lyophilization, glycerolization, and radiation sterilization to ensure safer, more effective grafts.
-        </p>
-        <a href="{{ site.baseurl }}/assets/pdfs/latest-publication.pdf"
-           class="text-warm-coral hover:underline font-semibold" target="_blank" rel="noopener">
-          View Technical Paper <i class="fas fa-external-link-alt ml-1"></i>
-        </a>
-      </div>
-
-      <div class="bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-6 shadow hover:shadow-xl transition">
-        <i class="fas fa-book-open text-3xl text-bright-cyan mb-4"></i>
-        <h3 class="text-2xl font-bold text-graphite-gray mb-3">Peer-Reviewed Publications</h3>
-        <p class="text-gray-700 mb-4">
-          Contributions to the regenerative medicine literature and internationally cited research.
-        </p>
-        <a href="https://researchgate.net/adelmarzban" class="text-warm-coral hover:underline font-semibold" target="_blank" rel="noopener">
-          ResearchGate Profile <i class="fas fa-arrow-right ml-1"></i>
-        </a>
+  <!-- ABOUT TEASER -->
+  <section class="container" style="padding:48px 16px 64px">
+    <div class="card" style="display:grid;gap:22px;grid-template-columns:auto 1fr;align-items:center">
+      <img src="{{ '/assets/img/avatar.png' | relative_url }}" alt="Adel Marzban portrait" width="120" height="120" style="border-radius:18px;border:1px solid #edf0f2">
+      <div>
+        <h2 style="font-size:22px;margin:0 0 6px">About</h2>
+        <p style="margin:0 0 12px">I build systems that connect lab‑grade rigor with clinical realities—so innovations travel faster from bench to bedside. Current focus: hydrogel DN designs, Ce‑UIO‑66 integration, and AI‑assisted QC.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="{{ '/blog/' | relative_url }}" class="btn" style="border:1px solid #e5e7eb">Read Insights</a>
+          <a href="{{ '/contact/' | relative_url }}" class="btn" style="background:var(--cyan);color:#fff">Contact</a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- DATA & AI -->
-<section id="data-ai" class="py-16 md:py-24 container mx-auto px-4 sm:px-6 lg:px-8">
-  <h2 class="text-4xl font-extrabold mb-12 text-center text-deep-teal">Data Science, Coding & Biomedical AI</h2>
-
-  <div class="max-w-4xl mx-auto text-center mb-10 bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-8 shadow">
-    <p class="text-xl font-light text-graphite-gray">
-      My current focus is transitioning into a <strong>Biomedical AI Engineer</strong>, applying deep learning and predictive
-      modeling to complex healthcare challenges.
-    </p>
-    <div class="flex flex-wrap justify-center gap-6 mt-6 text-2xl text-bright-cyan">
-      <i class="fab fa-python" title="Python"></i>
-      <i class="fas fa-brain" title="Machine Learning"></i>
-      <i class="fas fa-database" title="SQL"></i>
-      <i class="fab fa-docker" title="Docker"></i>
-      <i class="fas fa-fire" title="Spark"></i>
-    </div>
-  </div>
-
-  <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-    <div class="bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-6 shadow hover:shadow-xl transition">
-      <h3 class="text-2xl font-bold text-deep-teal mb-3">AI for Tissue Integrity Prediction</h3>
-      <p class="text-gray-700 mb-4">
-        Developing ML models to predict tissue viability and integrity based on processing parameters and patient data.
-      </p>
-      <a href="https://github.com/adelmarzban/ai-tissue-project" class="text-bright-cyan hover:underline font-semibold" target="_blank" rel="noopener">
-        View GitHub Repository <i class="fab fa-github ml-1"></i>
-      </a>
-    </div>
-
-    <div class="bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-6 shadow hover:shadow-xl transition">
-      <h3 class="text-2xl font-bold text-deep-teal mb-3">Cloud-Based EHR Dashboard</h3>
-      <p class="text-gray-700 mb-4">
-        Concept for a digital health platform providing scalable patient monitoring and modernized EHR systems.
-      </p>
-      <a href="#contact" class="text-bright-cyan hover:underline font-semibold">
-        Discuss Collaboration <i class="fas fa-handshake ml-1"></i>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ENTREPRENEURSHIP -->
-<section id="entrepreneurship" class="py-16 md:py-24 bg-deep-teal/10">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="text-4xl font-extrabold mb-12 text-center text-deep-teal">Entrepreneurship & Innovation</h2>
-
-    <div class="max-w-4xl mx-auto space-y-10">
-      <div class="bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-8 shadow">
-        <h3 class="text-3xl font-bold mb-3 text-graphite-gray">Tissue Product Manufacturing Company</h3>
-        <p class="text-lg text-gray-700">
-          Managed an allograft company through regulatory milestones, supplying high-quality, approved tissue products
-          to surgeons across specialties.
-        </p>
-        <a href="{{ site.baseurl }}/assets/pdfs/latest-publication.pdf"
-           class="text-warm-coral hover:underline font-semibold mt-2 inline-block" target="_blank" rel="noopener">
-          View Business Overview <i class="fas fa-chart-line ml-1"></i>
-        </a>
-      </div>
-
-      <div class="bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-8 shadow">
-        <h3 class="text-3xl font-bold mb-3 text-graphite-gray">Digital Health Startup Venture</h3>
-        <p class="text-lg text-gray-700">
-          Building a cloud platform aimed at modernizing healthcare monitoring and improving EHR data accessibility.
-        </p>
-        <a href="#contact" class="text-warm-coral hover:underline font-semibold mt-2 inline-block">
-          Inquire About Collaboration <i class="fas fa-dollar-sign ml-1"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BLOG CTA -->
-<section id="blog-insights" class="py-16 md:py-24 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-  <h2 class="text-4xl font-extrabold mb-6 text-deep-teal">Insights and Thought Leadership</h2>
-  <p class="text-xl max-w-3xl mx-auto mb-8 text-gray-700 bg-white/80 border border-soft-silver rounded-2xl backdrop-blur p-4 shadow">
-    Explore articles and reflections bridging tissue engineering, biomedical AI, and healthcare innovation.
-  </p>
-  <a href="{{ site.baseurl }}/blog.html"
-     class="inline-block bg-warm-coral hover:bg-deep-teal text-white font-bold py-3 px-10 rounded-xl transition shadow">
-    Read the Blog <i class="fas fa-feather-alt ml-2"></i>
-  </a>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="py-16 md:py-24 bg-graphite-gray text-soft-silver">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-2xl">
-    <h2 class="text-4xl font-extrabold mb-4 text-bright-cyan">Let's Collaborate</h2>
-    <p class="text-xl mb-8">
-      I welcome opportunities to partner in advanced tissue engineering, biomedical AI development, or digital health ventures.
-    </p>
-
-    <a href="mailto:someone@example.com"
-       class="bg-deep-teal hover:bg-bright-cyan text-white font-bold py-3 px-8 rounded-full transition inline-block text-lg shadow">
-      <i class="fas fa-envelope mr-3"></i> Get in Touch
-    </a>
-
-    <div class="mt-10 pt-6 border-t border-soft-silver/20">
-      <h3 class="text-lg font-semibold mb-4 text-warm-coral">Connect with Me</h3>
-      <div class="flex justify-center gap-6 text-3xl">
-        <a href="https://linkedin.com/in/adelmarzban" target="_blank" rel="noopener" class="hover:text-bright-cyan" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/adelmarzban" target="_blank" rel="noopener" class="hover:text-bright-cyan" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://researchgate.net/profile/Adel-Marzban" target="_blank" rel="noopener" class="hover:text-bright-cyan" title="ResearchGate"><i class="fab fa-researchgate"></i></a>
-        <a href="mailto:someone@example.com" class="hover:text-bright-cyan" title="Email"><i class="fas fa-at"></i></a>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+</body>
+</html>
