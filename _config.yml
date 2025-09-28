@@ -15,6 +15,6 @@ plugins:
   - jekyll-feed
 
   # _config.yml (add these anywhere)
-google_analytics: "G-XXXXXXXXXX"          # ← your GA4 Measurement ID
+google_analytics: "G-GMF5DCTPM2"          # ← your GA4 Measurement ID
 search_console_verification: "1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI"  # ← the value Google gives you
 
