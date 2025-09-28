@@ -17,9 +17,20 @@
     <meta name="google-site-verification" content="{{ site.google_site_verification }}" />
     {% endif %}
 
+    <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+    <meta property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
+    <meta property="og:image" content="{{ site.url }}/assets/img/og-image.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@adelmarzban"> 
+    <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta name="twitter:description" content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
     
     <script>
         // TAILWIND CONFIGURATION - UPDATED WITH NEW PALETTE
@@ -46,11 +57,11 @@
     <style>
         /* Base Background and Scroll Behavior */
         body {
-            background-color: var(--soft-sand); /* Soft Sand */
+            background-color: var(--soft-sand);
             scroll-behavior: smooth;
         }
 
-        /* Define CSS Custom Properties (Variables) for use in CSS-only styles */
+        /* Define CSS Custom Properties (Variables) */
         :root {
             --deep-navy: #0A192F;
             --teal-blue: #14B8A6;
@@ -59,27 +70,26 @@
             --slate-gray: #475569;
         }
 
-        /* --- CONSOLIDATED & ENHANCED GLASS EFFECTS --- */
+        /* --- GLASS EFFECTS --- */
         .glass-container {
-            /* Kept high contrast for readability */
             background: rgba(255, 255, 255, 0.6); 
             border-radius: 1.5rem;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15); 
             border: 1px solid rgba(255, 255, 255, 0.8); 
-            backdrop-filter: blur(16px); /* Increased blur */
+            backdrop-filter: blur(16px); 
             -webkit-backdrop-filter: blur(16px);
             transition: all 0.3s ease-in-out; 
         }
         .glass-container:hover {
-            box-shadow: 0 0 40px 0 rgba(20, 184, 166, 0.25); /* Subtle Teal Blue hover glow */
+            box-shadow: 0 0 40px 0 rgba(20, 184, 166, 0.25);
         }
 
-        /* Fixed Navigation Bar Glass Effect (More Opaque for Readability) */
+        /* Fixed Navigation Bar Glass Effect */
         .nav-glass {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 2px 10px rgba(10, 25, 47, 0.1); /* Subtle Navy shadow */
+            box-shadow: 0 2px 10px rgba(10, 25, 47, 0.1);
         }
 
         /* Header link hover transition */
@@ -103,17 +113,17 @@
             left: 0;
         }
 
-        /* Graphical Glow Effect for CTA/High-Value Cards */
-        .glow-teal { box-shadow: 0 0 15px rgba(20, 184, 166, 0.6); } /* UPDATED */
+        /* Graphical Glow Effect */
+        .glow-teal { box-shadow: 0 0 15px rgba(20, 184, 166, 0.6); } 
         .glow-coral { box-shadow: 0 0 15px rgba(248, 113, 113, 0.6); }
 
         /* JEKKYLL MARKDOWN CONTENT STYLES */
-        .markdown-content h1 { @apply text-4xl font-extrabold mb-6 mt-8 text-deep-navy; } /* UPDATED */
-        .markdown-content h2 { @apply text-3xl font-bold mb-5 mt-7 text-teal-blue; } /* UPDATED */
+        .markdown-content h1 { @apply text-4xl font-extrabold mb-6 mt-8 text-deep-navy; }
+        .markdown-content h2 { @apply text-3xl font-bold mb-5 mt-7 text-teal-blue; }
         .markdown-content p { @apply mb-5 leading-relaxed; }
         .markdown-content ul { @apply list-disc list-inside mb-5 ml-4; }
         .markdown-content a { @apply text-warm-coral hover:underline; }
-        .markdown-content blockquote { @apply border-l-4 border-teal-blue pl-4 py-2 italic text-slate-gray; } /* UPDATED */
+        .markdown-content blockquote { @apply border-l-4 border-teal-blue pl-4 py-2 italic text-slate-gray; }
         
         /* ACCESSIBILITY: Skip Link Style */
         .skip-link {
@@ -134,9 +144,26 @@
         .content-padding { padding-top: 5.5rem; }
     </style>
 
-    </head>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "{{ site.title | split: '|' | first | strip }}",
+      "jobTitle": "Tissue Banking Innovation & Biomedical AI",
+      "url": "{{ site.url }}",
+      "sameAs": [
+        "https://linkedin.com/in/adelmarzban",
+        "https://github.com/adelmarzban",
+        "https://researchgate.net/profile/Adel-Marzban"
+      ],
+      "image": "{{ site.url }}/assets/img/avatar.png",
+      "email": "{{ site.email }}"
+    }
+    </script>
+</head>
 
 <body class="text-slate-gray">
+
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-glass transition-shadow duration-300" role="banner">
@@ -172,7 +199,9 @@
     <main id="main-content" class="content-padding py-16" role="main">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
             <article class="glass-container p-8 md:p-12 lg:p-16 markdown-content">
-                <h1 class="text-5xl font-extrabold mb-4 text-deep-navy">{{ page.title }}</h1>
+                {% if page.title and page.title != "Home" %}
+                    <h1 class="text-5xl font-extrabold mb-4 text-deep-navy">{{ page.title }}</h1>
+                {% endif %}
                 
                 {% if page.layout == "post" %}
                 <p class="text-lg text-slate-gray mb-8">
@@ -196,5 +225,34 @@
         </div>
     </footer>
 
-    </body>
+    <script>
+        // Mobile Menu Toggle Logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true' || false;
+            this.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Hide mobile menu when a link is clicked (Fixes mobile menu persistence)
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuToggle.setAttribute('aria-expanded', 'false'); // Reset accessibility state
+            });
+        });
+
+        // Dynamic Glass/Shadow for Navbar on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
 </html>
