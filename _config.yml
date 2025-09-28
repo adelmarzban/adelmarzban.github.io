@@ -5,11 +5,32 @@ title: Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مر�
 email: adelmarzban@gmail.com
 description: >-
   Advancing Medicine Through Tissue Innovation, Data Science, and Digital Health.
-baseurl: "" # The subpath of your site (e.g., /blog)
+baseurl: "" 
 url: "https://adelmarzban.github.io"
+google_site_verification: "1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI" # MOVED from index.html
 
 # Build settings
 markdown: kramdown
-theme: minima # You can change this later, but minima is a safe default
+theme: minima
 plugins:
   - jekyll-feed
+  
+# OPTIMIZATION: Set clean URLs for posts
+permalink: /:title/
+
+# OPTIMIZATION: Ensure root files (like contact.md) use the layout
+defaults:
+  -
+    scope:
+      path: "" # An empty string means all files in the root folder
+      type: "pages"
+    values:
+      layout: "default"
+
+# OPTIMIZATION: Exclude unnecessary files from the build
+exclude:
+  - "README.md"
+  - "Gemfile"
+  - "Gemfile.lock"
+  - "node_modules"
+  - "package.json"
