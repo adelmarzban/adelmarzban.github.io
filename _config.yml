@@ -1,20 +1,16 @@
-# Jekyll Configuration File for GitHub Pages
+title: "Adel Marzban"
+description: "Tissue innovation & biomedical AI — portfolio and blog."
 
-# Site settings
-title: Adel Marzban | Tissue Banking Innovation & Biomedical AI 
-email: adelmarzban@gmail.com
-description: >-
-  Advancing Medicine Through Tissue Innovation, Data Science, and Digital Health.
-baseurl: "" # The subpath of your site (e.g., /blog)
+# Root site settings
 url: "https://adelmarzban.github.io"
+baseurl: ""   # root site → leave empty
 
-# Build settings
 markdown: kramdown
-theme: minima # You can change this later, but minima is a safe default
+permalink: pretty
+
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
 
-  # _config.yml (add these anywhere)
-google_analytics: "G-GMF5DCTPM2"          # ← your GA4 Measurement ID
-search_console_verification: "1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI"  # ← the value Google gives you
-
+exclude:
+  - README.md
