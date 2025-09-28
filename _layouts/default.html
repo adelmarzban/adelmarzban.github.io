@@ -195,8 +195,12 @@
             <a href="{{ site.baseurl }}/#contact" class="p-2 rounded-md bg-warm-coral text-clean-white hover:bg-teal-blue text-center mt-2">Contact</a>
         </div>
     </header>
-    
-    <main id="main-content" class="content-padding py-16" role="main">
+
+    <main id="main-content" class="content-padding" role="main">
+{% if page.url == "/" or page.url == "/index.html" %}
+    {{ content }}
+{% else %}
+    <div class="py-16">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
             <article class="glass-container p-8 md:p-12 lg:p-16 markdown-content">
                 {% if page.title and page.title != "Home" %}
@@ -215,8 +219,10 @@
                     {{ content }}
                 </div>
             </article>
-            </div>
-    </main>
+        </div>
+    </div>
+{% endif %}
+</main>
 
     <footer class="bg-deep-navy text-soft-sand py-8" role="contentinfo">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
