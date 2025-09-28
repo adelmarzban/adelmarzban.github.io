@@ -1,14 +1,15 @@
 title: "Adel Marzban | Tissue Innovation & Biomedical AI"
 description: "Advancing medicine via tissue innovation, tissue banking, and biomedical AI."
-url: "https://adelmarzban.github.io"   # no trailing slash
-baseurl: ""                             # user site must be empty
+url: "https://adelmarzban.github.io"
+baseurl: ""              # user site
 
-# Markdown / formatting
+theme: null              # << disable injected theme to use your own layouts
+
 markdown: kramdown
 kramdown:
   input: GFM
 
-# Blog URLs and pagination (blog index at /blog/)
+# Blog URLs and pagination
 permalink: /blog/:year/:month/:day/:title/
 paginate: 5
 paginate_path: "/blog/page:num"
@@ -29,7 +30,7 @@ exclude:
   - package.json
   - package-lock.json
 
-# Sensible defaults for posts
+# Defaults
 defaults:
   - scope:
       path: ""
