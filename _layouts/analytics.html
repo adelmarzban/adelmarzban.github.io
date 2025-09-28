@@ -1,24 +1,10 @@
-{%- if site.google_analytics and site.google_analytics != "" -%}
 <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GMF5DCTPM2"></script>
 <script>
-  // Respect Do Not Track
-  const dntEnabled = (
-    navigator.doNotTrack == "1" ||
-    window.doNotTrack == "1" ||
-    navigator.msDoNotTrack == "1"
-  );
-  if (!dntEnabled) {
-    (function(id){
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id='+id;
-      document.head.appendChild(s);
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', id, { anonymize_ip: true });
-    })('{{ site.google_analytics }}');
-  }
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  // Anonymize IP for privacy, optional but recommended
+  gtag('config', 'G-GMF5DCTPM2', { anonymize_ip: true });
 </script>
-{%- endif -%}
