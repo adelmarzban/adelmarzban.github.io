@@ -3,19 +3,37 @@ description: "Advancing medicine via tissue innovation, tissue banking, and biom
 url: "https://adelmarzban.github.io"   # no trailing slash
 baseurl: ""                             # user site must be empty
 
+# Markdown / formatting
 markdown: kramdown
 kramdown:
   input: GFM
 
+# Blog URLs and pagination (blog index at /blog/)
 permalink: /blog/:year/:month/:day/:title/
 paginate: 5
 paginate_path: "/blog/page:num"
 
+# GitHub Pages–supported plugins
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-paginate
 
+# Build hygiene
 exclude:
   - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+
+# Sensible defaults for posts
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+      author: "Adel Marzban"
