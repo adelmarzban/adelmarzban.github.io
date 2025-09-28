@@ -1,0 +1,24 @@
+---
+# Only the presence of front matter tells Jekyll to process SCSS
+---
+/* assets/css/site.scss */
+
+:root {
+  --color-deep-teal: #006D77;
+  --color-bright-cyan: #00B4D8;
+  --color-soft-silver: #E0E0E0;
+}
+
+* {
+  transition: color .15s ease, background-color .15s ease,
+              border-color .15s ease, opacity .15s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-soft-silver); }
+::-webkit-scrollbar-thumb { background: var(--color-deep-teal); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-bright-cyan); }
+
+/* Anchor offset so content isn’t hidden under fixed header */
+[id] { scroll-margin-top: 88px; }
