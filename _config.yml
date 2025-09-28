@@ -1,16 +1,54 @@
-title: "Adel Marzban"
-description: "Tissue innovation & biomedical AI — portfolio and blog."
-
-# Root site settings
-url: "https://adelmarzban.github.io"
-baseurl: ""   # root site → leave empty
-
+title: "Adel Marzban | Tissue Innovation & Biomedical AI"
+description: "Advancing medicine via tissue innovation, tissue banking, and biomedical AI."
+url: "https://adelmarzban.github.io"   # no trailing slash
+# Build settings
 markdown: kramdown
-permalink: pretty
+kramdown:
+  input: GFM
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
 
+permalink: /blog/:year/:month/:day/:title/
+paginate: 5
+paginate_path: "/blog/page:num"
+
+# Plugins for better appearance & functionality
 plugins:
-  - jekyll-feed
-  - jekyll-sitemap
+  - jekyll-feed        # RSS/Atom feed at /feed.xml
+  - jekyll-sitemap     # Sitemap at /sitemap.xml
+  - jekyll-seo-tag     # SEO/meta tags
+  - jekyll-paginate    # Blog pagination
+  - jekyll-archives    # Archives by year/month
+  - jekyll-toc         # Automatic table of contents in posts
+  - jemoji             # GitHub-style emoji :smile:
 
+# jekyll-archives configuration
+jekyll-archives:
+  enabled:
+    - year
+    - month
+  layout: archive
+  permalinks:
+    year: '/blog/:year/'
+    month: '/blog/:year/:month/'
+
+# Excluded files
 exclude:
   - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+
+# Defaults for posts/pages
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+      author: "Adel Marzban"
+      toc: true
+      comments: false
