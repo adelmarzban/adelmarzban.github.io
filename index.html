@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مرزبان</title>
+
+    <!-- GOOGLE SEARCH CONSOLE VERIFICATION TAG -->
+    <!-- REPLACE 'YOUR_UNIQUE_CODE_FROM_GOOGLE' with the actual code provided by Google -->
+    <meta name="google-site-verification" content="1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script>
+        // Tailwind Configuration with Custom Colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-teal': '#006D77',     /* Primary (Science, Trust) */
+                        'bright-cyan': '#00B4D8',   /* Secondary/Accent (Technology, Digital) */
+                        'warm-coral': '#FF6B6B',    /* Accent CTA (Human warmth, Energy) */
+                        'graphite-gray': '#2E2E2E', /* Text */
+                        'soft-silver': '#E0E0E0',   /* Background */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Background and Scroll Behavior */
+        body {
+            background-color: #E0E0E0; /* Soft Silver */
+            scroll-behavior: smooth;
+            transition: background-color 0.5s ease-in-out; /* Liquid transition */
+        }
+
+        /* --- ENHANCED LIQUID GLASS EFFECTS --- */
+        
+        /* The Core Glass-Liquid Effect */
+        .glass-container {
+            /* Increased Transparency and Contrast */
+            background: rgba(255, 255, 255, 0.25); 
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15); /* Stronger shadow */
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Brighter edge */
+            backdrop-filter: blur(12px); /* Increased blur */
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease-in-out; /* Liquid hover transition */
+        }
+        
+        .glass-container:hover {
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.25); /* Lifted shadow on hover */
+        }
+
+        /* Fixed Navigation Bar Glass Effect (More Opaque for Readability) */
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header link hover transition */
+        .nav-link {
+            position: relative;
+            padding-bottom: 2px;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px; /* Slightly thicker line */
+            bottom: 0;
+            left: 50%;
+            background-color: #00B4D8; /* Bright Cyan */
+            transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        /* Graphical Glow Effect for CTA/High-Value Cards */
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.6); /* Bright Cyan glow */
+        }
+        .glow-coral {
+             box-shadow: 0 0 15px rgba(255, 107, 107, 0.6); /* Warm Coral glow */
+        }
+
+        /* Custom Scrollbar (Minimalist) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-divider-silver);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary-teal);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-accent-cyan);
+        }
+        
+        /* Ensure content doesn't get hidden under the fixed header */
+        .content-padding { padding-top: 5.5rem; }
+    </style>
+</head>
+
+<body class="text-graphite-gray">
+
+    <!-- HEADER: Fixed Navigation Bar -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-glass transition-shadow duration-300">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <a href="/" class="text-2xl font-extrabold text-deep-teal hover:text-bright-cyan transition duration-300">
+                Adel Marzban
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden lg:flex space-x-8 text-lg font-medium">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#tissue-eng" class="nav-link">Tissue Eng.</a>
+                <a href="#data-ai" class="nav-link">Data & AI</a>
+                <a href="#entrepreneurship" class="nav-link">Innovation</a>
+                <a href="/blog.html" class="nav-link">Blog</a>
+                <a href="#contact" class="px-4 py-1 rounded-full bg-warm-coral text-white hover:bg-deep-teal transition duration-300 shadow-md hover:shadow-lg">Contact</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-toggle" class="lg:hidden text-2xl text-deep-teal p-2 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu (Hidden by Default) -->
+        <div id="mobile-menu" class="hidden lg:hidden flex flex-col space-y-2 p-4 bg-white shadow-lg">
+            <a href="#about" class="p-2 rounded-md hover:bg-soft-silver">About</a>
+            <a href="#tissue-eng" class="p-2 rounded-md hover:bg-soft-silver">Tissue Eng.</a>
+            <a href="#data-ai" class="p-2 rounded-md hover:bg-soft-silver">Data & AI</a>
+            <a href="#entrepreneurship" class="p-2 rounded-md hover:bg-soft-silver">Innovation</a>
+            <a href="/blog.html" class="p-2 rounded-md hover:bg-soft-silver">Blog</a>
+            <a href="#contact" class="p-2 rounded-md bg-warm-coral text-white hover:bg-deep-teal text-center mt-2">Contact</a>
+        </div>
+    </header>
+
+    <main class="content-padding">
+
+        <!-- A. Home Page (Overview) - Hero Section -->
+        <section id="home" class="relative overflow-hidden py-24 md:py-32 lg:py-48 bg-deep-teal/90 text-white flex items-center justify-center">
+            <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('assets/img/hero-background.jpg');"></div>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-4">
+                    Advancing Medicine Through <span class="text-bright-cyan">Tissue Innovation</span>, <span class="text-warm-coral">Data Science</span>, and Digital Health.
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 font-light glass-container p-4 hover:glow-cyan">
+                    Adel Marzban is a multipotential scientist, physician, and entrepreneur bridging regenerative medicine with the transformative power of AI and digital technologies.
+                </p>
+                <div class="space-x-4">
+                    <a href="#data-ai" class="button-cta bg-bright-cyan hover:bg-deep-teal text-graphite-gray font-bold py-3 px-8 rounded-xl transition duration-300 inline-block shadow-lg glow-cyan">
+                        Explore AI Projects <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#tissue-eng" class="text-white hover:text-bright-cyan font-bold py-3 px-8 transition duration-300 inline-block border-2 border-bright-cyan rounded-xl hover:shadow-xl">
+                        View Tissue Innovations
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- B. About Me -->
+        <section id="about" class="py-16 md:py-24 container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto glass-container p-8 md:p-12">
+                
+                <h2 class="text-5xl font-extrabold mb-10 text-deep-teal border-b border-soft-silver pb-4 text-center">About Adel Marzban</h2>
+
+                <div class="grid md:grid-cols-3 gap-12 items-start">
+                    
+                    <!-- Left Column: Graphical & Summary -->
+                    <div class="md:col-span-1 flex flex-col items-center md:sticky md:top-24">
+                        <!-- Profile Image -->
+                        <img src="assets/img/avatar.png" alt="Adel Marzban Profile" 
+                             class="w-48 h-48 rounded-full object-cover mb-6 border-4 border-bright-cyan shadow-xl transition transform hover:scale-105 duration-300">
+                        
+                        <!-- Multipotential Identity Visual -->
+                        <div class="w-full text-center p-4 rounded-xl bg-deep-teal text-white shadow-lg glow-cyan">
+                            <h4 class="text-lg font-bold mb-3">Multipotential Identity</h4>
+                            <div class="space-y-2 text-sm">
+                                <p><i class="fas fa-user-md mr-1"></i> Physician &rightarrow; Scientist</p>
+                                <p class="text-warm-coral font-semibold border-t border-b border-white/30 py-1"><i class="fas fa-lightbulb mr-1"></i> Innovator & Entrepreneur</p>
+                                <p><i class="fas fa-code mr-1"></i> AI Engineer & Data Scientist</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Professional Narrative -->
+                    <div class="md:col-span-2 space-y-8">
+                        <h3 class="text-2xl text-bright-cyan font-semibold border-b border-soft-silver pb-2">My Mission: Bridging Biology and the Digital Future</h3>
+
+                        <!-- Paragraph 1: Commitment & Question -->
+                        <div>
+                            <p class="text-xl text-graphite-gray italic mb-3">
+                                "How can science and technology work together to restore lives and improve patient care?"
+                            </p>
+                            <p class="text-lg text-gray-700">
+                                I am Adel Marzban, a physician, scientist, and entrepreneur with a deep commitment to advancing both tissue engineering and digital health innovation. My journey has always been guided by this single question.
+                            </p>
+                        </div>
+                        
+                        <!-- Paragraph 2: Background (Tissue Engineering) -->
+                        <div>
+                            <h4 class="text-xl font-bold text-deep-teal mb-3 flex items-center"><i class="fas fa-hand-holding-heart mr-2 text-warm-coral"></i> Foundation in Regenerative Medicine</h4>
+                            <p class="text-lg text-gray-700">
+                                Over the past decade, I have built a strong foundation in **tissue banking and regenerative medicine**. My work includes developing acellular dermis membranes, innovating in allograft processing techniques, and creating collagen-based biomaterials. As the manager of an allograft product manufacturing company, I have successfully guided the approval and delivery of high-quality tissue products to surgeons, ensuring patients receive the best available options for healing and recovery.
+                            </p>
+                        </div>
+
+                        <!-- Paragraph 3: Vision (Data Science & AI) -->
+                        <div>
+                            <h4 class="text-xl font-bold text-deep-teal mb-3 flex items-center"><i class="fas fa-brain mr-2 text-bright-cyan"></i> Future in Biomedical AI</h4>
+                            <p class="text-lg text-gray-700">
+                                My path extends beyond biology. I am deeply engaged in data science and coding, building skills in **Python, ML, deep learning, SQL/NoSQL, and big data technologies**. My vision is to apply these tools in biomedical AI and digital health systems — from predictive modeling in healthcare to intelligent cloud-based platforms that support patient monitoring and electronic health records. This dual expertise allows me to operate at the critical **intersection of medicine and technology**.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- C. Tissue Engineering & Allografts -->
+        <section id="tissue-eng" class="py-16 md:py-24 bg-deep-teal/10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-extrabold mb-12 text-center text-deep-teal">Tissue Engineering & Allograft Innovations</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card 1: Acellular Dermis -->
+                    <div class="glass-container p-6 hover:shadow-xl transition duration-300 hover:border-bright-cyan border-2 border-transparent">
+                        <i class="fas fa-microscope text-3xl text-bright-cyan mb-4"></i>
+                        <h3 class="text-2xl font-bold text-graphite-gray mb-3">Acellular Dermis Membranes</h3>
+                        <p class="text-gray-600 mb-4">Development and testing of advanced dermis membranes for use in maxillofacial, dental, and complex wound healing applications.</p>
+                        <a href="assets/pdfs/acellular-dermis-case.pdf" class="text-warm-coral hover:underline font-semibold" target="_blank">Download Case Study <i class="fas fa-file-pdf ml-1"></i></a>
+                    </div>
+                    <!-- Card 2: Processing Methods -->
+                    <div class="glass-container p-6 hover:shadow-xl transition duration-300 hover:border-bright-cyan border-2 border-transparent">
+                        <i class="fas fa-flask text-3xl text-bright-cyan mb-4"></i>
+                        <h3 class="text-2xl font-bold text-graphite-gray mb-3">Allograft Processing Methods</h3>
+                        <p class="text-gray-600 mb-4">Innovations in lyophilization, glycerolization, and radiation sterilization to ensure safer, more effective, and readily available tissue grafts.</p>
+                        <a href="assets/pdfs/processing-methods.pdf" class="text-warm-coral hover:underline font-semibold" target="_blank">View Technical Paper <i class="fas fa-external-link-alt ml-1"></i></a>
+                    </div>
+                    <!-- Card 3: Publications -->
+                    <div class="glass-container p-6 hover:shadow-xl transition duration-300 hover:border-bright-cyan border-2 border-transparent">
+                        <i class="fas fa-book-open text-3xl text-bright-cyan mb-4"></i>
+                        <h3 class="text-2xl font-bold text-graphite-gray mb-3">Peer-Reviewed Publications</h3>
+                        <p class="text-gray-600 mb-4">Contribution to the global body of regenerative medicine knowledge with internationally cited research papers.</p>
+                        <a href="https://researchgate.net/adelmarzban" class="text-warm-coral hover:underline font-semibold" target="_blank">ResearchGate Profile <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- D. Data Science, Coding & Biomedical AI -->
+        <section id="data-ai" class="py-16 md:py-24 container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-extrabold mb-12 text-center text-deep-teal">Data Science, Coding & Biomedical AI</h2>
+            <div class="max-w-4xl mx-auto text-center mb-10 glass-container p-8">
+                <p class="text-xl font-light text-graphite-gray">
+                    My current focus is transitioning into a **Biomedical AI Engineer**, applying deep learning and predictive modeling to complex healthcare challenges.
+                </p>
+                <div class="flex flex-wrap justify-center space-x-4 mt-6 text-2xl text-bright-cyan">
+                    <span title="Python"><i class="fab fa-python"></i></span>
+                    <span title="Machine Learning"><i class="fas fa-brain"></i></span>
+                    <span title="SQL"><i class="fas fa-database"></i></span>
+                    <span title="Docker"><i class="fab fa-docker"></i></span>
+                    <span title="Spark"><i class="fas fa-fire"></i></span>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Card 1: Predictive Modeling Project -->
+                <div class="glass-container p-6 hover:shadow-xl transition duration-300 border-l-4 border-bright-cyan hover:glow-cyan">
+                    <h3 class="text-2xl font-bold text-deep-teal mb-3">AI for Tissue Integrity Prediction</h3>
+                    <p class="text-gray-600 mb-4">Developing ML models to predict tissue viability and integrity based on processing parameters and patient data, optimizing allograft selection.</p>
+                    <a href="https://github.com/adelmarzban/ai-tissue-project" class="text-bright-cyan hover:underline font-semibold" target="_blank">View GitHub Repository <i class="fab fa-github ml-1"></i></a>
+                </div>
+                <!-- Card 2: Digital Health Platform -->
+                <div class="glass-container p-6 hover:shadow-xl transition duration-300 border-l-4 border-bright-cyan hover:glow-cyan">
+                    <h3 class="text-2xl font-bold text-deep-teal mb-3">Cloud-Based EHR Dashboard</h3>
+                    <p class="text-gray-600 mb-4">Concept for a digital health platform providing scalable patient monitoring and modernized electronic health record (EHR) systems.</p>
+                    <a href="#contact" class="text-bright-cyan hover:underline font-semibold">Discuss Collaboration <i class="fas fa-handshake ml-1"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- E. Entrepreneurship & Innovation -->
+        <section id="entrepreneurship" class="py-16 md:py-24 bg-deep-teal/10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-extrabold mb-12 text-center text-deep-teal">Entrepreneurship & Innovation</h2>
+                <div class="max-w-4xl mx-auto space-y-10">
+                    <!-- Project 1: Allograft Company -->
+                    <div class="glass-container p-8 border-l-4 border-warm-coral hover:glow-coral">
+                        <h3 class="text-3xl font-bold mb-3 text-graphite-gray">Tissue Product Manufacturing Company</h3>
+                        <p class="text-lg text-gray-700">Successfully managed and guided an allograft company through regulatory milestones, supplying high-quality, approved tissue products to surgeons across various specialties.</p>
+                        <a href="assets/pdfs/business-case-tissue.pdf" class="text-warm-coral hover:underline font-semibold mt-2 inline-block">View Business Overview <i class="fas fa-chart-line ml-1"></i></a>
+                    </div>
+                    <!-- Project 2: Digital Health Startup -->
+                    <div class="glass-container p-8 border-l-4 border-warm-coral hover:glow-coral">
+                        <h3 class="text-3xl font-bold mb-3 text-graphite-gray">Digital Health Startup Venture</h3>
+                        <p class="text-lg text-gray-700">Currently building a cloud-based platform aimed at modernizing healthcare monitoring and improving EHR data accessibility for clinical teams.</p>
+                        <a href="#contact" class="text-warm-coral hover:underline font-semibold mt-2 inline-block">Inquire About Investment <i class="fas fa-dollar-sign ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- F. Blog / Insights (Link to Blog Index) -->
+        <section id="blog-insights" class="py-16 md:py-24 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-extrabold mb-6 text-deep-teal">Insights and Thought Leadership</h2>
+            <p class="text-xl max-w-3xl mx-auto mb-8 text-gray-700 glass-container p-4 hover:shadow-xl">
+                Explore articles and reflections bridging tissue engineering, biomedical AI, and healthcare innovation.
+            </p>
+            <a href="/blog.html" class="button-cta bg-warm-coral hover:bg-deep-teal text-white font-bold py-3 px-10 rounded-xl transition duration-300 inline-block shadow-lg glow-coral">
+                Read the Blog <i class="fas fa-feather-alt ml-2"></i>
+            </a>
+        </section>
+
+        <!-- G. Contact & Collaboration -->
+        <section id="contact" class="py-16 md:py-24 bg-graphite-gray text-soft-silver">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-2xl">
+                <h2 class="text-4xl font-extrabold mb-4 text-bright-cyan">Let's Collaborate</h2>
+                <p class="text-xl mb-8">
+                    I welcome opportunities to partner in advanced tissue engineering, biomedical AI development, or digital health ventures.
+                </p>
+
+                <a href="mailto:your.email@example.com" class="bg-deep-teal hover:bg-bright-cyan text-white font-bold py-3 px-8 rounded-full transition duration-300 inline-block text-lg shadow-xl hover:glow-cyan">
+                    <i class="fas fa-envelope mr-3"></i> Get in Touch
+                </a>
+
+                <div class="mt-10 pt-6 border-t border-soft-silver/20">
+                    <h3 class="text-lg font-semibold mb-4 text-warm-coral">Connect with Me</h3>
+                    <div class="space-x-6 text-3xl">
+                        <a href="https://linkedin.com/in/adelmarzban" target="_blank" class="hover:text-bright-cyan transition duration-300" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/adelmarzban" target="_blank" class="hover:text-bright-cyan transition duration-300" title="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://researchgate.net/profile/Adel-Marzban" target="_blank" class="hover:text-bright-cyan transition duration-300" title="ResearchGate"><i class="fab fa-researchgate"></i></a>
+                        <a href="mailto:your.email@example.com" class="hover:text-bright-cyan transition duration-300" title="Email"><i class="fas fa-at"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-graphite-gray text-soft-silver py-8 border-t border-deep-teal">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; {{ 'now' | date: "2024" }} Adel Marzban. All Rights Reserved.</p>
+            <p class="mt-2">Built with passion at the intersection of Biology and AI.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu and Dynamic Scroll Effects -->
+    <script>
+        // Mobile Menu Toggle Logic
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Hide mobile menu when a link is clicked
+        document.getElementById('mobile-menu').querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Dynamic Glass/Shadow for Navbar on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
