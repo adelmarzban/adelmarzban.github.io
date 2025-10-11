@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <title>{% if page.title and page.title != "Home" %}{{ page.title }} | {% endif %}{{ site.title }}</title>
 
-    <meta name="description" content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+    <meta name="description"
+        content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
-    
+
     {% if site.google_site_verification %}
     <meta name="google-site-verification" content="{{ site.google_site_verification }}" />
     {% endif %}
 
     <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
     <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-    <meta property="og:description" content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+    <meta property="og:description"
+        content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
     <meta property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
     <meta property="og:image" content="{{ site.url }}/assets/img/og-image.jpg">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@adelmarzban"> 
+    <meta name="twitter:site" content="@adelmarzban">
     <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-    <meta name="twitter:description" content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+    <meta name="twitter:description"
+        content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <script>
-        // TAILWIND CONFIGURATION - UPDATED WITH NEW PALETTE
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'deep-navy': '#0A192F',     /* Primary (Foundation, Science) */
-                        'teal-blue': '#14B8A6',     /* Secondary/Accent (Innovation, Digital) */
-                        'sky-blue': '#38BDF8',      /* Secondary/Accent (Freshness) */
-                        'warm-coral': '#F87171',    /* Accent CTA (Empathy, Human Touch) */
-                        'soft-sand': '#F1F5F9',     /* Background (Calm) */
-                        'slate-gray': '#475569',    /* Text & Subtle Design */
-                        'clean-white': '#FFFFFF',   /* White Text/Background */
+                        'deep-navy': '#0A192F',
+                        'teal-blue': '#14B8A6',
+                        'sky-blue': '#38BDF8',
+                        'warm-coral': '#F87171',
+                        'soft-sand': '#F1F5F9',
+                        'slate-gray': '#475569',
+                        'clean-white': '#FFFFFF',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -53,15 +55,9 @@
             }
         }
     </script>
-    
-    <style>
-        /* Base Background and Scroll Behavior */
-        body {
-            background-color: var(--soft-sand);
-            scroll-behavior: smooth;
-        }
 
-        /* Define CSS Custom Properties (Variables) */
+    <style>
+        /*  CSS Custom Properties (Variables) */
         :root {
             --deep-navy: #0A192F;
             --teal-blue: #14B8A6;
@@ -70,16 +66,23 @@
             --slate-gray: #475569;
         }
 
+        body {
+            background-color: var(--soft-sand);
+            scroll-behavior: smooth;
+            color: var(--slate-gray);
+        }
+
         /* --- GLASS EFFECTS --- */
         .glass-container {
-            background: rgba(255, 255, 255, 0.6); 
+            background: rgba(255, 255, 255, 0.6);
             border-radius: 1.5rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15); 
-            border: 1px solid rgba(255, 255, 255, 0.8); 
-            backdrop-filter: blur(16px); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            transition: all 0.3s ease-in-out; 
+            transition: box-shadow 0.3s ease-in-out;
         }
+
         .glass-container:hover {
             box-shadow: 0 0 40px 0 rgba(20, 184, 166, 0.25);
         }
@@ -98,33 +101,57 @@
             padding-bottom: 2px;
             transition: color 0.3s;
         }
+
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 3px; 
+            height: 3px;
             bottom: 0;
             left: 50%;
-            background-color: var(--teal-blue); 
+            background-color: var(--teal-blue);
             transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
         }
+
         .nav-link:hover::after {
             width: 100%;
             left: 0;
         }
 
         /* Graphical Glow Effect */
-        .glow-teal { box-shadow: 0 0 15px rgba(20, 184, 166, 0.6); } 
-        .glow-coral { box-shadow: 0 0 15px rgba(248, 113, 113, 0.6); }
+        .glow-teal {
+            box-shadow: 0 0 15px rgba(20, 184, 166, 0.6);
+        }
+
+        .glow-coral {
+            box-shadow: 0 0 15px rgba(248, 113, 113, 0.6);
+        }
 
         /* JEKKYLL MARKDOWN CONTENT STYLES */
-        .markdown-content h1 { @apply text-4xl font-extrabold mb-6 mt-8 text-deep-navy; }
-        .markdown-content h2 { @apply text-3xl font-bold mb-5 mt-7 text-teal-blue; }
-        .markdown-content p { @apply mb-5 leading-relaxed; }
-        .markdown-content ul { @apply list-disc list-inside mb-5 ml-4; }
-        .markdown-content a { @apply text-warm-coral hover:underline; }
-        .markdown-content blockquote { @apply border-l-4 border-teal-blue pl-4 py-2 italic text-slate-gray; }
-        
+        .markdown-content h1 {
+            @apply text-4xl font-extrabold mb-6 mt-8 text-deep-navy;
+        }
+
+        .markdown-content h2 {
+            @apply text-3xl font-bold mb-5 mt-7 text-teal-blue;
+        }
+
+        .markdown-content p {
+            @apply mb-5 leading-relaxed;
+        }
+
+        .markdown-content ul {
+            @apply list-disc list-inside mb-5 ml-4;
+        }
+
+        .markdown-content a {
+            @apply text-warm-coral hover:underline;
+        }
+
+        .markdown-content blockquote {
+            @apply border-l-4 border-teal-blue pl-4 py-2 italic text-slate-gray;
+        }
+
         /* ACCESSIBILITY: Skip Link Style */
         .skip-link {
             position: absolute;
@@ -136,143 +163,101 @@
             z-index: 10000;
             transition: top 0.3s;
         }
+
         .skip-link:focus {
             top: 0;
         }
 
         /* Ensure content doesn't get hidden under the fixed header */
-        .content-padding { padding-top: 5.5rem; }
+        .content-padding {
+            padding-top: 5.5rem;
+        }
     </style>
 
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "{{ site.title | split: '|' | first | strip }}",
-      "jobTitle": "Tissue Banking Innovation & Biomedical AI",
-      "url": "{{ site.url }}",
-      "sameAs": [
-        "https://linkedin.com/in/adelmarzban",
-        "https://github.com/adelmarzban",
-        "https://researchgate.net/profile/Adel-Marzban"
-      ],
-      "image": "{{ site.url }}/assets/img/avatar.png",
-      "email": "{{ site.email }}"
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "{{ site.title | split: '|' | first | strip }}",
+        "jobTitle": "Tissue Banking Innovation & Biomedical AI",
+        "url": "{{ site.url }}",
+        "sameAs": [
+            "https://linkedin.com/in/adelmarzban",
+            "https://github.com/adelmarzban",
+            "https://researchgate.net/profile/Adel-Marzban"
+        ],
+        "image": "{{ site.url }}/assets/img/avatar.png",
+        "email": "{{ site.email }}"
     }
     </script>
 </head>
 
-<body class="text-slate-gray">
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- Accessible, robust header navigation for Jekyll (GitHub Pages) + Tailwind -->
-<!-- Place this inside your layout's <body> -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-glass transition-shadow duration-300"
+        role="banner">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center" role="navigation"
+            aria-label="Main Navigation">
+            <a href="{{ site.baseurl }}/"
+                class="text-2xl font-extrabold text-deep-navy hover:text-teal-blue transition duration-300">
+                Adel Marzban
+            </a>
 
-<!-- Skip link (hidden until focused) -->
-<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-3 focus:py-2 focus:rounded-md focus:bg-clean-white focus:text-deep-navy focus:shadow">Skip to main content</a>
+            <div class="hidden lg:flex space-x-8 text-lg font-medium">
+                <a href="{{ site.baseurl }}/#about" class="nav-link">About</a>
+                <a href="{{ site.baseurl }}/#tissue-eng" class="nav-link">Tissue Eng.</a>
+                <a href="{{ site.baseurl }}/#data-ai" class="nav-link">Data & AI</a>
+                <a href="{{ site.baseurl }}/#entrepreneurship" class="nav-link">Innovation</a>
+                <a href="{{ site.baseurl }}/blog/" class="nav-link">Blog</a>
+                <a href="{{ site.baseurl }}/#contact"
+                    class="px-4 py-1 rounded-full bg-warm-coral text-clean-white hover:bg-teal-blue transition duration-200">Contact</a>
+            </div>
 
-<header id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-glass transition-shadow duration-300" role="banner">
-  <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center" aria-label="Main Navigation">
-    <a href="{{ '/' | relative_url }}" class="text-2xl font-extrabold text-deep-navy hover:text-teal-blue transition duration-300">
-      Adel Marzban
-    </a>
+            <button id="menu-toggle" class="lg:hidden text-2xl text-deep-navy p-2 rounded-lg hover:bg-soft-sand/80"
+                aria-controls="mobile-menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
 
-    <!-- Desktop nav -->
-    <ul class="hidden lg:flex space-x-8 text-lg font-medium">
-      <li><a href="{{ '/' | relative_url }}#about" class="nav-link">About</a></li>
-      <li><a href="{{ '/' | relative_url }}#tissue-eng" class="nav-link">Tissue Eng.</a></li>
-      <li><a href="{{ '/' | relative_url }}#data-ai" class="nav-link">Data & AI</a></li>
-      <li><a href="{{ '/' | relative_url }}#entrepreneurship" class="nav-link">Innovation</a></li>
-      <li><a href="{{ '/blog/' | relative_url }}" class="nav-link" {% if page.url contains '/blog' %}aria-current="page"{% endif %}>Blog</a></li>
-      <li><a href="{{ '/' | relative_url }}#contact" class="px-4 py-1 rounded-full bg-warm-coral text-clean-white hover:bg-teal-blue transition duration-200">Contact</a></li>
-    </ul>
-
-    <!-- Mobile menu button -->
-    <button id="menu-toggle" class="lg:hidden text-2xl text-deep-navy p-2 rounded-lg hover:bg-soft-sand/80" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
-      <!-- Use any icon system you actually load (e.g., Heroicons). This inline SVG avoids FA dependency. -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6"><path d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Zm.75 4.5a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5H3.75Z"/></svg>
-    </button>
-  </nav>
-
-  <!-- Mobile nav -->
-  <div id="mobile-menu" class="hidden lg:hidden flex flex-col space-y-2 p-4 bg-clean-white shadow-lg" role="menu">
-    <a href="{{ '/' | relative_url }}#about" class="p-2 rounded-md hover:bg-soft-sand" role="menuitem">About</a>
-    <a href="{{ '/' | relative_url }}#tissue-eng" class="p-2 rounded-md hover:bg-soft-sand" role="menuitem">Tissue Eng.</a>
-    <a href="{{ '/' | relative_url }}#data-ai" class="p-2 rounded-md hover:bg-soft-sand" role="menuitem">Data & AI</a>
-    <a href="{{ '/' | relative_url }}#entrepreneurship" class="p-2 rounded-md hover:bg-soft-sand" role="menuitem">Innovation</a>
-    <a href="{{ '/blog/' | relative_url }}" class="p-2 rounded-md hover:bg-soft-sand" role="menuitem">Blog</a>
-    <a href="{{ '/' | relative_url }}#contact" class="p-2 rounded-md bg-warm-coral text-clean-white hover:bg-teal-blue text-center mt-2" role="menuitem">Contact</a>
-  </div>
-</header>
-
-<!-- Spacer so content isn't hidden behind the fixed header (adjust height to your header size) -->
-<div aria-hidden="true" class="h-16 lg:h-20"></div>
-
-<!-- Your main content should start here and have the id used by the skip link -->
-<main id="main-content">
-  <!-- page content -->
-</main>
-
-<script>
-  (function () {
-    const btn = document.getElementById('menu-toggle');
-    const menu = document.getElementById('mobile-menu');
-
-    if (!btn || !menu) return;
-
-    function openMenu() {
-      menu.classList.remove('hidden');
-      btn.setAttribute('aria-expanded', 'true');
-      btn.setAttribute('aria-label', 'Close menu');
-    }
-    function closeMenu() {
-      menu.classList.add('hidden');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.setAttribute('aria-label', 'Open menu');
-    }
-
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      expanded ? closeMenu() : openMenu();
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeMenu();
-    });
-
-    // Close after clicking any mobile menu link
-    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
-  })();
-</script>
-
+        <div id="mobile-menu" class="hidden lg:hidden flex flex-col space-y-2 p-4 bg-clean-white shadow-lg">
+            <a href="{{ site.baseurl }}/#about" class="p-2 rounded-md hover:bg-soft-sand">About</a>
+            <a href="{{ site.baseurl }}/#tissue-eng" class="p-2 rounded-md hover:bg-soft-sand">Tissue Eng.</a>
+            <a href="{{ site.baseurl }}/#data-ai" class="p-2 rounded-md hover:bg-soft-sand">Data & AI</a>
+            <a href="{{ site.baseurl }}/#entrepreneurship" class="p-2 rounded-md hover:bg-soft-sand">Innovation</a>
+            <a href="{{ site.baseurl }}/blog/" class="p-2 rounded-md hover:bg-soft-sand">Blog</a>
+            <a href="{{ site.baseurl }}/#contact"
+                class="p-2 rounded-md bg-warm-coral text-clean-white hover:bg-teal-blue text-center mt-2">Contact</a>
+        </div>
+    </header>
 
     <main id="main-content" class="content-padding" role="main">
-{% if page.url == "/" or page.url == "/index.html" %}
-    {{ content }}
-{% else %}
-    <div class="py-16">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-            <article class="glass-container p-8 md:p-12 lg:p-16 markdown-content">
-                {% if page.title and page.title != "Home" %}
+        {% if page.url == "/" or page.url == "/index.html" %}
+        {{ content }}
+        {% else %}
+        <div class="py-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+                <article class="glass-container p-8 md:p-12 lg:p-16 markdown-content">
+                    {% if page.title and page.title != "Home" %}
                     <h1 class="text-5xl font-extrabold mb-4 text-deep-navy">{{ page.title }}</h1>
-                {% endif %}
-                
-                {% if page.layout == "post" %}
-                <p class="text-lg text-slate-gray mb-8">
-                    <i class="far fa-calendar-alt mr-2 text-warm-coral"></i> 
-                    Published {{ page.date | date: "%B %-d, %Y" }} 
-                    {% if page.author %}by {{ page.author }}{% endif %}
-                </p>
-                {% endif %}
+                    {% endif %}
 
-                <div class="prose max-w-none text-lg">
-                    {{ content }}
-                </div>
-            </article>
+                    {% if page.layout == "post" %}
+                    <p class="text-lg text-slate-gray mb-8">
+                        <i class="far fa-calendar-alt mr-2 text-warm-coral"></i>
+                        Published {{ page.date | date: "%B %-d, %Y" }}
+                        {% if page.author %}by {{ page.author }}{% endif %}
+                    </p>
+                    {% endif %}
+
+                    <div class="prose max-w-none text-lg">
+                        {{ content }}
+                    </div>
+                </article>
+            </div>
         </div>
-    </div>
-{% endif %}
-</main>
+        {% endif %}
+    </main>
 
     <footer class="bg-deep-navy text-soft-sand py-8" role="contentinfo">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
@@ -282,33 +267,27 @@
     </footer>
 
     <script>
-        // Mobile Menu Toggle Logic
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
 
-        menuToggle.addEventListener('click', function() {
-            const isExpanded = this.getAttribute('aria-expanded') === 'true' || false;
-            this.setAttribute('aria-expanded', !isExpanded);
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', !isExpanded);
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Hide mobile menu when a link is clicked (Fixes mobile menu persistence)
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
-                menuToggle.setAttribute('aria-expanded', 'false'); // Reset accessibility state
+                menuToggle.setAttribute('aria-expanded', 'false');
             });
         });
 
-        // Dynamic Glass/Shadow for Navbar on scroll
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-lg');
-            } else {
-                navbar.classList.remove('shadow-lg');
-            }
+            navbar.classList.toggle('shadow-lg', window.scrollY > 50);
         });
     </script>
 </body>
+
 </html>
