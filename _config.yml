@@ -11,6 +11,7 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-sitemap   # ✅ allowed on GitHub Pages
+  - jekyll-last-modified-at
 
 permalink: /:title/
 
