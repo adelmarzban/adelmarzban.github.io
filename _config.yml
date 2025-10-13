@@ -1,35 +1,26 @@
-# Jekyll Configuration File for GitHub Pages
-
-# Site settings
 title: Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مرزبان
 email: adelmarzban@gmail.com
 description: >-
   Advancing Medicine Through Tissue Innovation, Data Science, and Digital Health.
-baseurl: "" 
+baseurl: ""
 url: "https://adelmarzban.github.io"
-google_site_verification: "1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI" # MOVED from index.html
+google_site_verification: "1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI"
 
-# Build settings
 markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-last-modified-at
-  
-# OPTIMIZATION: Set clean URLs for posts
+  - jekyll-sitemap   # ✅ allowed on GitHub Pages
+
 permalink: /:title/
 
-# OPTIMIZATION: Ensure root files (like contact.md) use the layout
 defaults:
-  -
-    scope:
-      path: "" # An empty string means all files in the root folder
+  - scope:
+      path: ""
       type: "pages"
     values:
       layout: "default"
 
-# OPTIMIZATION: Exclude unnecessary files from the build
 exclude:
   - "README.md"
   - "Gemfile"
