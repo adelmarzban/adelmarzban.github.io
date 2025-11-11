@@ -1,11 +1,11 @@
----
-layout: post
-title: "My First Daily Insight"
-author: Adel Marzban
-categories: [AI, Data Science]
----
+layout: post title: "My First Daily Insight" author: Adel Marzban categories: [AI, Data Science]
 
-# Today's Topic
+<!--
+The <h1> title "My First Daily Insight" is now generated automatically
+by _layouts/default.html, using the "title:" from the front matter above.
+
+You can just start writing your content directly.
+-->
 
 This is where I write my daily insights...
 
