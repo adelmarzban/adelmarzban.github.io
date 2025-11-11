@@ -15,8 +15,6 @@ plugins:
   - jekyll-sitemap
   - jekyll-feed
   - jekyll-redirect-from
-  - jekyll-remote-theme
-
 
 permalink: /:title/
 
