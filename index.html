@@ -209,5 +209,29 @@ title: Home
                 </div>
             </div>
         </div>
+
+
+
+
+      <section id="selected-publications" class="py-16 md:py-24">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-4xl font-extrabold mb-8 text-center text-deep-navy">Selected Publications</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      {% assign pubs = site.publications | sort: "year" | reverse | slice: 0, 3 %}
+      {% for pub in pubs %}
+        <article class="glass-container p-6 hover:shadow-xl transition duration-300">
+          <h3 class="text-xl font-bold"><a href="{{ pub.url }}" class="hover:underline">{{ pub.title }}</a></h3>
+          <p class="text-slate-gray text-sm mt-2">{{ pub.authors }}</p>
+          <p class="text-slate-gray/80 text-sm"><i>{{ pub.journal }}</i>{% if pub.year %} ({{ pub.year }}){% endif %}</p>
+          <a href="{{ pub.url }}" class="text-teal-blue underline mt-3 inline-block">Read more</a>
+        </article>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-8">
+      <a href="{{ site.baseurl }}/publications/" class="button-cta bg-teal-blue hover:bg-sky-blue text-deep-navy font-bold py-3 px-8 rounded-xl">All Publications</a>
+    </div>
+  </div>
+</section>
+
     </section>
 </main>
