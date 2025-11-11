@@ -1,51 +1,64 @@
 ---
+# This page lists all your blog posts.
 layout: default
 title: Insights & Blog Archive
 description: Explore Adel Marzban's articles and reflections bridging tissue engineering, biomedical AI, and healthcare innovation.
 permalink: /blog/
 ---
-<main id="main-content" class="py-24 container mx-auto px-4 sm:px-6 lg:px-8" role="main">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-extrabold mb-10 text-deep-navy text-center">Insights & Blog Archive</h1>
-        
-        {% for post in site.posts %}
-            <div class="glass-container p-6 mb-6">
-                <h2 class="text-2xl font-bold text-deep-navy mb-2">
-                    <a href="{{ site.baseurl }}{{ post.url }}" class="hover:text-teal-blue transition duration-200">{{ post.title }}</a>
-                </h2>
-                <p class="text-sm text-slate-gray/70 mb-3">
-                    <span class="text-warm-coral"><i class="far fa-calendar-alt mr-1"></i> {{ post.date | date: "%B %-d, %Y" }}</span> 
-                    | Tags: 
-                    {% for tag in post.tags %}
-                        <a href="{{ site.baseurl }}/tags#{{ tag | slugify }}" class="text-teal-blue hover:underline">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
-                    {% endfor %}
-                </p>
-                <p class="text-base text-slate-gray">{{ post.content | strip_html | truncatewords: 30 }}</p>
-                
-                <a href="{{ site.baseurl }}{{ post.url }}" class="text-teal-blue font-semibold mt-3 inline-block hover:underline">
-                    Read Post <i class="fas fa-chevron-right ml-1"></i>
-                </a>
-            </div>
-        {% endfor %}
 
-        {% if paginator.total_pages > 1 %}
-            <div class="flex justify-center mt-12 space-x-4">
-                {% if paginator.previous_page %}
-                    <a href="{{ site.baseurl }}{{ paginator.previous_page_path }}" class="px-4 py-2 bg-teal-blue text-clean-white rounded-full hover:bg-sky-blue transition">
-                        <i class="fas fa-arrow-left mr-2"></i> Newer Posts
-                    </a>
-                {% endif %}
-                {% if paginator.next_page %}
-                    <a href="{{ site.baseurl }}{{ paginator.next_page_path }}" class="px-4 py-2 bg-teal-blue text-clean-white rounded-full hover:bg-sky-blue transition">
-                        Older Posts <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                {% endif %}
-            </div>
-        {% endif %}
-        {% if site.posts.size == 0 %}
-            <div class="text-center text-lg mt-10 p-10 glass-container text-slate-gray">
-                No blog posts found yet. Start your daily writing!
-            </div>
-        {% endif %}
-    </div>
-</main>
+<!--
+  This content is injected into _layouts/default.html.
+  The <h1> title is automatically added by default.html
+  using the "title:" from the front matter above.
+-->
+
+<p class="text-lg -mt-4 mb-8">
+  Welcome to my blog. Here I share insights on tissue innovation, data science, and digital health.
+</p>
+
+<!--
+  The "markdown-content" class from default.html styles this
+  list, but we will add a few more styles for the loop.
+-->
+{% assign posts = site.posts | sort: 'date' | reverse %}
+
+{% if posts.size > 0 %}
+  <div class="mt-8 space-y-8">
+    {% for post in posts %}
+      <div classTA="pb-6 border-b border-slate-300">
+        <!-- Link to the post's dedicated page -->
+        <h2 class="text-2xl font-bold text-deep-navy mb-2">
+          <a href="{{ post.url | relative_url }}" class="hover:text-teal-blue transition duration-200">{{ post.title }}</a>
+        </h2>
+
+        <!-- Post date & Tags -->
+        <p class="text-sm text-slate-gray/80 mb-3">
+          <span class="text-warm-coral"><i class="far fa-calendar-alt mr-1"></i> {{ post.date | date: "%B %-d, %Y" }}</span> 
+          {% if post.tags.size > 0 %}
+            | Tags: 
+            {% for tag in post.tags %}
+              <span class="text-teal-blue">{{ tag }}</span>{% unless forloop.last %}, {% endunless %}
+            {% endfor %}
+          {% endif %}
+        </p>
+        
+        <!-- This renders the post's excerpt -->
+        <div class="text-base text-slate-gray">
+          {{ post.excerpt }}
+          <a href="{{ post.url | relative_url }}" class="text-teal-blue font-semibold hover:underline ml-1">
+            Read Post <i class="fas fa-chevron-right ml-1 text-xs"></i>
+          </a>
+        </div>
+
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Note: Jekyll-paginate plugin doesn't work this way by default. -->
+  <!-- This basic loop is simpler and more reliable for most blogs. -->
+
+{% else %}
+  <div class="text-center text-lg mt-10 p-10 text-slate-gray">
+      No blog posts found yet. Check back soon!
+  </div>
+{% endif %}
