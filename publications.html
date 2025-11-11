@@ -1,30 +1,77 @@
 ---
+# This page lists all your publications.
 layout: default
 title: Publications
+description: A list of Adel Marzban's publications, research projects, and academic contributions.
 permalink: /publications/
 ---
 
-<section class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-  <h1 class="text-4xl font-extrabold mb-8 text-deep-navy">Publications</h1>
+<!--
+  This content is injected into _layouts/default.html.
+  The "markdown-content" class from default.html will style this.
+  The <h1> title is automatically added by default.html
+  using the "title:" from the front matter above.
+-->
 
-  <div class="grid md:grid-cols-2 gap-6">
-    {% assign pubs = site.publications | sort: "year" | reverse %}
+<p class="text-lg -mt-4 mb-8">
+  Here is a list of my publications, research projects, and academic contributions.
+</p>
+
+<!--
+  This is the standard Jekyll loop for a collection.
+  We will create a simple, clean list that looks great
+  inside the main "glass-container".
+-->
+{% assign pubs = site.publications | sort: 'year' | reverse %}
+
+<div class="mt-8 space-y-8">
+
+  {% if pubs.size > 0 %}
     {% for pub in pubs %}
-      <article class="glass-container p-6 hover:shadow-xl transition duration-300">
-        <h2 class="text-2xl font-bold mb-2">
-          <a href="{{ pub.url }}" class="text-deep-navy hover:underline">{{ pub.title }}</a>
+      <div class="pb-6 border-b border-slate-300">
+        
+        <!-- Link to the publication's dedicated page -->
+        <h2 class="text-2xl font-bold text-deep-navy mb-2">
+          <a href="{{ pub.url | relative_url }}" class="hover:text-teal-blue transition duration-200">{{ pub.title }}</a>
         </h2>
-        <p class="text-slate-gray text-sm mb-3">
-          {{ pub.authors }} — <i>{{ pub.journal }}</i>
+
+        <!-- Display other data from the publication's front matter -->
+        <p class="text-base font-medium text-slate-800">
+          {{ pub.authors | default: "N/A" }}
+        </p>
+        <p class="text-base italic text-slate-600 mt-1">
+          {{ pub.journal | default: "N/A" }}
           {% if pub.year %} ({{ pub.year }}){% endif %}
         </p>
-        {% if pub.abstract %}<p class="text-slate-gray/90 line-clamp-3">{{ pub.abstract }}</p>{% endif %}
-        <div class="mt-3 space-x-3">
-          <a href="{{ pub.url }}" class="text-teal-blue underline">Details</a>
-          {% if pub.doi %}<a href="{{ pub.doi }}" class="text-warm-coral underline" target="_blank">DOI</a>{% endif %}
-          {% if pub.pdf %}<a href="{{ pub.pdf }}" class="text-warm-coral underline" target="_blank">PDF</a>{% endif %}
+
+        <!-- This renders the abstract/excerpt from the markdown file -->
+        {% if pub.abstract %}
+          <p class="text-base text-slate-700 mt-3 line-clamp-3">
+            {{ pub.abstract }}
+          </p>
+        {% endif %}
+        
+        <!-- Links -->
+        <div class="mt-4 space-x-4">
+          <a href="{{ pub.url | relative_url }}" class="text-teal-blue font-semibold hover:underline">
+            View Details <i class="fas fa-chevron-right ml-1 text-xs"></i>
+          </a>
+          {% if pub.doi %}
+            <a href="{{ pub.doi }}" class="text-warm-coral font-semibold hover:underline" target="_blank" rel="noopener">
+              DOI
+            </a>
+          {% endif %}
+          {% if pub.pdf %}
+            <a href="{{ pub.pdf | relative_url }}" class="text-warm-coral font-semibold hover:underline" target="_blank" rel="noopener">
+              PDF
+            </a>
+          {% endif %}
         </div>
-      </article>
+
+      </div>
     {% endfor %}
-  </div>
-</section>
+  {% else %}
+    <p class="text-lg text-slate-600">No publications found yet. Please check back soon.</p>
+  {% endif %}
+
+</div>
