@@ -1,61 +1,92 @@
-title: Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مرزبان
+# --- Site Settings ---
+# (Your personal information)
+title: "Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مرزبان"
 email: adelmarzban@gmail.com
 description: >-
   Advancing Medicine Through Tissue Innovation, Data Science, and Digital Health.
-baseurl: ""
 url: "https://adelmarzban.github.io"
+baseurl: ""
+
 google_site_verification: "1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI"
 
+# --- Build Settings ---
 markdown: kramdown
 theme: minima
+
+# --- Plugins ---
+# (Your full list of plugins)
 plugins:
   - jekyll-feed
-  - jekyll-sitemap   # ✅ allowed on GitHub Pages
-  - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-seo-tag
   - jekyll-redirect-from
+  - jekyll-paginate
 
-permalink: /:title/
+# --- Permalinks & Pagination ---
+# Pretty permalinks for pages by default
+permalink: /:name/
 
-defaults:
-  - scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: "default"
+# Pagination (used by blog.html)
+paginate: 10
+paginate_path: "/blog/page:num/"
 
-exclude:
-  - "README.md"
-  - "Gemfile"
-  - "Gemfile.lock"
-  - "node_modules"
-  - "package.json"
-
-
+# --- Collections ---
+# Defines your content types
 collections:
   publications:
     output: true
-    permalink: /publications/:name/
+    permalink: /publications/:name/ # Using :name is cleaner than :path
+  posts:
+    output: true
+    # This permalink matches what you defined in 'defaults'
+    permalink: /blog/:year/:month/:day/:title/
 
+# --- Defaults ---
+# (Your excellent defaults setup)
 defaults:
   - scope:
       path: ""
       type: "pages"
     values:
       layout: "default"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "default"
+      permalink: /blog/:year/:month/:day/:title/
   - scope:
       path: ""
       type: "publications"
     values:
-      layout: "publication"   # _layouts/publication.html
+      layout: "publication" # uses _layouts/publication.html
 
-# show in Minima’s top nav if you want
+# --- Theme-Specific Settings (Minima) ---
+# Navigation (shown by your layout/theme if implemented)
 header_pages:
   - publications.html
   - blog.html
   - contact.md
 
-# optional: include publications in your RSS feed
+# Include publications in RSS feed
 feed:
   collections:
     - publications
+
+# --- Housekeeping ---
+# Merged exclude list for a clean repository
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - .jekyll-metadata
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+  - .gitignore
+  - package.json # from your list
