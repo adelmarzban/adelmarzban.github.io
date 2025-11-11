@@ -28,3 +28,32 @@ exclude:
   - "Gemfile.lock"
   - "node_modules"
   - "package.json"
+
+
+collections:
+  publications:
+    output: true
+    permalink: /publications/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "publications"
+    values:
+      layout: "publication"   # _layouts/publication.html
+
+# show in Minima’s top nav if you want
+header_pages:
+  - publications.html
+  - blog.html
+  - contact.md
+
+# optional: include publications in your RSS feed
+feed:
+  collections:
+    - publications
