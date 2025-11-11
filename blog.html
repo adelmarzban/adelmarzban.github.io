@@ -1,64 +1,61 @@
 ---
-# This page lists all your blog posts.
 layout: default
 title: Insights & Blog Archive
 description: Explore Adel Marzban's articles and reflections bridging tissue engineering, biomedical AI, and healthcare innovation.
 permalink: /blog/
 ---
 
-<!--
-  This content is injected into _layouts/default.html.
-  The <h1> title is automatically added by default.html
-  using the "title:" from the front matter above.
--->
-
 <p class="text-lg -mt-4 mb-8">
   Welcome to my blog. Here I share insights on tissue innovation, data science, and digital health.
 </p>
 
-<!--
-  The "markdown-content" class from default.html styles this
-  list, but we will add a few more styles for the loop.
--->
-{% assign posts = site.posts | sort: 'date' | reverse %}
+{% assign posts = paginator.posts | default: site.posts %}
 
-{% if posts.size > 0 %}
+{% if posts and posts.size > 0 %}
   <div class="mt-8 space-y-8">
     {% for post in posts %}
-      <div classTA="pb-6 border-b border-slate-300">
-        <!-- Link to the post's dedicated page -->
+      <div class="pb-6 border-b border-slate-300">
         <h2 class="text-2xl font-bold text-deep-navy mb-2">
-          <a href="{{ post.url | relative_url }}" class="hover:text-teal-blue transition duration-200">{{ post.title }}</a>
+          <a href="{{ post.url | relative_url }}" class="hover:text-teal-blue transition duration-200">
+            {{ post.title }}
+          </a>
         </h2>
 
-        <!-- Post date & Tags -->
         <p class="text-sm text-slate-gray/80 mb-3">
-          <span class="text-warm-coral"><i class="far fa-calendar-alt mr-1"></i> {{ post.date | date: "%B %-d, %Y" }}</span> 
-          {% if post.tags.size > 0 %}
-            | Tags: 
+          <span class="text-warm-coral">
+            <i class="far fa-calendar-alt mr-1"></i> {{ post.date | date: "%B %-d, %Y" }}
+          </span>
+          {% if post.tags and post.tags.size > 0 %}
+            | Tags:
             {% for tag in post.tags %}
               <span class="text-teal-blue">{{ tag }}</span>{% unless forloop.last %}, {% endunless %}
             {% endfor %}
           {% endif %}
         </p>
-        
-        <!-- This renders the post's excerpt -->
-        <div class="text-base text-slate-gray">
-          {{ post.excerpt }}
+
+        <p class="text-base text-slate-gray">
+          {{ post.excerpt | strip_html | normalize_whitespace | truncate: 180 }}
           <a href="{{ post.url | relative_url }}" class="text-teal-blue font-semibold hover:underline ml-1">
             Read Post <i class="fas fa-chevron-right ml-1 text-xs"></i>
           </a>
-        </div>
-
+        </p>
       </div>
     {% endfor %}
   </div>
 
-  <!-- Note: Jekyll-paginate plugin doesn't work this way by default. -->
-  <!-- This basic loop is simpler and more reliable for most blogs. -->
-
+  {% if paginator and paginator.total_pages and paginator.total_pages > 1 %}
+    <nav class="flex items-center gap-3 mt-8">
+      {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path | relative_url }}" class="underline">← Newer</a>
+      {% endif %}
+      <span>Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+      {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path | relative_url }}" class="underline">Older →</a>
+      {% endif %}
+    </nav>
+  {% endif %}
 {% else %}
   <div class="text-center text-lg mt-10 p-10 text-slate-gray">
-      No blog posts found yet. Check back soon!
+    No blog posts found yet. Check back soon!
   </div>
 {% endif %}
