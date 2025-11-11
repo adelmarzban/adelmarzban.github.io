@@ -2,14 +2,44 @@
 layout: default
 ---
 
-<article class="publication">
-  <h1>{{ page.title }}</h1>
-  <p><strong>Authors:</strong> {{ page.authors }}</p>
-  <p><strong>Journal:</strong> {{ page.journal }}</p>
-  <p><strong>Year:</strong> {{ page.year }}</p>
-  <p><strong>DOI:</strong> <a href="{{ page.doi }}">{{ page.doi }}</a></p>
-  <hr>
-  <div class="content">
+<article class="publication max-w-4xl mx-auto glass-container p-6 md:p-10">
+  <header class="mb-6">
+    <h1 class="text-3xl md:text-4xl font-extrabold text-deep-navy">{{ page.title }}</h1>
+    <p class="text-slate-gray mt-2">
+      {% if page.authors %}<strong>Authors:</strong> {{ page.authors }} · {% endif %}
+      {% if page.journal %}<strong>Journal:</strong> <i>{{ page.journal }}</i>{% endif %}
+      {% if page.year %} ({{ page.year }}){% endif %}
+    </p>
+    {% if page.doi or page.pdf %}
+      <div class="mt-3 space-x-3">
+        {% if page.doi %}<a class="text-teal-blue underline" href="{{ page.doi }}" target="_blank">DOI</a>{% endif %}
+        {% if page.pdf %}<a class="text-warm-coral underline" href="{{ page.pdf }}" target="_blank">PDF</a>{% endif %}
+      </div>
+    {% endif %}
+  </header>
+
+  {% if page.abstract %}
+    <section class="mb-6">
+      <h2 class="text-xl font-bold text-deep-navy">Abstract</h2>
+      <p class="text-slate-gray">{{ page.abstract }}</p>
+    </section>
+  {% endif %}
+
+  <section class="prose max-w-none">
     {{ content }}
-  </div>
+  </section>
 </article>
+
+{%- comment -%} Optional structured data for SEO {%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": {{ page.title | jsonify }},
+  "author": {{ page.authors | jsonify }},
+  "datePublished": {{ page.year | jsonify }},
+  "isPartOf": { "@type": "Periodical", "name": {{ page.journal | jsonify }} },
+  "identifier": {{ page.doi | jsonify }},
+  "url": "{{ site.url }}{{ page.url }}"
+}
+</script>
