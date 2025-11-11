@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Dual-Network Shape-Memory Hydrogels for Wound Healing"
 authors: "Adel Marzban, et al."
 journal: "Journal of Biomedical Materials Research"
