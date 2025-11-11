@@ -9,30 +9,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-  <!--
-    [OPTIMIZED] Removed 10+ lines of manual SEO tags (title, og:image, twitter, etc.)
-    The {% seo %} tag below handles all of this automatically by reading
-    your _config.yml and page front matter. This prevents duplicate tags.
-  -->
-
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="{{ '/assets/img/favicon.png' | relative_url }}">
 
-  <!-- SEO: jekyll-seo-tag handles title, canonical, description, Open Graph, etc. -->
+  <!-- SEO (title, canonical, og, twitter, verification, etc.) -->
   {% seo %}
 
-  <!--
-    [OPTIMIZED] Removed manual Google Site Verification.
-    The {% seo %} tag adds this automatically if "google_site_verification"
-    is in your _config.yml (which it is).
-  -->
-
-  <!-- Tailwind CDN (keep in head to avoid FOUC with JIT) -->
+  <!-- Tailwind + fonts/icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <!-- Tailwind Config with your palette -->
+  <!-- Tailwind config -->
   <script>
     tailwind.config = {
       theme: {
@@ -44,109 +32,66 @@
             'warm-coral': '#F87171',
             'soft-sand': '#F1F5F9',
             'slate-gray': '#475569',
-            'clean-white': '#FFFFFF',
+            'clean-white': '#FFFFFF'
           },
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
         }
       }
     }
   </script>
 
-  <!-- [STYLES] Your custom styles are great. No changes needed. -->
   <style>
-    /* Base & variables */
     :root {
-      --deep-navy: #0A192F;
-      --teal-blue: #14B8A6;
-      --warm-coral: #F87171;
-      --soft-sand: #F1F5F9;
-      --slate-gray: #475569;
-      --clean-white: #FFFFFF;
+      --deep-navy:#0A192F; --teal-blue:#14B8A6; --warm-coral:#F87171;
+      --soft-sand:#F1F5F9; --slate-gray:#475569; --clean-white:#FFFFFF;
     }
-    body {
-      background-color: var(--soft-sand);
-      color: var(--slate-gray);
-      scroll-behavior: smooth;
-    }
-
-    /* Glass effects */
+    body { background-color:var(--soft-sand); color:var(--slate-gray); scroll-behavior:smooth; }
     .glass-container {
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 1.5rem;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: box-shadow 0.3s ease-in-out;
+      background:rgba(255,255,255,.6); border-radius:1.5rem;
+      box-shadow:0 8px 32px rgba(0,0,0,.15); border:1px solid rgba(255,255,255,.8);
+      backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+      transition:box-shadow .3s ease-in-out;
     }
-    .glass-container:hover {
-      box-shadow: 0 0 40px 0 rgba(20, 184, 166, 0.25);
-    }
-
+    .glass-container:hover { box-shadow:0 0 40px rgba(20,184,166,.25); }
     .nav-glass {
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 2px 10px rgba(10, 25, 47, 0.1);
+      background:rgba(255,255,255,.98); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      box-shadow:0 2px 10px rgba(10,25,47,.1);
     }
-
-    /* Header link underline animation */
-    .nav-link {
-      position: relative;
-      padding-bottom: 2px;
-      transition: color 0.3s;
-    }
+    .nav-link { position:relative; padding-bottom:2px; transition:color .3s; }
     .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 3px;
-      bottom: 0;
-      left: 50%;
-      background-color: var(--teal-blue);
-      transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+      content:''; position:absolute; width:0; height:3px; bottom:0; left:50%;
+      background-color:var(--teal-blue); transition:width .3s,left .3s;
     }
-    .nav-link:hover::after { width: 100%; left: 0; }
-
-    .glow-teal { box-shadow: 0 0 15px rgba(20, 184, 166, 0.6); }
-    .glow-coral { box-shadow: 0 0 15px rgba(248, 113, 113, 0.6); }
-
-    /* Markdown content (no @apply here; Tailwind CDN doesn't process @apply) */
-    .markdown-content h1 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 800; margin: 2rem 0 1.5rem; color: var(--deep-navy); }
-    .markdown-content h2 { font-size: 1.875rem; line-height: 2.25rem; font-weight: 700; margin: 1.75rem 0 1.25rem; color: var(--teal-blue); }
-    .markdown-content p { margin-bottom: 1.25rem; line-height: 1.8; }
-    .markdown-content ul { list-style: disc inside; margin-bottom: 1.25rem; margin-left: 1rem; }
-    .markdown-content a { color: var(--warm-coral); text-decoration: none; }
-    .markdown-content a:hover { text-decoration: underline; }
-    .markdown-content blockquote { border-left: 4px solid var(--teal-blue); padding: .5rem 1rem; font-style: italic; color: var(--slate-gray); }
-
-    /* Accessibility: Skip link */
-    .skip-link {
-      position: absolute; top: -40px; left: 0;
-      background: var(--warm-coral); color: white;
-      padding: 8px; z-index: 10000; transition: top 0.3s;
-    }
-    .skip-link:focus { top: 0; }
-
-    /* Ensure content isn't hidden behind fixed header */
-    .content-padding { padding-top: 5.5rem; }
+    .nav-link:hover::after { width:100%; left:0; }
+    .glow-teal { box-shadow:0 0 15px rgba(20,184,166,.6); }
+    .glow-coral { box-shadow:0 0 15px rgba(248,113,113,.6); }
+    .markdown-content h1{font-size:2.25rem;line-height:2.5rem;font-weight:800;margin:2rem 0 1.5rem;color:var(--deep-navy);}
+    .markdown-content h2{font-size:1.875rem;line-height:2.25rem;font-weight:700;margin:1.75rem 0 1.25rem;color:var(--teal-blue);}
+    .markdown-content p{margin-bottom:1.25rem;line-height:1.8;}
+    .markdown-content ul{list-style:disc inside;margin-bottom:1.25rem;margin-left:1rem;}
+    .markdown-content a{color:var(--warm-coral);text-decoration:none;}
+    .markdown-content a:hover{text-decoration:underline;}
+    .markdown-content blockquote{border-left:4px solid var(--teal-blue);padding:.5rem 1rem;font-style:italic;color:var(--slate-gray);}
+    .skip-link{position:absolute;top:-40px;left:0;background:var(--warm-coral);color:#fff;padding:8px;z-index:10000;transition:top .3s;}
+    .skip-link:focus{top:0;}
+    .content-padding{padding-top:5.5rem;}
   </style>
 
-  <!-- JSON-LD: Person (This is great, keep it!) -->
+  <!-- JSON-LD -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "{{ site.title | split: '|' | first | strip }}",
-    "jobTitle": "Tissue Banking Innovation & Biomedical AI",
-    "url": "{{ site.url }}",
-    "sameAs": [
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":"{{ site.title | split: '|' | first | strip }}",
+    "jobTitle":"Tissue Banking Innovation & Biomedical AI",
+    "url":"{{ site.url }}",
+    "sameAs":[
       "https://linkedin.com/in/adelmarzban",
       "https://github.com/adelmarzban",
       "https://researchgate.net/profile/Adel-Marzban"
     ],
-    "image": "{{ '/assets/img/avatar.png' | relative_url | absolute_url }}",
-    "email": "{{ site.email }}"
+    "image":"{{ '/assets/img/avatar.png' | relative_url | absolute_url }}",
+    "email":"{{ site.email }}"
   }
   </script>
 </head>
@@ -154,7 +99,6 @@
 <body class="text-slate-gray">
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- [HEADER] Your header and mobile menu are well-structured. No changes needed. -->
   <header id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-glass transition-shadow duration-300" role="banner">
     <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center" role="navigation" aria-label="Main Navigation">
       <a href="{{ '/' | relative_url }}" class="text-2xl font-extrabold text-deep-navy hover:text-teal-blue transition duration-300">
@@ -188,16 +132,11 @@
   </header>
 
   <main id="main-content" class="content-padding" role="main">
-    <!-- This logic is smart. It gives you a full-width homepage -->
-    <!-- and a contained layout for all other pages. -->
     {% if page.url == "/" %}
       {{ content }}
     {% else %}
       <div class="py-16">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <!--
-            This "markdown-content" class matches your custom styles in the <head>
-          -->
           <article class="glass-container p-8 md:p-12 lg:p-16 markdown-content">
             {% if page.title and page.title != "Home" %}
               <h1 class="text-5xl font-extrabold mb-4 text-deep-navy">{{ page.title }}</h1>
@@ -211,13 +150,7 @@
               </p>
             {% endif %}
 
-            <!--
-              [OPTIMIZED] Removed the conflicting <div class="prose ..."> wrapper.
-              Your custom ".markdown-content" styles in the <head> will now
-              apply correctly to the {{ content }} below without conflict.
-            -->
             {{ content }}
-
           </article>
         </div>
       </div>
@@ -231,7 +164,6 @@
     </div>
   </footer>
 
-  <!-- [JAVASCRIPT] This is perfectly placed and well-written. No changes. -->
   <script>
     (function () {
       const menuToggle = document.getElementById('menu-toggle');
@@ -244,8 +176,6 @@
           this.setAttribute('aria-expanded', String(!isExpanded));
           mobileMenu.classList.toggle('hidden');
         });
-
-        // Close menu on link click (defensive if no links exist)
         mobileMenu.querySelectorAll('a').forEach(link => {
           link.addEventListener('click', () => {
             mobileMenu.classList.add('hidden');
@@ -256,11 +186,8 @@
 
       if (navbar) {
         window.addEventListener('scroll', () => {
-          if (window.scrollY > 50) {
-            navbar.classList.add('shadow-lg');
-          } else {
-            navbar.classList.remove('shadow-lg');
-          }
+          if (window.scrollY > 50) navbar.classList.add('shadow-lg');
+          else navbar.classList.remove('shadow-lg');
         });
       }
     })();
