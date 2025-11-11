@@ -13,7 +13,6 @@ plugins:
   - jekyll-sitemap   # ✅ allowed on GitHub Pages
   - jekyll-seo-tag
   - jekyll-sitemap
-  - jekyll-feed
   - jekyll-redirect-from
 
 permalink: /:title/
