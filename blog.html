@@ -23,12 +23,17 @@ permalink: /blog/
     <!-- Category chips -->
     <div id="cat-chips" class="flex flex-wrap gap-2">
       <button data-cat="__all" class="chip active px-3 py-1 rounded-full border">All</button>
-      {% assign cats = site.categories | sort_natural %}
-      {% for pair in cats %}
-        {% assign cat_name = pair[0] %}
+
+      {%- comment -%}
+      Jekyll 3.x: site.categories is a hash { "Name" => [posts...] }.
+      Get only the keys, then sort.
+      {%- endcomment -%}
+      {% assign cat_names = site.categories | map: 0 | sort %}
+      {% for cat_name in cat_names %}
+        {% assign posts_in_cat = site.categories[cat_name] %}
         {% assign cat_slug = cat_name | slugify %}
         <button data-cat="{{ cat_slug }}" class="chip px-3 py-1 rounded-full border">
-          {{ cat_name }} <span class="opacity-60">({{ pair[1].size }})</span>
+          {{ cat_name }} <span class="opacity-60">({{ posts_in_cat | size }})</span>
         </button>
       {% endfor %}
     </div>
@@ -51,10 +56,13 @@ permalink: /blog/
         {% endif %}
       {% endfor %}
 
+      {% capture _safe_title %}{{ post.title | strip | downcase }}{% endcapture %}
+      {% capture _safe_excerpt %}{{ post.excerpt | strip_html | strip | downcase }}{% endcapture %}
+
       <article class="post-card pb-6 border-b border-slate-300"
                data-cats="{{ cat_slugs }}"
-               data-title="{{ post.title | downcase | escape }}"
-               data-excerpt="{{ post.excerpt | strip_html | downcase | escape }}">
+               data-title="{{ _safe_title | escape }}"
+               data-excerpt="{{ _safe_excerpt | escape }}">
         <h2 class="text-2xl font-bold text-deep-navy mb-2">
           <a href="{{ post.url | relative_url }}" class="hover:text-teal-blue transition">
             {{ post.title }}
