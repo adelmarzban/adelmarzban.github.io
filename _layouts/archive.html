@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+<div class="py-16">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+    <h1 class="text-3xl font-bold mb-6">
+      Posts in “{{ page.title }}”
+    </h1>
+
+    {% for post in page.posts %}
+      <article class="mb-8">
+        <h2 class="text-xl font-semibold">
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h2>
+        <p class="text-sm text-slate-gray mb-2">{{ post.date | date: "%B %-d, %Y" }}</p>
+        <p>{{ post.excerpt | strip_html | truncate: 180 }}</p>
+        <a class="text-teal-blue hover:underline" href="{{ post.url | relative_url }}">Read more →</a>
+        <hr class="mt-6">
+      </article>
+    {% endfor %}
+  </div>
+</div>
