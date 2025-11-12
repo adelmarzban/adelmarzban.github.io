@@ -5,18 +5,58 @@ description: Explore Adel Marzban's articles and reflections bridging tissue eng
 permalink: /blog/
 ---
 
-<p class="text-lg -mt-4 mb-8">
-  Welcome to my blog. Here I share insights on tissue innovation, data science, and digital health.
-</p>
+<div class="max-w-3xl mx-auto px-4 py-10">
 
-{% assign posts = paginator.posts | default: site.posts %}
+  <h1 class="text-3xl font-bold mb-2">Insights & Blog Archive</h1>
+  <p class="opacity-80 mb-6">
+    Welcome to my blog. Filter by category or search titles & excerpts.
+  </p>
 
-{% if posts and posts.size > 0 %}
-  <div class="mt-8 space-y-8">
+  <!-- Controls -->
+  <div class="mb-6 space-y-3">
+    <!-- Search -->
+    <label for="post-search" class="sr-only">Search posts</label>
+    <input id="post-search" type="search" placeholder="Search posts..."
+           class="w-full rounded-lg border border-slate-300 px-3 py-2"
+           autocomplete="off">
+
+    <!-- Category chips -->
+    <div id="cat-chips" class="flex flex-wrap gap-2">
+      <button data-cat="__all" class="chip active px-3 py-1 rounded-full border">All</button>
+      {% assign cats = site.categories | sort_natural %}
+      {% for pair in cats %}
+        {% assign cat_name = pair[0] %}
+        {% assign cat_slug = cat_name | slugify %}
+        <button data-cat="{{ cat_slug }}" class="chip px-3 py-1 rounded-full border">
+          {{ cat_name }} <span class="opacity-60">({{ pair[1].size }})</span>
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Posts list -->
+  {% assign posts = paginator.posts | default: site.posts %}
+  <div id="post-list" class="space-y-8">
     {% for post in posts %}
-      <div class="pb-6 border-b border-slate-300">
+      {% comment %}
+        Build a comma-separated slug list for data-cats
+      {% endcomment %}
+      {% assign cat_slugs = "" %}
+      {% for c in post.categories %}
+        {% assign slug = c | slugify %}
+        {% if forloop.first %}
+          {% assign cat_slugs = slug %}
+        {% else %}
+          {% assign cat_slugs = cat_slugs | append: "," | append: slug %}
+        {% endif %}
+      {% endfor %}
+
+      <article class="post-card pb-6 border-b border-slate-300"
+               data-cats="{{ cat_slugs }}"
+               data-title="{{ post.title | downcase | escape }}"
+               data-excerpt="{{ post.excerpt | strip_html | downcase | escape }}">
         <h2 class="text-2xl font-bold text-deep-navy mb-2">
-          <a href="{{ post.url | relative_url }}" class="hover:text-teal-blue transition duration-200">
+          <a href="{{ post.url | relative_url }}" class="hover:text-teal-blue transition">
             {{ post.title }}
           </a>
         </h2>
@@ -25,21 +65,24 @@ permalink: /blog/
           <span class="text-warm-coral">
             <i class="far fa-calendar-alt mr-1"></i> {{ post.date | date: "%B %-d, %Y" }}
           </span>
-          {% if post.tags and post.tags.size > 0 %}
-            | Tags:
-            {% for tag in post.tags %}
-              <span class="text-teal-blue">{{ tag }}</span>{% unless forloop.last %}, {% endunless %}
-            {% endfor %}
+          {% if post.categories and post.categories.size > 0 %}
+            <span class="ml-2">•</span>
+            <span class="ml-2">
+              {% for c in post.categories %}
+                <a class="underline text-teal-blue"
+                   href="{{ '/blog/' | relative_url }}?cat={{ c | slugify }}">{{ c }}</a>{% unless forloop.last %}, {% endunless %}
+              {% endfor %}
+            </span>
           {% endif %}
         </p>
 
         <p class="text-base text-slate-gray">
-          {{ post.excerpt | strip_html | normalize_whitespace | truncate: 180 }}
+          {{ post.excerpt | strip_html | truncate: 180 }}
           <a href="{{ post.url | relative_url }}" class="text-teal-blue font-semibold hover:underline ml-1">
             Read Post <i class="fas fa-chevron-right ml-1 text-xs"></i>
           </a>
         </p>
-      </div>
+      </article>
     {% endfor %}
   </div>
 
@@ -54,8 +97,74 @@ permalink: /blog/
       {% endif %}
     </nav>
   {% endif %}
-{% else %}
-  <div class="text-center text-lg mt-10 p-10 text-slate-gray">
-    No blog posts found yet. Check back soon!
-  </div>
-{% endif %}
+</div>
+
+<!-- Filtering JS (no dependencies) -->
+<script>
+(function() {
+  const chips = document.querySelectorAll('#cat-chips .chip');
+  const posts = Array.from(document.querySelectorAll('.post-card'));
+  const search = document.getElementById('post-search');
+
+  function parseCatsParam() {
+    const params = new URLSearchParams(window.location.search);
+    const raw = (params.get('cat') || '').trim();
+    if (!raw) return [];
+    return raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+  }
+
+  function setActiveChips(slugs) {
+    chips.forEach(chip => {
+      const c = chip.dataset.cat;
+      chip.classList.toggle('active',
+        (slugs.length === 0 && c === '__all') || (slugs.length === 1 && slugs[0] === c));
+      chip.classList.toggle('bg-teal-50', chip.classList.contains('active'));
+      chip.classList.toggle('border-teal-400', chip.classList.contains('active'));
+    });
+  }
+
+  function filter() {
+    const q = (search.value || '').toLowerCase().trim();
+    const active = parseCatsParam(); // 0 or more
+    posts.forEach(card => {
+      const cats = (card.dataset.cats || '').split(',').filter(Boolean);
+      const inCat = active.length === 0 || active.some(a => cats.includes(a));
+      const inText = !q || card.dataset.title.includes(q) || card.dataset.excerpt.includes(q);
+      card.style.display = (inCat && inText) ? '' : 'none';
+    });
+    setActiveChips(active);
+  }
+
+  // Chip clicks -> update ?cat=... & filter
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const cat = chip.dataset.cat;
+      const url = new URL(window.location.href);
+      if (cat === '__all') {
+        url.searchParams.delete('cat');
+      } else {
+        url.searchParams.set('cat', cat);
+      }
+      history.replaceState(null, '', url);
+      filter();
+    });
+  });
+
+  // Search input
+  search.addEventListener('input', filter);
+
+  // Init from URL (?cat=one,two)
+  filter();
+})();
+</script>
+
+<style>
+  /* Minimal active chip styling (keeps your palette) */
+  #cat-chips .chip {
+    border-color: rgba(71,85,105,.4); /* slate-500/40 */
+  }
+  #cat-chips .chip.active {
+    background: rgba(20,184,166,.12); /* teal tint */
+    border-color: rgb(45,212,191);
+  }
+</style>
