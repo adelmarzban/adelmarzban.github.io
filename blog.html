@@ -1,162 +1,166 @@
----
-layout: default
-title: Insights & Blog Archive
-description: Explore Adel Marzban's articles and reflections bridging tissue engineering, biomedical AI, and healthcare innovation.
-permalink: /blog/
----
+layout: default title: Insights & Blog Archive description: Explore Adel Marzban's articles and reflections bridging tissue engineering, biomedical AI, and healthcare innovation. permalink: /blog/
 
 <div class="max-w-3xl mx-auto px-4 py-10">
 
-  <h1 class="text-3xl font-bold mb-2">Insights & Blog Archive</h1>
-  <p class="opacity-80 mb-6">
-    Welcome to my blog. Filter by category or search titles & excerpts.
-  </p>
+<h1 class="text-3xl font-bold mb-2">Insights & Blog Archive</h1>
+<p class="opacity-80 mb-6">
+Welcome to my blog. Filter by category or search titles & excerpts.
+</p>
 
-  <!-- Controls -->
-  <div class="mb-6 space-y-3">
-    <!-- Search -->
-    <label for="post-search" class="sr-only">Search posts</label>
-    <input id="post-search" type="search" placeholder="Search posts..."
-           class="w-full rounded-lg border border-slate-300 px-3 py-2"
-           autocomplete="off">
+<!-- Controls -->
 
-    <!-- Category chips -->
-    <div id="cat-chips" class="flex flex-wrap gap-2">
-      <button data-cat="__all" class="chip active px-3 py-1 rounded-full border">All</button>
+<div class="mb-6 space-y-3">
+<!-- Search -->
+<label for="post-search" class="sr-only">Search posts</label>
+<input id="post-search" type="search" placeholder="Search posts..."
+class="w-full rounded-lg border border-slate-300 px-3 py-2"
+autocomplete="off">
 
-      {%- comment -%}
-      Jekyll 3.x: site.categories is a hash { "Name" => [posts...] }.
-      Get only the keys, then sort.
-      {%- endcomment -%}
-      {% assign cat_names = site.categories | map: 0 | sort %}
-      {% for cat_name in cat_names %}
-        {% assign posts_in_cat = site.categories[cat_name] %}
-        {% assign cat_slug = cat_name | slugify %}
-        <button data-cat="{{ cat_slug }}" class="chip px-3 py-1 rounded-full border">
-          {{ cat_name }} <span class="opacity-60">({{ posts_in_cat | size }})</span>
-        </button>
-      {% endfor %}
-    </div>
-  </div>
+<!-- Category chips -->
+<div id="cat-chips" class="flex flex-wrap gap-2">
+  <button data-cat="__all" class="chip active px-3 py-1 rounded-full border">All</button>
 
-  <!-- Posts list -->
-  {% assign posts = paginator.posts | default: site.posts %}
-  <div id="post-list" class="space-y-8">
-    {% for post in posts %}
-      {% assign cat_slugs = "" %}
-      {% for c in post.categories %}
-        {% assign slug = c | slugify %}
-        {% if forloop.first %}
-          {% assign cat_slugs = slug %}
-        {% else %}
-          {% assign cat_slugs = cat_slugs | append: "," | append: slug %}
-        {% endif %}
-      {% endfor %}
+  {%- comment -%}
+  Jekyll 3.x: site.categories is a hash { "Name" => [posts...] }.
+  Get only the keys, then sort.
+  {%- endcomment -%}
+  {% assign cat_names = site.categories | map: 0 | sort %}
+  {% for cat_name in cat_names %}
+    {% assign posts_in_cat = site.categories[cat_name] %}
+    {% assign cat_slug = cat_name | slugify %}
+    <button data-cat="{{ cat_slug }}" class="chip px-3 py-1 rounded-full border">
+      {{ cat_name }} <span class="opacity-60">({{ posts_in_cat | size }})</span>
+    </button>
+  {% endfor %}
+</div>
 
-      {% capture _safe_title %}{{ post.title | strip | downcase }}{% endcapture %}
-      {% capture _safe_excerpt %}{{ post.excerpt | strip_html | strip | downcase }}{% endcapture %}
 
-      <article class="post-card pb-6 border-b border-slate-300"
-               data-cats="{{ cat_slugs }}"
-               data-title="{{ _safe_title | escape }}"
-               data-excerpt="{{ _safe_excerpt | escape }}">
-        <h2 class="text-2xl font-bold text-deep-navy mb-2">
-          <a href="{{ post.url | relative_url }}" class="hover:text-teal-blue transition">
-            {{ post.title }}
-          </a>
-        </h2>
+</div>
 
-        <p class="text-sm text-slate-gray/80 mb-3">
-          <span class="text-warm-coral">
-            <i class="far fa-calendar-alt mr-1"></i> {{ post.date | date: "%B %-d, %Y" }}
-          </span>
-          {% if post.categories and post.categories.size > 0 %}
-            <span class="ml-2">•</span>
-            <span class="ml-2">
-              {% for c in post.categories %}
-                <a class="underline text-teal-blue"
-                   href="{{ '/blog/' | relative_url }}?cat={{ c | slugify }}">{{ c }}</a>{% unless forloop.last %}, {% endunless %}
-              {% endfor %}
-            </span>
-          {% endif %}
-        </p>
+<!-- Posts list -->
 
-        <p class="text-base text-slate-gray">
-          {{ post.excerpt | strip_html | truncate: 180 }}
-          <a href="{{ post.url | relative_url }}" class="text-teal-blue font-semibold hover:underline ml-1">
-            Read Post <i class="fas fa-chevron-right ml-1 text-xs"></i>
-          </a>
-        </p>
-      </article>
-    {% endfor %}
-  </div>
+{% assign posts = paginator.posts | default: site.posts %}
 
-  {% if paginator and paginator.total_pages and paginator.total_pages > 1 %}
-    <nav class="flex items-center gap-3 mt-8">
-      {% if paginator.previous_page %}
-        <a href="{{ paginator.previous_page_path | relative_url }}" class="underline">← Newer</a>
+<div id="post-list" class="space-y-8">
+{% for post in posts %}
+{% assign cat_slugs = "" %}
+{% for c in post.categories %}
+{% assign slug = c | slugify %}
+{% if forloop.first %}
+{% assign cat_slugs = slug %}
+{% else %}
+{% assign cat_slugs = cat_slugs | append: "," | append: slug %}
+{% endif %}
+{% endfor %}
+
+  {% capture _safe_title %}{{ post.title | strip | downcase }}{% endcapture %}
+  {% capture _safe_excerpt %}{{ post.excerpt | strip_html | strip | downcase }}{% endcapture %}
+
+  <article class="post-card pb-6 border-b border-slate-300"
+           data-cats="{{ cat_slugs }}"
+           data-title="{{ _safe_title | escape }}"
+           data-excerpt="{{ _safe_excerpt | escape }}">
+    <h2 class="text-2xl font-bold text-deep-navy mb-2">
+      <a href="{{ post.url | relative_url }}" class="hover:text-teal-blue transition">
+        {{ post.title }}
+      </a>
+    </h2>
+
+    <p class="text-sm text-slate-gray/80 mb-3">
+      <span class="text-warm-coral">
+        <i class="far fa-calendar-alt mr-1"></i> {{ post.date | date: "%B %-d, %Y" }}
+      </span>
+      {% if post.categories and post.categories.size > 0 %}
+        <span class="ml-2">•</span>
+        <span class="ml-2">
+          {% for c in post.categories %}
+            <a class="underline text-teal-blue"
+               href="{{ '/blog/' | relative_url }}?cat={{ c | slugify }}">{{ c }}</a>{% unless forloop.last %}, {% endunless %}
+          {% endfor %}
+        </span>
       {% endif %}
-      <span>Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
-      {% if paginator.next_page %}
-        <a href="{{ paginator.next_page_path | relative_url }}" class="underline">Older →</a>
-      {% endif %}
-    </nav>
-  {% endif %}
+    </p>
+
+    <p class="text-base text-slate-gray">
+      {{ post.excerpt | strip_html | truncate: 180 }}
+      <a href="{{ post.url | relative_url }}" class="text-teal-blue font-semibold hover:underline ml-1">
+        Read Post <i class="fas fa-chevron-right ml-1 text-xs"></i>
+      </a>
+    </p>
+  </article>
+{% endfor %}
+
+
+</div>
+
+{% if paginator and paginator.total_pages and paginator.total_pages > 1 %}
+<nav class="flex items-center gap-3 mt-8">
+{% if paginator.previous_page %}
+<a href="{{ paginator.previous_page_path | relative_url }}" class="underline">← Newer</a>
+{% endif %}
+<span>Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+{% if paginator.next_page %}
+<a href="{{ paginator.next_page_path | relative_url }}" class="underline">Older →</a>
+{% endif %}
+</nav>
+{% endif %}
+
 </div>
 
 <!-- Filtering JS (no dependencies) -->
+
 <script>
 (function() {
-  const chips = document.querySelectorAll('#cat-chips .chip');
-  const posts = Array.from(document.querySelectorAll('.post-card'));
-  const search = document.getElementById('post-search');
+const chips = document.querySelectorAll('#cat-chips .chip');
+const posts = Array.from(document.querySelectorAll('.post-card'));
+const search = document.getElementById('post-search');
 
-  function parseCatsParam() {
-    const params = new URLSearchParams(window.location.search);
-    const raw = (params.get('cat') || '').trim();
-    if (!raw) return [];
-    return raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-  }
+function parseCatsParam() {
+const params = new URLSearchParams(window.location.search);
+const raw = (params.get('cat') || '').trim();
+if (!raw) return [];
+return raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+}
 
-  function setActiveChips(slugs) {
-    chips.forEach(chip => {
-      const c = chip.dataset.cat;
-      chip.classList.toggle('active',
-        (slugs.length === 0 && c === '__all') || (slugs.length === 1 && slugs[0] === c));
-      chip.classList.toggle('bg-teal-50', chip.classList.contains('active'));
-      chip.classList.toggle('border-teal-400', chip.classList.contains('active'));
-    });
-  }
+function setActiveChips(slugs) {
+chips.forEach(chip => {
+const c = chip.dataset.cat;
+chip.classList.toggle('active',
+(slugs.length === 0 && c === '__all') || (slugs.length === 1 && slugs[0] === c));
+chip.classList.toggle('bg-teal-50', chip.classList.contains('active'));
+chip.classList.toggle('border-teal-400', chip.classList.contains('active'));
+});
+}
 
-  function filter() {
-    const q = (search.value || '').toLowerCase().trim();
-    const active = parseCatsParam();
-    posts.forEach(card => {
-      const cats = (card.dataset.cats || '').split(',').filter(Boolean);
-      const inCat = active.length === 0 || active.some(a => cats.includes(a));
-      const inText = !q || card.dataset.title.includes(q) || card.dataset.excerpt.includes(q);
-      card.style.display = (inCat && inText) ? '' : 'none';
-    });
-    setActiveChips(active);
-  }
+function filter() {
+const q = (search.value || '').toLowerCase().trim();
+const active = parseCatsParam();
+posts.forEach(card => {
+const cats = (card.dataset.cats || '').split(',').filter(Boolean);
+const inCat = active.length === 0 || active.some(a => cats.includes(a));
+const inText = !q || card.dataset.title.includes(q) || card.dataset.excerpt.includes(q);
+card.style.display = (inCat && inText) ? '' : 'none';
+});
+setActiveChips(active);
+}
 
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      const cat = chip.dataset.cat;
-      const url = new URL(window.location.href);
-      if (cat === '__all') url.searchParams.delete('cat');
-      else url.searchParams.set('cat', cat);
-      history.replaceState(null, '', url);
-      filter();
-    });
-  });
+chips.forEach(chip => {
+chip.addEventListener('click', () => {
+const cat = chip.dataset.cat;
+const url = new URL(window.location.href);
+if (cat === '__all') url.searchParams.delete('cat');
+else url.searchParams.set('cat', cat);
+history.replaceState(null, '', url);
+filter();
+});
+});
 
-  search.addEventListener('input', filter);
-  filter(); // init from URL
+search.addEventListener('input', filter);
+filter(); // init from URL
 })();
 </script>
 
 <style>
-  #cat-chips .chip { border-color: rgba(71,85,105,.4); }
-  #cat-chips .chip.active { background: rgba(20,184,166,.12); border-color: rgb(45,212,191); }
+#cat-chips .chip { border-color: rgba(71,85,105,.4); }
+#cat-chips .chip.active { background: rgba(20,184,166,.12); border-color: rgb(45,212,191); }
 </style>
