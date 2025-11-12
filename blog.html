@@ -1,174 +1,37 @@
 ---
-layout: default
-title: "Blog & Professional Insights"
+layout: page
+title: "Insights & Blog Archive"
 permalink: /blog/
-# Ensure you have 'paginate: 10' and 'paginate_path: "/blog/page:num/"' in your _config.yml
 ---
-<!-- Load Lunr.js for client-side search functionality -->
-<script src="https://unpkg.com/lunr/lunr.js"></script>
 
-<div class="bg-gray-50 min-h-screen py-16">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <header class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold text-teal-800 tracking-tight mb-3">
-                Insights on Biomedical AI & Innovation
-            </h1>
-            <p class="text-xl text-gray-600">
-                A curated archive of articles spanning Tissue Engineering, Data Science, and Entrepreneurship.
-            </p>
-        </header>
+<div class="post-archive">
+  {% assign posts_sorted = site.posts | sort: "date" | reverse %}
+  {% if posts_sorted.size > 0 %}
+    <ul class="post-list">
+      {% for post in posts_sorted %}
+        <li>
+          <span class="post-meta">
+            {{ post.date | date: "%B %d, %Y" }}
+          </span>
+          <h3>
+            <a class="post-link" href="{{ post.url | relative_url }}">
+              {{ post.title }}
+            </a>
+          </h3>
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
-
-            <!-- Sidebar (Search, Categories, Tags) -->
-            <aside class="lg:col-span-1">
-                {% include blog_sidebar.html %}
-            </aside>
-
-            <!-- Main Content Area (Post List) -->
-            <main class="lg:col-span-3">
-                <section id="post-list-container">
-                    
-                    {% if site.paginate %}
-                        <!-- Standard Jekyll Pagination Block -->
-                        {% assign posts = paginator.posts %}
-                    {% else %}
-                        <!-- Fallback if pagination is not enabled -->
-                        {% assign posts = site.posts %}
-                    {% endif %}
-                    
-                    {% if posts.size > 0 %}
-                        <!-- Loop through posts and use the includes/post_card.html template -->
-                        {% for post in posts %}
-                            {% include post_card.html post=post %}
-                        {% endfor %}
-                    {% else %}
-                        <div class="text-center py-16 bg-white rounded-xl shadow-lg">
-                            <p class="text-xl text-gray-500">No posts found matching your criteria.</p>
-                        </div>
-                    {% endif %}
-
-                </section>
-
-                <!-- Pagination Links (Will only render if site.paginate is set in _config.yml) -->
-                {% if site.paginate %}
-                    {% include pagination.html %}
-                {% endif %}
-            </main>
-
-        </div>
-    </div>
+          {% if post.excerpt %}
+            <p>{{ post.excerpt | strip_html | truncate: 180 }}</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No posts yet. Check back soon for new insights!</p>
+  {% endif %}
 </div>
 
-<!-- Custom JavaScript for Client-Side Search (Lunr.js) -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const searchInput = document.getElementById('blog-search-input');
-        const postListContainer = document.getElementById('post-list-container');
-        let idx; // Lunr index
-        let postsData; // Raw post data
+<hr>
 
-        // Check if we are on the main blog page or a paginated page
-        const isArchivePage = postListContainer !== null;
-        if (!isArchivePage) return; // Stop if element is not present
-
-        // Function to fetch the search index and initialize Lunr
-        function initializeSearch() {
-            fetch('{{ site.baseurl }}/search.json')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    postsData = data;
-                    idx = lunr(function () {
-                        // Configuration for the index
-                        this.field('title', { boost: 10 });
-                        this.field('tags');
-                        this.field('categories');
-                        this.field('content');
-                        this.ref('url');
-
-                        // Add documents to the index
-                        postsData.forEach(function (doc) {
-                            this.add(doc);
-                        }, this);
-                    });
-                })
-                .catch(error => console.error('Error fetching or initializing Lunr:', error));
-        }
-
-        // Function to filter the displayed posts
-        function filterPosts(query) {
-            if (!idx) return; // Index not ready
-
-            // Get all post elements (used as templates for the filtered results)
-            const allPostElements = Array.from(postListContainer.children).filter(el => el.tagName === 'ARTICLE');
-
-            // If query is empty, show all standard paginated posts
-            if (!query.trim()) {
-                // We rely on Jekyll's liquid loop to show the correct page posts by default
-                allPostElements.forEach(el => el.style.display = 'block');
-                
-                // Hide pagination if present
-                const pagination = document.querySelector('.pagination');
-                if (pagination) pagination.style.display = 'flex'; // Default display for pagination
-                
-                return;
-            }
-
-            // Hide pagination
-            const pagination = document.querySelector('.pagination');
-            if (pagination) pagination.style.display = 'none';
-            
-            // Search using Lunr
-            const results = idx.search(query);
-            const foundUrls = results.map(r => r.ref);
-            
-            // Hide all posts currently displayed by Jekyll's Liquid loop
-            allPostElements.forEach(el => el.style.display = 'none');
-
-            // Show only the matching posts by finding their URL and displaying them
-            // NOTE: This basic implementation assumes all possible post cards are present in the DOM (which is true without pagination)
-            // If pagination is enabled, this will only search posts on the current page.
-            
-            // For true site-wide search with pagination, the original post cards need to be regenerated/fetched.
-            // A simpler approach for the Canvas environment: we toggle visibility of existing elements.
-            
-            let foundCount = 0;
-            allPostElements.forEach(el => {
-                const postUrl = el.querySelector('a').getAttribute('href');
-                if (foundUrls.includes(postUrl)) {
-                    el.style.display = 'block';
-                    foundCount++;
-                }
-            });
-            
-            // Basic feedback for the user
-            if (foundCount === 0) {
-                 // Check if the "No posts found" message already exists
-                if (!document.getElementById('no-results-message')) {
-                    const noResults = document.createElement('div');
-                    noResults.id = 'no-results-message';
-                    noResults.className = 'text-center py-16 bg-white rounded-xl shadow-lg';
-                    noResults.innerHTML = '<p class="text-xl text-coral-500 font-semibold">No posts matched your search term: "' + query.trim() + '"</p>';
-                    postListContainer.appendChild(noResults);
-                }
-            } else {
-                 const noResults = document.getElementById('no-results-message');
-                 if (noResults) noResults.remove();
-            }
-        }
-
-        // Event listener for search input
-        searchInput.addEventListener('keyup', (e) => {
-            // Wait a moment for the user to finish typing
-            setTimeout(() => filterPosts(e.target.value), 150);
-        });
-
-        // Initialize search when the page loads
-        initializeSearch();
-    });
-</script>
+<p style="text-align:center; opacity:0.7; font-size:0.9em;">
+  {{ site.title }} &mdash; {{ site.description }}
+</p>
