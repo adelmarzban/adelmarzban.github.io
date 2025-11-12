@@ -1,6 +1,6 @@
 # --- Site Settings ---
 # (Your personal information)
-title: "Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مرزبان"
+title: "Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مرzبان"
 email: adelmarzban@gmail.com
 description: >-
   Advancing Medicine Through Tissue Innovation, Data Science, and Digital Health.
@@ -21,6 +21,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-redirect-from
   - jekyll-paginate
+  - jekyll-archives  # <-- ADDED PLUGIN
 
 # --- Permalinks & Pagination ---
 # Pretty permalinks for pages by default
@@ -53,13 +54,26 @@ defaults:
       path: ""
       type: "posts"
     values:
-      layout: "default"
+      layout: "post"  # <-- OPTIMIZED: Changed from "default" to use your post layout
       permalink: /blog/:year/:month/:day/:title/
   - scope:
       path: ""
       type: "publications"
     values:
       layout: "publication" # uses _layouts/publication.html
+
+# --- NEW: jekyll-archives Settings ---
+# (This block is required for the jekyll-archives plugin)
+# !! WARNING: This plugin is NOT supported by GitHub Pages
+# !! and requires a custom GitHub Actions workflow to run.
+jekyll-archives:
+  enabled:
+    - tags
+    - categories
+  layout: 'archive' # You will need to create a _layouts/archive.html file
+  permalinks:
+    tag: '/blog/tags/:name/'
+    category: '/blog/categories/:name/'
 
 # --- Theme-Specific Settings (Minima) ---
 # Navigation (shown by your layout/theme if implemented)
