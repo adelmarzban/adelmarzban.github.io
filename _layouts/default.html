@@ -138,17 +138,9 @@
       <div class="py-16">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <article class="glass-container p-8 md:p-12 lg:p-16 markdown-content">
-            {% if page.title and page.title != "Home" %}
-              <h1 class="text-5xl font-extrabold mb-4 text-deep-navy">{{ page.title }}</h1>
-            {% endif %}
-
-            {% if page.layout == "post" %}
-              <p class="text-lg mb-8">
-                <i class="far fa-calendar-alt mr-2 text-warm-coral"></i>
-                Published {{ page.date | date: "%B %-d, %Y" }}
-                {% if page.author %}by {{ page.author }}{% endif %}
-              </p>
-            {% endif %}
+            {%- if page.layout != "post" and page.title and page.title != "Home" -%}
+			<h1 class="text-5xl font-extrabold mb-4 text-deep-navy">{{ page.title }}</h1>
+			{%- endif -%}
 
             {{ content }}
           </article>
