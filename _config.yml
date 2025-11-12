@@ -1,6 +1,10 @@
-# --- Site Settings ---
-# (Your personal information)
-title: "Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مرzبان"
+# =====================================================
+#  Adel Marzban | Jekyll Config
+#  Optimized for GitHub Pages + Tailwind + client filtering
+# =====================================================
+
+# --- Site Identity ---
+title: "Adel Marzban | Tissue Banking Innovation & Biomedical AI | عادل مرزبان"
 email: adelmarzban@gmail.com
 description: >-
   Advancing Medicine Through Tissue Innovation, Data Science, and Digital Health.
@@ -13,82 +17,64 @@ google_site_verification: "1YXxtaPSg2KsLAHGV5mAy8dvOUalsuZk9u0bES2TvpI"
 markdown: kramdown
 theme: minima
 
-# --- Plugins ---
-# (Your full list of plugins)
+# --- Plugins (GitHub Pages Safe) ---
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-redirect-from
   - jekyll-paginate
-  - jekyll-archives  # <-- ADDED PLUGIN
 
 # --- Permalinks & Pagination ---
-# Pretty permalinks for pages by default
+# Default clean URLs for pages and posts
 permalink: /:name/
 
-# Pagination (used by blog.html)
+# Blog pagination
 paginate: 10
 paginate_path: "/blog/page:num/"
 
 # --- Collections ---
-# Defines your content types
 collections:
   publications:
     output: true
-    permalink: /publications/:name/ # Using :name is cleaner than :path
+    permalink: /publications/:name/
   posts:
     output: true
-    # This permalink matches what you defined in 'defaults'
     permalink: /blog/:year/:month/:day/:title/
 
 # --- Defaults ---
-# (Your excellent defaults setup)
 defaults:
   - scope:
       path: ""
       type: "pages"
     values:
       layout: "default"
+
   - scope:
       path: ""
       type: "posts"
     values:
-      layout: "post"  # <-- OPTIMIZED: Changed from "default" to use your post layout
+      layout: "post"  # use _layouts/post.html by default
       permalink: /blog/:year/:month/:day/:title/
+
   - scope:
       path: ""
       type: "publications"
     values:
-      layout: "publication" # uses _layouts/publication.html
+      layout: "publication"  # uses _layouts/publication.html
 
-# --- NEW: jekyll-archives Settings ---
-# (This block is required for the jekyll-archives plugin)
-# !! WARNING: This plugin is NOT supported by GitHub Pages
-# !! and requires a custom GitHub Actions workflow to run.
-jekyll-archives:
-  enabled:
-    - tags
-    - categories
-  layout: 'archive' # You will need to create a _layouts/archive.html file
-  permalinks:
-    tag: '/blog/tags/:name/'
-    category: '/blog/categories/:name/'
-
-# --- Theme-Specific Settings (Minima) ---
-# Navigation (shown by your layout/theme if implemented)
+# --- Navigation / Header ---
 header_pages:
   - publications.html
   - blog.html
   - contact.md
 
-# Include publications in RSS feed
+# --- RSS Feed ---
 feed:
   collections:
     - publications
 
-# --- Housekeeping ---
-# Merged exclude list for a clean repository
+# --- Exclusions (Clean Repo) ---
 exclude:
   - .sass-cache/
   - .jekyll-cache/
@@ -103,4 +89,7 @@ exclude:
   - vendor/ruby/
   - README.md
   - .gitignore
-  - package.json # from your list
+  - package.json
+  - package-lock.json
+  - tailwind.config.js
+  - postcss.config.js
