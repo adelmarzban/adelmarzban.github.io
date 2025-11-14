@@ -5,7 +5,7 @@ authors: "Adel Marzban"
 journal: "Journal of Polymers and the Environment"
 categories: [Allograft, Bone Cement, Biomaterials, Calcium-based cement]
 year: 2025
-doi: "https://onlinelibrary.wiley.com/doi/10.1002/cjce.23048]](https://doi.org/10.1007/s10924-025-03573-w"
+doi: "https://doi.org/10.1007/s10924-025-03573-w"
 pdf: ""
 abstract: "This study introduces a bioengineered PMMA-based bone cement reinforced with chitosan and human-derived bone powder, achieving enhanced osteoconductivity, improved mechanical strength, reduced polymerization temperature, and superior cellular responses compared to conventional PMMA."
 ---
