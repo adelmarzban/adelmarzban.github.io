@@ -7,7 +7,7 @@ categories: [Skin Membrane, Acellular Dermis, Allograft Processing]
 year: 2018
 doi: "https://civilica.com/doc/982480"
 pdf: "{{ site.baseurl }}/assets/pdfs/marzban-2025-dn-hydrogel.pdf"
-abstract: "This study describes the development and sterilization of an acellular dermis (ADM) collagen membrane produced by ITP (Regen Allograft) as a bioresorbable allograft for wound coverage, offering a safe alternative to autografts.
+abstract: "This study describes the development and sterilization of an acellular dermis (ADM) collagen membrane produced by ITP (Regen Allograft) as a bioresorbable allograft for wound coverage, offering a safe alternative to autografts."
 ---
 
 **Highlights**
