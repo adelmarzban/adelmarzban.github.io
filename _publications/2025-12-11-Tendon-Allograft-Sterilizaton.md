@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Effects of gamma radiation as terminal sterilization on mechanical properties and organic composition of bone and skin allograft"
+title: "Effects of Gamma radiation as terminal sterilization on mechanical properties and organic composition of bone and skin allograft"
 authors: "Adel Marzban"
 journal: "Journal of Materials Research"
 categories: ["Allograft", "Sterilization", "Tissue Graft", "Tendon Reconstruction"]
