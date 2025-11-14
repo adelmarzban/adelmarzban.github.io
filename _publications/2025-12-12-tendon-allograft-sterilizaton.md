@@ -1,14 +1,14 @@
 ---
 layout: post
-title: "Effects of Gamma radiation as terminal sterilization on mechanical properties and organic composition of bone and skin allograft"
+title: "Advances in Bone Repair: A Bioengineered PMMA-Based Bone Cement with Enhanced Otseoconductivity Utilizing Human-Derived Bone Powder"
 authors: "Adel Marzban"
-journal: "Journal of Materials Research"
-categories: [Allograft, Sterilization, Tissue Graft, Tendon Reconstruction]
-year: 2025
-doi: "https://doi.org/10.1557/s43578-025-01584-w"
+journal: "Journal of Polymers and the Environment"
+categories: [Allograft, Bone Cement, Biomaterials, Calcium-based cement]
+year: 2015
+doi: "[https://onlinelibrary.wiley.com/doi/10.1002/cjce.23048]](https://doi.org/10.1007/s10924-025-03573-w"
 pdf: "{{ site.baseurl }}/assets/pdfs/marzban-2025-dn-hydrogel.pdf"
-abstract: "This study examines how standard gamma sterilization alters the mechanical strength and collagen composition of freeze-dried bone and skin allografts, highlighting the trade-off between sterilization safety and tissue biomechanical integrity."
+abstract: "This study introduces a bioengineered PMMA-based bone cement reinforced with chitosan and human-derived bone powder, achieving enhanced osteoconductivity, improved mechanical strength, reduced polymerization temperature, and superior cellular responses compared to conventional PMMA."
 ---
 
 **Highlights**
-This publication investigates the impact of gamma radiation—commonly used as a terminal sterilization method in tissue banking—on the structural and mechanical quality of freeze-dried bone and skin allografts. The results show substantial reductions in Young’s modulus and ultimate stress for both tissue types, indicating weakening of their load-bearing capacity. Biochemical analysis confirms notable decreases in hydroxyproline content, reflecting collagen degradation caused by irradiation. FTIR reveals modifications in amide and phosphate peaks consistent with collagen network disruption, while SEM imaging shows increased porosity and microstructural fragmentation. Together, these findings demonstrate that although gamma radiation effectively sterilizes allograft tissues, it can compromise their biomechanical performance. The study emphasizes the need to optimize irradiation parameters to ensure both sterility and functional integrity in musculoskeletal and reconstructive applications.
+This publication focuses on overcoming key limitations of conventional polymethyl methacrylate (PMMA) bone cement, including its poor bioactivity, relatively high polymerization heat, and restricted mechanical performance. The authors develop a modified cement formulation by incorporating chitosan (Ch) and human-derived allograft bone powder (BP), both chosen for their bioactive and osteoconductive properties. The composite PMMA-Ch-BP cement is fabricated via solvent casting, and its structure and morphology are characterized using FTIR and SEM. Mechanical testing reveals a notable 26.77% increase in compressive strength relative to standard PMMA, while a 15.22 °C decrease in polymerization temperature suggests a reduced risk of thermal damage to surrounding tissues. In vitro assays demonstrate enhanced biocompatibility, with the modified cement reaching approximately 120% cell viability versus unmodified PMMA by day 5, alongside improved cell attachment and spreading observed in SEM imaging. Overall, the results indicate that PMMA-Ch-BP is a promising next-generation bone cement with superior osteoconductive potential, better mechanical performance, and safer thermal behavior for orthopedic applications.
