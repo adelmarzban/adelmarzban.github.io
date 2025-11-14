@@ -3,7 +3,7 @@ layout: post
 title: "Effects of Gamma radiation as terminal sterilization on mechanical properties and organic composition of bone and skin allograft"
 authors: "Adel Marzban"
 journal: "Journal of Materials Research"
-categories: ["Allograft", "Sterilization", "Tissue Graft", "Tendon Reconstruction"]
+categories: [Allograft, Sterilization, Tissue Graft, Tendon Reconstruction]
 year: 2025
 doi: "https://doi.org/10.1557/s43578-025-01584-w"
 pdf: "{{ site.baseurl }}/assets/pdfs/marzban-2025-dn-hydrogel.pdf"
