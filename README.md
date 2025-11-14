@@ -86,5 +86,4 @@ This principle guides my work at the intersection of **biology + data + innovati
 ---
 
 ## 📌 License  
-This repository hosts a personal website; all content, posts, and designs are © 2025 Adel Marzban unless otherwise stated.
-
+This repository contains the source code for my personal website. All posts, designs, and written content are the property of Adel Marzban (2025), unless noted otherwise.
