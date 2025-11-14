@@ -1,30 +1,90 @@
----
-layout: default
-title: Home - Adel Marzban, Tissue Banking Innovations & Data Scientist & Technical Writer
----
+# 🌐 Adel Marzban — Tissue Engineering, Biomedical AI & Digital Health Innovation  
 
-## 👋 Welcome to My Portfolio
-
-I'm **Adel Marzban**, a versatile professional passionate about the intersection of **Data Science** and **Technical Communication**. My expertise lies in transforming complex data insights into clear, actionable, and well-documented solutions.
+Welcome to the source repository of **adelmarzban.github.io**, my personal website where I bring together my work across **tissue banking**, **Allograft**, **biomedical engineering**, **data science**, and **digital health**.  
+This site reflects my multidisciplinary approach to building meaningful, science-driven solutions at the intersection of biology and technology.
 
 ---
 
-### 🧠 My Core Expertise
+## 👋 About Me  
+I’m **Adel Marzban**, an engineer and scientist working at the interface of:
 
-* **Data Science & Machine Learning:** Python, Pandas, Scikit-learn, TensorFlow/PyTorch, Statistical Modeling.
-* **Technical Writing:** Clear, precise documentation (API, user guides, tutorials), utilizing tools like Markdown, ReStructuredText, and Jekyll/Sphinx.
-* **Software Development:** Strong foundation in **Python** and version control with **Git/GitHub**.
+- **Tissue Engineering & Bioprocess Innovation**  
+- **Biomedical AI, Data Science & Machine Learning**  
+- **Digital Health, Technical Strategy & Scientific Communication**
+
+My work focuses on translating biological systems and complex datasets into actionable insights, improved healthcare processes, and scalable digital tools.
 
 ---
 
-### 🚀 Get Started
+## 🔬 Core Focus Areas
 
-Explore my work to see how I combine technical rigor with exceptional communication:
+### **🧪 Tissue Banking & Biomedical Engineering**  
+- Tissue processing workflows  
+- Quality & compliance in biobanking  
+- Innovation in transplant safety and cell/tissue systems  
 
-* **[📝 Read My Blog Posts]({{ site.baseurl }}/blog/)**: Dive into detailed tutorials and insights on data science and technical writing topics.
-* **[🛠️ View My Projects]({{ site.baseurl }}/projects/)**: Check out my hands-on code and documentation examples on GitHub.
-* **[🔗 Connect with Me]({{ site.social.linkedin_url }})**: Let's discuss your next challenging project!
+### **🤖 Data Science & Biomedical AI**  
+- Machine learning & predictive modeling  
+- Python (Pandas, Scikit-learn, TensorFlow/PyTorch)  
+- Biomedical data pipelines, analysis & visualization  
 
-***
+### **📝 Technical Writing & Scientific Communication**  
+- Clear, structured documentation (API docs, research guides, SOPs, tutorials)  
+- Markdown, Jekyll, Sphinx & ReStructuredText  
+- Bridging complex concepts for technical + non-technical audiences  
 
-> "The goal is to turn data into information, and information into insight." - Carly Fiorina (Quote to inspire action/thought)
+---
+
+## 📁 Website Structure
+
+This repository powers my GitHub Pages website using **Jekyll** and includes:
+
+- `_layouts/` — Custom templates optimized for clarity and readability  
+- `_posts/` — Articles on biomedical AI, tissue engineering, and innovation  
+- `projects/` — Hands-on examples, research highlights, and technical demos  
+- `assets/` — Visuals, diagrams, and UI elements  
+- `index.html` — Homepage with focus on storytelling and navigation  
+
+---
+
+##  Explore My Work
+- 📚 **Google Scholar**  
+  Insights on tissue engineering, biomedical engineering, and interdisciplinary innovation.  
+  👉 `https://scholar.google.com/citations?user=tQBnMZ8AAAAJ&hl=en`
+  
+- 📚 **Blog**  
+  Insights on tissue engineering, biomedical data, AI trends, and interdisciplinary innovation.  
+  👉 `https://adelmarzban.github.io/blog/`
+
+- 🧬 **Projects**  
+  Code samples, mini-research demos, and technical documentation.  
+  👉 `https://adelmarzban.github.io/projects/`
+
+- 📄 **Publications**  
+  A curated list of scientific work, research contributions, and academic outputs.  
+  👉 `https://adelmarzban.github.io/publications/`
+
+- 🌐 **Main Website**  
+  👉 `https://adelmarzban.github.io/`
+
+---
+
+## 🤝 Connect  
+I’m always open to new collaborations—whether in tissue engineering, biomedical AI, digital health, or scientific writing.
+
+- 🔗 LinkedIn: *Available on the website footer*  
+- 📧 Contact: via *Contact* page on the website
+
+---
+
+## 🧭 Philosophy  
+> *“The goal is to turn data into information, and information into insight.”*  
+> — Carly Fiorina  
+
+This principle guides my work at the intersection of **biology + data + innovation**.
+
+---
+
+## 📌 License  
+This repository hosts a personal website; all content, posts, and designs are © 2025 Adel Marzban unless otherwise stated.
+
