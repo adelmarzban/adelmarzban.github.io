@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پلتفرم سلامت روان - نسخه نهایی</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link to Vazirmatn font -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Vazirmatn', 'sans-serif'],
+            },
+            transitionProperty: {
+              'width': 'width',
+              'transform': 'transform',
+            }
+          },
+        },
+      };
+    </script>
+    <style>
+        .sidebar { transition: transform 0.3s ease-in-out; }
+        .main-content { transition: margin-right 0.3s ease-in-out; }
+        
+        /* Watermark */
+        body::after {
+            content: "Adel Is Testing";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: clamp(3rem, 8vw, 10rem);
+            font-weight: 800;
+            color: rgba(0, 0, 0, 0.04);
+            z-index: 10000;
+            pointer-events: none;
+            white-space: nowrap;
+            user-select: none;
+        }
+        
+        /* Fix for number input spin buttons in Firefox */
+        input[type=number] { -moz-appearance: textfield; }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* --- NEW UI/UX STYLES --- */
+
+        /* Sidebar Item States */
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.75rem 1rem; /* 12px 16px */
+            border-radius: 0.5rem; /* 8px */
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            text-align: right;
+        }
+        .sidebar-item .sidebar-icon {
+            margin-left: 0.75rem; /* 12px */
+            flex-shrink: 0;
+        }
+
+        /* State: Active (Current Step) */
+        .sidebar-item[data-state="active"] {
+            background-color: #DBEAFE; /* bg-blue-100 */
+            color: #1D4ED8; /* text-blue-700 */
+        }
+
+        /* State: Completed (Visited) */
+        .sidebar-item[data-state="completed"] {
+            color: #374151; /* text-gray-700 */
+        }
+        .sidebar-item[data-state="completed"]:hover {
+            background-color: #F3F4F6; /* bg-gray-100 */
+            color: #000;
+        }
+
+        /* State: Locked (Not Unlocked) */
+        .sidebar-item[data-state="locked"] {
+            color: #9CA3AF; /* text-gray-400 */
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Kebab Menu (for Edit/Delete) */
+        .kebab-dropdown {
+            position: absolute;
+            left: 0; /* Positioned to the left in RTL */
+            top: 100%; /* Below the toggle button */
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #E5E7EB;
+            z-index: 10;
+            width: 140px;
+            padding: 0.5rem;
+        }
+        .kebab-dropdown button {
+            display: block;
+            width: 100%;
+            text-align: right;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+        .kebab-dropdown button:hover {
+            background-color: #F3F4F6;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+
+    <!-- 1. APP SHELL -->
+    <div id="app-container" class="w-full flex-grow"></div>
+    
+    <!-- Pop-up & Modal Containers -->
+    <div id="message-box" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 py-3 px-6 rounded-full shadow-lg transition-opacity duration-500 opacity-0 hidden text-white font-bold text-center z-50"></div>
+    <div id="edit-modal" class="fixed inset-0 w-full h-full z-40 hidden"></div>
+
+    <!-- 2. JAVASCRIPT LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SECTION 0: STATE DECLARATION (Initial Values) ---
+            // Declared within DOMContentLoaded for safety against global scope issues
+            let currentUser = null;
+            let screeningAnswers = [];
+            let thoughtLog = [];
+            let screeningResults = null;
+            let isLoginMode = true;
+            let currentStepId = 'screening'; 
+            let currentEntryId = null; 
+            let isSidebarOpen = false;
+            let unlockedSteps = ['screening'];
+            
+            // --- SECTION 1: GLOBAL STATE & UI SVGs ---
+            
+            // --- DOM Elements ---
+            const appContainer = document.getElementById('app-container');
+            const messageBox = document.getElementById('message-box');
+            const editModalContainer = document.getElementById('edit-modal');
+
+            // --- UI SVGs ---
+            const icons = {
+                screening: `<svg class="w-6 h-6 sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>`,
+                intro: `<svg class="w-6 h-6 sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>`,
+                log: `<svg class="w-6 h-6 sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>`,
+                identify: `<svg class="w-6 h-6 sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>`,
+                challenge: `<svg class="w-6 h-6 sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>`,
+                completed: `<svg class="w-6 h-6 sidebar-icon text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+                locked: `<svg class="w-6 h-6 sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`,
+                kebab: `<svg class="w-5 h-5 text-gray-500 hover:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01"></path></svg>`
+            };
+            
+            // --- App State ---
+            const questions = [
+                "1. احساس غم یا ناامیدی", "2. بی‌علاقگی یا لذت‌نبردن از فعالیت‌ها", "3. تغییر در اشتها یا وزن", "4. مشکلات خواب", "5. احساس خستگی مفرط", "6. احساس بی‌ارزشی یا گناه", "7. مشکل در تمرکز", "8. کندی یا بی‌قراری روانی-حرکتی", "9. افکار مرگ یا خودکشی", "10. احساس پوچی", "11. کاهش انگیزه", "12. انزوا از دیگران", "13. نگرانی مزمن و بی‌دلیل", "14. تنش عضلانی یا بی‌قراری", "15. تپش قلب ناگهانی", "16. تعریق زیاد", "17. لرزش یا احساس لرزش", "18. احساس خفگی یا تنگی نفس", "19. درد یا ناراحتی در قفسه سینه", "20. سرگیجه یا سبکی سر", "21. ترس از مردن", "22. ترس از دیوانه شدن", "23. جدا شدن از واقعیت", "24. از دست دادن کنترل", "25. انرژی زیاد یا غیرعادی", "26. نیاز کم به خواب", "27. پرحرفی", "28. افزایش عزت نفس یا بزرگ‌بینی", "29. افکار سریع", "30. حواس‌پرتی", "31. افزایش فعالیت هدف‌دار", "32. رفتارهای پرخطر", "33. تحریک‌پذیری شدید", "34. تصمیم‌گیری‌های غیرمنطقی", "35. ولخرجی یا بی‌ملاحظگی", "36. مصرف مواد یا الکل", "37. تغییرات خلق‌وخوی شدید", "38. فعالیت جنسی بیش‌ازحد", "39. ترس از فضاهای باز", "40. ترس از تنها ماندن", "41. ترس از حضور در مکان‌های شلوغ", "42. اجتناب از مکان‌های خاص", "43. افکار مزاحم و ناخواسته", "44. شک مداوم و وسواس فکری", "45. رفتارهای تکراری مثل شستن یا چک‌کردن", "46. ترس از قضاوت دیگران", "47. اجتناب از صحبت در جمع", "48. اضطراب در موقعیت‌های اجتماعی", "49. سرخ شدن یا لرزش در جمع"
+            ];
+            
+            // --- Utility Functions ---
+            
+            const enforceNumberLimit = (e) => {
+                if (e.target.type === 'number' && e.target.classList.contains('number-input')) {
+                    let value = e.target.value.replace(/[^0-9]/g, '');
+                    if (value === '') { e.target.value = ''; return; }
+                    let num = parseInt(value, 10);
+                    if (isNaN(num)) { e.target.value = ''; }
+                    else if (num < 0) { e.target.value = 0; }
+                    else if (num > 10) { e.target.value = 10; }
+                    else { e.target.value = num; }
+                }
+            };
+            document.addEventListener('input', enforceNumberLimit);
+
+            const showMessage = (text, isError = false) => {
+                messageBox.textContent = text;
+                messageBox.classList.remove('hidden', 'opacity-0', 'bg-blue-500', 'bg-red-500');
+                messageBox.classList.add('opacity-100', isError ? 'bg-red-500' : 'bg-blue-500');
+                setTimeout(() => {
+                    messageBox.classList.remove('opacity-100');
+                    setTimeout(() => messageBox.classList.add('hidden'), 500);
+                }, 3000);
+            };
+
+            const saveUserData = () => {
+                if (!currentUser) return;
+                let users = JSON.parse(localStorage.getItem('users')) || {};
+                if (users[currentUser.email]) {
+                    users[currentUser.email].answers = screeningAnswers;
+                    users[currentUser.email].thoughtLog = thoughtLog;
+                    users[currentUser.email].unlockedSteps = unlockedSteps;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                localStorage.setItem('currentStepId', currentStepId); 
+            };
+
+            const loadUserData = () => {
+                // Read/Refresh global currentUser
+                currentUser = JSON.parse(localStorage.getItem('currentUser')); 
+                
+                if (!currentUser) {
+                    // Set safe initial defaults if logged out
+                    screeningAnswers = new Array(questions.length).fill(false);
+                    thoughtLog = [];
+                    unlockedSteps = ['screening'];
+                    currentStepId = 'screening';
+                    return; 
+                }
+
+                let users = JSON.parse(localStorage.getItem('users')) || {};
+                const userData = users[currentUser.email];
+                
+                if (userData) {
+                    screeningAnswers = userData.answers || new Array(questions.length).fill(false);
+                    thoughtLog = userData.thoughtLog || [];
+                    unlockedSteps = userData.unlockedSteps || ['screening']; 
+                } else {
+                    // Safety initialization for new/corrupt users
+                    screeningAnswers = new Array(questions.length).fill(false);
+                    thoughtLog = [];
+                    unlockedSteps = ['screening'];
+                }
+                
+                currentStepId = localStorage.getItem('currentStepId') || 'screening';
+            };
+
+            // NEW: Helper to unlock steps and re-render sidebar
+            const unlockStep = (stepId) => {
+                if (!unlockedSteps.includes(stepId)) {
+                    unlockedSteps.push(stepId);
+                    saveUserData();
+                    renderSidebarNav(); 
+                }
+            };
+
+
+            // --- SECTION 2: MODULE: CORE APP LAYOUT (Sidebar & Shell) ---
+            
+            const htmlTemplates_AppLayout = `
+                <div class="flex w-full h-full">
+                    <!-- Sidebar (Right) -->
+                    <aside id="sidebar" class="w-64 bg-white shadow-lg p-6 flex flex-col flex-shrink-0
+                                                fixed md:relative h-full
+                                                transform md:translate-x-0 translate-x-full
+                                                sidebar z-30
+                                                right-0 top-0">
+                        <div class="flex items-center justify-between mb-10">
+                            <h2 class="text-2xl font-extrabold text-blue-800 text-center">
+                                پلتفرم سلامت
+                            </h2>
+                            <button id="close-sidebar-btn" class="md:hidden p-1 text-gray-600 hover:text-black">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                        </div>
+                        
+                        <!-- NEW: Storytelling Nav Container -->
+                        <nav id="sidebar-nav-container" class="flex flex-col gap-y-2"></nav>
+
+                        <div class="mt-auto pt-6 border-t border-gray-200">
+                            <p id="user-email-display" class="text-sm text-gray-500 mb-3 text-center truncate"></p>
+                            <button id="logout-button" class="w-full px-4 py-2 bg-red-500 text-white rounded-lg shadow-sm hover:bg-red-600 text-sm font-semibold transition-all">
+                                خروج از حساب
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- Main Content (Left) -->
+                    <main class="flex-1 w-full main-content md:mr-64 overflow-y-auto">
+                        <div class="bg-white shadow-md p-4 flex items-center justify-between md:hidden sticky top-0 z-10">
+                            <button id="open-sidebar-btn" class="p-2 text-gray-700">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            </button>
+                            <h3 class="font-bold text-lg text-blue-800" id="mobile-page-title"></h3>
+                        </div>
+                        <div id="page-content-container" class="p-4 md:p-8 max-w-7xl mx-auto"></div>
+                    </main>
+                    
+                    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden hidden"></div>
+                </div>
+            `;
+
+            const openSidebar = () => {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                if (sidebar) sidebar.classList.remove('translate-x-full');
+                if (overlay) overlay.classList.remove('hidden');
+                isSidebarOpen = true;
+            };
+            
+            const closeSidebar = () => {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                if (sidebar) sidebar.classList.add('translate-x-full');
+                if (overlay) overlay.classList.add('hidden');
+                isSidebarOpen = false;
+            };
+            
+            // NEW: Rewritten to render the 5-step journey
+            const renderSidebarNav = () => {
+                const navContainer = document.getElementById('sidebar-nav-container');
+                const userEmailDisplay = document.getElementById('user-email-display');
+                
+                if (!navContainer || !userEmailDisplay) return; 
+
+                userEmailDisplay.textContent = currentUser.email;
+                
+                // Add listeners that only need to be set once
+                if (!document.getElementById('logout-button')._listenerAttached) {
+                    document.getElementById('logout-button').addEventListener('click', handleLogout);
+                    document.getElementById('logout-button')._listenerAttached = true;
+                }
+                if (!document.getElementById('open-sidebar-btn')._listenerAttached) {
+                    document.getElementById('open-sidebar-btn').addEventListener('click', openSidebar);
+                    document.getElementById('open-sidebar-btn')._listenerAttached = true;
+                }
+                if (!document.getElementById('close-sidebar-btn')._listenerAttached) {
+                    document.getElementById('close-sidebar-btn').addEventListener('click', closeSidebar);
+                    document.getElementById('close-sidebar-btn')._listenerAttached = true;
+                }
+                if (!document.getElementById('sidebar-overlay')._listenerAttached) {
+                    document.getElementById('sidebar-overlay').addEventListener('click', closeSidebar);
+                    document.getElementById('sidebar-overlay')._listenerAttached = true;
+                }
+
+
+                navContainer.innerHTML = ''; 
+                let activeModuleTitle = '';
+                
+                journeySteps.forEach(step => {
+                    const isUnlocked = unlockedSteps.includes(step.id);
+                    const isActive = step.id === currentStepId;
+                    const isCompleted = isUnlocked && !isActive && unlockedSteps.indexOf(step.id) < unlockedSteps.indexOf(currentStepId);
+
+                    let state = 'locked';
+                    let icon = icons.locked;
+
+                    if (isActive) {
+                        state = 'active';
+                        icon = step.icon; // Use the step's own icon
+                        activeModuleTitle = step.title;
+                    } else if (isCompleted) {
+                        state = 'completed';
+                        icon = icons.completed; // Use the green check icon
+                    } else if (isUnlocked) {
+                        // Unlocked but not active and not completed (e.g., user clicked back)
+                        state = 'completed'; // Treat as 'completed' for navigation
+                        icon = step.icon;
+                    }
+                    
+                    const button = document.createElement('button');
+                    button.id = `nav-${step.id}`;
+                    button.className = 'sidebar-item';
+                    button.dataset.state = state;
+                    button.innerHTML = `${icon} <span class="flex-1">${step.title}</span>`;
+                    
+                    if (isUnlocked) {
+                        button.addEventListener('click', () => {
+                            currentStepId = step.id;
+                            saveUserData(); // Save the new step
+                            mainRouter();
+                            if (isSidebarOpen) closeSidebar(); 
+                        });
+                    }
+                    navContainer.appendChild(button);
+                });
+                
+                document.getElementById('mobile-page-title').textContent = activeModuleTitle;
+            };
+
+            const renderAppLayout = () => {
+                appContainer.innerHTML = htmlTemplates_AppLayout;
+                // Note: renderSidebarNav() is now called *after* this in mainRouter()
+            };
+            
+            // --- SECTION 3: MODULE: AUTHENTICATION ---
+            
+            const htmlTemplates_Auth = `
+                <div class="flex items-center justify-center min-h-[80vh]">
+                    <div class="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md mx-4">
+                        <h2 id="auth-title" class="text-3xl font-extrabold text-center text-gray-800 mb-8"></h2>
+                        <div class="flex flex-col space-y-4">
+                            <input id="email" type="email" placeholder="آدرس ایمیل" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-all"/>
+                            <input id="password" type="password" placeholder="رمز عبور" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-all"/>
+                            <button id="auth-button" class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg shadow-md hover:bg-blue-700 transition-all"></button>
+                            <button id="toggle-mode-button" class="text-sm text-blue-500 hover:text-blue-700 mt-2"></button>
+                        </div>
+                        <div class="mt-8 pt-4 border-t">
+                            <button id="clear-all-data-button" class="text-xs text-gray-500 hover:text-red-600 w-full">فراموشی رمز عبور یا حذف کامل اطلاعات</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const renderAuthForm = () => {
+                appContainer.innerHTML = htmlTemplates_Auth; 
+                
+                document.getElementById('auth-title').textContent = isLoginMode ? 'ورود به حساب کاربری' : 'ایجاد حساب کاربری';
+                document.getElementById('auth-button').textContent = isLoginMode ? 'ورود' : 'ثبت‌نام';
+                document.getElementById('toggle-mode-button').textContent = isLoginMode ? 'حساب کاربری ندارید؟ ثبت‌نام کنید.' : 'قبلاً ثبت‌نام کرده‌اید؟ وارد شوید.';
+                document.getElementById('auth-button').addEventListener('click', handleAuth);
+                document.getElementById('toggle-mode-button').addEventListener('click', () => {
+                    isLoginMode = !isLoginMode;
+                    renderAuthForm();
+                });
+                document.getElementById('clear-all-data-button').addEventListener('click', handleClearAllData);
+            };
+            
+            const handleAuth = () => {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                let users = JSON.parse(localStorage.getItem('users')) || {};
+                
+                if (!email || !password) {
+                    showMessage("ایمیل و رمز عبور نمی‌توانند خالی باشند.", true);
+                    return;
+                }
+
+                if (isLoginMode) {
+                    if (users[email] && users[email].password === password) {
+                        localStorage.setItem('currentUser', JSON.stringify({ email: email }));
+                        showMessage("با موفقیت وارد شدید.");
+                        mainRouter();
+                    } else {
+                        showMessage("نام کاربری یا رمز عبور اشتباه است.", true);
+                    }
+                } else { // Signup
+                    if (users[email]) {
+                        showMessage("این ایمیل قبلاً ثبت‌نام شده است.", true);
+                    } else {
+                        users[email] = { 
+                            password: password, 
+                            answers: new Array(questions.length).fill(false), 
+                            thoughtLog: [],
+                            unlockedSteps: ['screening'] // NEW: Set default journey
+                        };
+                        localStorage.setItem('users', JSON.stringify(users));
+                        localStorage.setItem('currentUser', JSON.stringify({ email: email }));
+                        showMessage("ثبت‌نام با موفقیت انجام شد.");
+                        mainRouter();
+                    }
+                }
+            };
+
+            const handleLogout = () => {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('currentStepId');
+                
+                showMessage("از حساب کاربری خارج شدید.");
+                mainRouter();
+            };
+
+            const handleClearAllData = () => {
+                if (window.confirm("آیا مطمئن هستید؟ تمام اطلاعات ذخیره شده (حساب‌های کاربری و یادداشت‌ها) برای همیشه حذف خواهند شد. این عمل غیرقابل بازگشت است.")) {
+                    localStorage.removeItem('users');
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('currentStepId');
+                    
+                    isLoginMode = true;
+                    showMessage("تمام اطلاعات با موفقیت حذف شد.");
+                    // After clearing, re-run router to initialize fresh state
+                    mainRouter();
+                }
+            };
+
+            // --- SECTION 4: MODULE: SCREENING (Step 1) ---
+            
+            const htmlTemplates_Screening = `
+                <div class="bg-white p-8 rounded-2xl shadow-xl">
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-blue-800 mb-6">گام ۱: تست غربالگری روان‌شناختی</h1>
+                    <p class="text-lg text-gray-700 mb-8">مواردی را که در خود تجربه می‌کنید، علامت بزنید:</p>
+                    <div id="questions-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"></div>
+                    <div class="flex flex-wrap justify-center gap-4 mb-8">
+                        <button id="submit-button" class="px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-all w-full md:w-auto">تحلیل نتایج</button>
+                        <button id="clear-button" class="px-8 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition-all w-full md:w-auto">پاک کردن فرم</button>
+                    </div>
+                    <div id="results-container"></div>
+                </div>
+            `;
+            
+            const renderScreeningPage = () => {
+                const pageContainer = document.getElementById('page-content-container');
+                if (!pageContainer) return; 
+                pageContainer.innerHTML = htmlTemplates_Screening;
+
+                let questionsHtml = questions.map((q, index) => `
+                    <label class="flex items-center p-4 rounded-xl cursor-pointer transition-colors border-2 ${screeningAnswers[index] ? 'bg-blue-100 border-blue-500' : 'bg-white border-gray-300 hover:bg-gray-50'}">
+                        <input type="checkbox" data-index="${index}" class="form-checkbox h-6 w-6 text-blue-600 rounded-md" ${screeningAnswers[index] ? 'checked' : ''}>
+                        <span class="mr-4 text-sm font-medium text-gray-800">${q}</span>
+                    </label>`).join('');
+
+                let resultsHtml = '';
+                if (screeningResults) {
+                     const listItems = screeningResults.length > 0
+                         ? screeningResults.map(r => `<li class="text-lg font-medium py-1">🔹 ${r}</li>`).join('')
+                         : `<p class="font-bold text-lg">هیچ الگوی مشخصی از اختلالات رایج مشاهده نشد.</p>`;
+                    resultsHtml = `
+                        <div class="mt-10 p-6 rounded-2xl bg-gray-50 border-2">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4">نتیجه غربالگری</h2>
+                            <div class="p-4 ${screeningResults.length > 0 ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'} rounded-xl">
+                                ${screeningResults.length > 0 ? '<p class="font-bold text-lg mb-2">❗️ممکن است شما نشانه‌هایی از موارد زیر را داشته باشید:</p>' : ''}
+                                <ul class="list-none pr-2">${listItems}</ul>
+                            </div>
+                            <div class="text-center mt-8 pt-6 border-t">
+                                <button id="go-to-intro-btn" class="px-8 py-3 bg-purple-600 text-white font-bold rounded-lg shadow-md hover:bg-purple-700 transition-all w-full md:w-auto">
+                                    ادامه به گام ۲: راهنمای مطالعه
+                                </button>
+                            </div>
+                        </div>`;
+                }
+                
+                document.getElementById('questions-container').innerHTML = questionsHtml;
+                document.getElementById('results-container').innerHTML = resultsHtml;
+                
+                document.getElementById('submit-button').addEventListener('click', analyzeScreeningResults);
+                document.getElementById('clear-button').addEventListener('click', handleClearScreening);
+                
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        screeningAnswers[e.target.dataset.index] = e.target.checked;
+                        e.target.closest('label').classList.toggle('bg-blue-100', e.target.checked);
+                        e.target.closest('label').classList.toggle('border-blue-500', e.target.checked);
+                        saveUserData(); 
+                    });
+                });
+
+                if (screeningResults) {
+                    document.getElementById('go-to-intro-btn').addEventListener('click', () => {
+                        // NEW: Unlock and navigate
+                        unlockStep('pathIntro');
+                        currentStepId = 'pathIntro';
+                        mainRouter();
+                    });
+                }
+            };
+            
+            const analyzeScreeningResults = () => {
+                const results = [];
+                const d = screeningAnswers;
+                if ((d[0] || d[1]) && d.slice(2, 12).filter(a => a).length >= 4) { results.push("افسردگی"); } 
+                else if ((d[0] && d[1]) && d.slice(2, 12).filter(a => a).length >= 3) { if (!results.includes("افسردگی")) { results.push("افسردگی"); } }
+                if (d[12] && d[13]) { results.push("اضطراب فراگیر"); }
+                if (d.slice(14, 20).filter(a => a).length >= 2 && d.slice(20, 24).filter(a => a).length >= 1) { results.push("حمله پانیک"); }
+                if (d.slice(24, 38).filter(a => a).length >= 4 && results.includes("افسردگی")) { results.push("اختلال دوقطبی"); }
+                if (d.slice(38, 42).some(a => a)) { results.push("هراس از مکان (آگورافوبیا)"); }
+                if (d.slice(42, 44).some(a => a)) { results.push("وسواس فکری"); }
+                if (d[44]) { results.push("وسواس عملی"); }
+                if (results.includes("وسواس فکری") && results.includes("وسواس عملی")) { results.push("وسواس فکری-عملی"); }
+                if (d.slice(45, 49).some(a => a)) { results.push("اضطراب اجتماعی"); }
+                
+                screeningResults = results;
+                saveUserData();
+                showMessage("نتایج تحلیل و ذخیره شد.");
+                renderScreeningPage();
+            };
+            
+            const handleClearScreening = () => {
+                screeningAnswers.fill(false);
+                screeningResults = null;
+                saveUserData();
+                renderScreeningPage();
+                showMessage("فرم پاک شد.");
+            };
+            
+            // --- SECTION 5: MODULE: PATH INTRO (Step 2) ---
+
+            const htmlTemplates_PathIntro = `
+                <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl">
+                    <div class="border-b border-gray-200 pb-6 mb-8">
+                        <h1 class="text-3xl font-extrabold text-blue-800 mb-4">
+                            گام ۲: راهنمای مطالعه (افکار و احساسات)
+                        </h1>
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            این راهنما برای مرور و درک عمیق‌تر مفاهیم ارائه شده در منابع طراحی شده است. این مفاهیم شامل ارتباط بین افکار و احساسات، روش‌های شناسایی افکار خودکار منفی و فهرستی جامع از خطاهای شناختی است.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">آزمون (سوالات کوتاه پاسخ)</h2>
+                        <p class="text-gray-600 mb-6">برای هر سوال، پاسخی در حدود ۲ تا ۳ جمله ارائه دهید.</p>
+                        <ol class="list-decimal list-inside space-y-5 text-gray-800 text-lg">
+                            <li>هدف اصلی اپلیکیشنی که در منابع معرفی شده چیست؟</li>
+                            <li>رابطه بین افکار، احساسات و رفتارها را بر اساس مطالب توضیح دهید.</li>
+                            <li>این اپلیکیشن بر تعدیل کدام سه احساس منفی تمرکز دارد؟</li>
+                            <li>"جدول سه ستونی" چیست و هر یک از ستون‌های آن چه اطلاعاتی را در بر می‌گیرد؟</li>
+                            <li>خطای شناختی "ذهن‌خوانی" را تعریف کرده و یک مثال برای آن بیاورید.</li>
+                        </ol>
+                    </div>
+
+                    <hr class="my-10 border-gray-200">
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">کلید پاسخنامه</h2>
+                        <ol class="list-decimal list-inside space-y-6 text-gray-700 leading-relaxed">
+                            <li><p>هدف اصلی این اپلیکیشن کمک به کاربران برای داشتن حس و حال بهتر است...</p></li>
+                            <li><p>بر اساس مطالب، همیشه ابتدا افکار به سراغ ما می‌آیند و این افکار، احساسات ما را شکل می‌دهند...</p></li>
+                            <li><p>این اپلیکیشن بر تعدیل کدام سه احساس منفی تمرکز دارد: غم، خشم و اضطراب...</p></li>
+                            <li><p>"جدول سه ستونی" ابزاری برای شناسایی افکار خودکار منفی است...</p></li>
+                            <li><p>"ذهن‌خوانی" خطایی است که در آن فرد فرض می‌کند می‌داند دیگران چه فکری می‌کنند...</p></li>
+                        </ol>
+                    </div>
+
+                    <!-- Other content omitted for brevity, but would be here -->
+
+                    <hr class="my-10 border-gray-200">
+
+                    <div class="text-center mt-8 pt-6 border-t">
+                        <button id="start-treatment-btn" class="px-10 py-4 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-all w-full md:w-auto">
+                            ادامه به گام ۳: ثبت افکار
+                        </button>
+                    </div>
+                    
+                </div>
+            `;
+            
+            const renderPathIntroPage = () => {
+                const pageContainer = document.getElementById('page-content-container');
+                if (!pageContainer) return;
+                pageContainer.innerHTML = htmlTemplates_PathIntro;
+                
+                document.getElementById('start-treatment-btn').addEventListener('click', () => {
+                    // NEW: Unlock and navigate
+                    unlockStep('thoughtLog');
+                    currentStepId = 'thoughtLog'; 
+                    mainRouter();
+                });
+            };
+
+            // --- SECTION 6: MODULE: THOUGHT LOG (Step 3) ---
+            
+            const htmlTemplates_ThoughtLog = `
+                <div class="space-y-8">
+                    <div class="bg-white p-8 rounded-2xl shadow-xl border">
+                        <h1 class="text-3xl font-extrabold text-blue-800 mb-6">گام ۳: ثبت افکار (جدول ۳ ستونی)</h1>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="flex flex-col space-y-2"><label for="thought-situation" class="font-semibold">۱. موقعیت</label><textarea id="thought-situation" rows="4" class="w-full p-3 border rounded-xl"></textarea></div>
+                            <div class="flex flex-col space-y-2"><label class="font-semibold">۲. احساسات (۰-۱۰)</label><div class="space-y-3 pt-2">
+                                <div class="flex items-center justify-between"><label>غم</label><input type="number" id="feeling-sad" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input"></div>
+                                <div class="flex items-center justify-between"><label>شادی</label><input type="number" id="feeling-happy" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input"></div>
+                                <div class="flex items-center justify-between"><label>اضطراب</label><input type="number" id="feeling-anxious" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input"></div>
+                            </div></div>
+                            <div class="flex flex-col space-y-2"><label class="font-semibold">۳. افکار منفی خودکار</label>
+                                <div id="new-thoughts-container" class="space-y-4">
+                                    <div class="new-thought-group space-y-2">
+                                        <textarea rows="3" class="w-full p-2 border rounded-xl" placeholder="فکر خود را بنویسید..."></textarea>
+                                        <input type="number" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input" placeholder="شدت فکر (۰-۱۰)">
+                                    </div>
+                                </div>
+                                <button id="add-thought-button" class="mt-4 text-sm text-blue-600 font-semibold self-start hover:text-blue-800">+ افزودن فکر دیگر</button>
+                            </div>
+                        </div>
+                        <div class="text-center mt-8 pt-6 border-t">
+                            <button id="save-thought-button" class="px-10 py-4 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-all w-full md:w-auto">
+                                ثبت یادداشت
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 p-4 md:p-8 rounded-2xl shadow-inner">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">یادداشت‌های ثبت شده</h2>
+                        <div id="log-entries-container" class="space-y-4"></div>
+                        
+                        <!-- NEW: Removed the confusing "Next Step" button from here. Navigation is via sidebar. -->
+                    </div>
+                </div>
+            `;
+            
+            const renderThoughtLogPage = () => {
+                const pageContainer = document.getElementById('page-content-container');
+                if (!pageContainer) return;
+                pageContainer.innerHTML = htmlTemplates_ThoughtLog;
+                
+                const logEntriesHtml = thoughtLog.map(entry => {
+                    const isPhase3Complete = entry.negativeThoughts.every(t => t.alternativeThought && t.conclusion);
+                    
+                    const statusBadge = isPhase3Complete 
+                        ? `<span class="inline-flex items-center gap-x-1.5 rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700">✓ تکمیل شده</span>`
+                        : `<span class="inline-flex items-center gap-x-1.5 rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-500">در انتظار</span>`;
+
+                    // NEW: Kebab Menu Structure
+                    return `
+                    <div class="bg-white p-5 rounded-xl shadow-md border grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                        <div class="space-y-2"><h4 class="font-bold text-gray-600 border-b pb-1">موقعیت</h4><p class="text-gray-800 break-words">${entry.situation}</p></div>
+                        <div class="space-y-2"><h4 class="font-bold text-gray-600 border-b pb-1">احساس / امتیاز</h4>${entry.feelings.map(f => `<span>${f.name}: <span class="font-bold text-blue-600">${f.score}/10</span></span>`).join('<br>')}</div>
+                        <div class="space-y-2"><h4 class="font-bold text-gray-600 border-b pb-1">افکار منفی / امتیاز</h4>
+                            <ul class="list-disc pr-5 space-y-2 text-gray-800">${entry.negativeThoughts.map(t => `<li class="break-words">${t.description} <span class="font-semibold text-red-600">(${t.score}/10)</span></li>`).join('')}</ul>
+                        </div>
+                        
+                        <!-- NEW: Kebab Menu -->
+                        <div class="absolute top-3 left-3">
+                            <div class="relative kebab-menu">
+                                <button data-id="${entry.id}" class="kebab-toggle p-2 rounded-full hover:bg-gray-100">
+                                    ${icons.kebab}
+                                </button>
+                                <div data-id="dropdown-${entry.id}" class="kebab-dropdown hidden">
+                                    <button data-id="${entry.id}" class="edit-thought-btn text-blue-600">ویرایش</button>
+                                    <button data-id="${entry.id}" class="delete-thought-btn text-red-500">حذف</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-3 left-3">${statusBadge}</div> 
+                    </div>`;
+                }).join('') || `<p class="text-center text-gray-500 col-span-full">هنوز یادداشتی ثبت نشده است.</p>`;
+
+                document.getElementById('log-entries-container').innerHTML = logEntriesHtml;
+                
+                attachThoughtLogListeners(); 
+            };
+            
+            const handleSaveThought = () => {
+                const situation = document.getElementById('thought-situation').value;
+                const thoughtNodes = document.querySelectorAll('.new-thought-group');
+                const negativeThoughts = [];
+                
+                thoughtNodes.forEach(node => {
+                    const description = node.querySelector('textarea').value;
+                    const score = node.querySelector('input[type="number"]').value;
+                    if (description && score) {
+                        negativeThoughts.push({ 
+                            id: Date.now() + Math.random(), description, score: parseInt(score),
+                            challenge_distortion: '', challenge_experience: '', challenge_others: '', challenge_anotherWay: '',
+                            alternativeThought: '', conclusion: ''
+                        });
+                    }
+                });
+
+                if (!situation || negativeThoughts.length === 0) {
+                    showMessage("لطفاً موقعیت و حداقل یک فکر منفی را ثبت کنید.", true);
+                    return;
+                }
+                
+                const newThought = {
+                    id: Date.now(), situation, negativeThoughts,
+                    feelings: [
+                        { name: 'غم', score: parseInt(document.getElementById('feeling-sad').value) || 0 },
+                        { name: 'شادی', score: parseInt(document.getElementById('feeling-happy').value) || 0 },
+                        { name: 'اضطراب', score: parseInt(document.getElementById('feeling-anxious').value) || 0 }
+                    ]
+                };
+                thoughtLog.unshift(newThought);
+                
+                // NEW: Unlock next step on first save
+                unlockStep('identifyThoughts');
+                
+                saveUserData();
+                renderThoughtLogPage();
+                showMessage("یادداشت جدید ثبت شد.");
+            };
+            
+            const handleDeleteThought = (id) => {
+                if (window.confirm("آیا از حذف این یادداشت اطمینان دارید؟")) {
+                    thoughtLog = thoughtLog.filter(thought => thought.id !== id);
+                    saveUserData();
+                    renderThoughtLogPage();
+                    showMessage("یادداشت حذف شد.");
+                }
+            };
+
+            // NEW: Listener for Kebab Menus
+            const attachKebabListeners = () => {
+                // Close all dropdowns when clicking anywhere
+                document.body.addEventListener('click', (e) => {
+                    document.querySelectorAll('.kebab-dropdown').forEach(dropdown => {
+                        if (!dropdown.parentElement.contains(e.target)) {
+                            dropdown.classList.add('hidden');
+                        }
+                    });
+                }, true); // Use capture phase
+
+                document.querySelectorAll('.kebab-toggle').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Stop click from bubbling to body
+                        const id = e.currentTarget.dataset.id;
+                        const dropdown = document.querySelector(`div[data-id="dropdown-${id}"]`);
+                        
+                        // Close all *other* dropdowns
+                        document.querySelectorAll('.kebab-dropdown').forEach(d => {
+                            if (d !== dropdown) d.classList.add('hidden');
+                        });
+                        
+                        dropdown.classList.toggle('hidden');
+                    });
+                });
+
+                document.querySelectorAll('.edit-thought-btn').forEach(btn => {
+                    // FIX: Close dropdown immediately when action is clicked
+                    btn.addEventListener('click', (e) => {
+                         e.currentTarget.closest('.kebab-dropdown').classList.add('hidden');
+                         openEditModal(parseInt(e.currentTarget.dataset.id));
+                    });
+                });
+                document.querySelectorAll('.delete-thought-btn').forEach(btn => {
+                    // FIX: Close dropdown immediately when action is clicked
+                    btn.addEventListener('click', (e) => {
+                         e.currentTarget.closest('.kebab-dropdown').classList.add('hidden');
+                         handleDeleteThought(parseInt(e.currentTarget.dataset.id));
+                    });
+                });
+            };
+            
+            const attachThoughtLogListeners = () => {
+                document.getElementById('save-thought-button').addEventListener('click', handleSaveThought);
+                document.getElementById('add-thought-button').addEventListener('click', () => {
+                    const container = document.getElementById('new-thoughts-container');
+                    const newThoughtGroup = document.createElement('div');
+                    newThoughtGroup.className = 'new-thought-group space-y-2 border-t pt-4 mt-4 relative';
+                    newThoughtGroup.innerHTML = `
+                        <textarea rows="3" class="w-full p-2 border rounded-xl" placeholder="فکر خود را بنویسید..."></textarea>
+                        <input type="number" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input" placeholder="شدت فکر (۰-۱۰)">
+                        <button class="remove-thought-btn absolute -top-2 right-0 text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center text-2xl font-bold">&times;</button>
+                    `;
+                    container.appendChild(newThoughtGroup);
+                    newThoughtGroup.querySelector('.remove-thought-btn').addEventListener('click', () => newThoughtGroup.remove());
+                });
+                
+                // NEW: Kebab listeners
+                attachKebabListeners();
+            };
+
+            // --- SECTION 7: MODULE: IDENTIFY NEGATIVE THOUGHTS (Step 4) ---
+            
+            const htmlTemplates_IdentifyThoughts = `
+                 <div class="container mx-auto max-w-6xl">
+                    <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl">
+                        <header class="text-center mb-10 border-b pb-8">
+                            <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color: #2e294e;">گام ۴: خطاهای شناختی چیست؟</h1>
+                        </header>
+
+                        <section class="bg-gray-50 rounded-lg p-6 mb-12 flex flex-col md:flex-row items-center justify-between">
+                            <div class="md:w-2/3 mb-6 md:mb-0 md:mr-8">
+                                <p class="text-lg mb-4">
+                                    خطاهای شناختی، الگوهای فکری هستند که پشتوانهٔ منطقی و شواهد کافی ندارند. به همین دلیل به آن‌ها «خطای فکری» گفته می‌شود.
+                                </p>
+                                <p class="text-gray-600">
+                                    همهٔ انسان‌ها این خطاها را تجربه می‌کنند، اما در افرادی با عزت‌نفس پایین، افسردگی یا اضطراب شایع‌تر هستند. شناخت این خطاها اولین قدم برای مدیریت آن‌هاست.
+                                </p>
+                            </div>
+                            <div class="flex flex-col items-center text-center">
+                                <span class="text-8xl md:text-9xl font-bold" style="color: #d7263d;">۱۷</span>
+                                <span class="text-xl font-semibold text-gray-700 mt-2">خطای شناختی رایج</span>
+                            </div>
+                        </section>
+
+                        <!-- Content omitted for brevity... -->
+                        <section class="mb-12">
+                            <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+                                <span class="text-3xl mr-3">🔍</span>
+                                گروه ۱: خطاهای ادراکی (فیلتر کردن)
+                            </h2>
+                            <p class="mb-6 text-gray-600">این خطاها نحوه درک ما از واقعیت را با فیلتر کردن اطلاعات مثبت یا تمرکز بیش از حد بر اطلاعات منفی تغییر می‌دهند.</p>
+                        </section>
+
+                        <section class="mb-12">
+                            <h2 class="text-3xl font-bold text-center mb-4" style="color: #2e294e;">دسته بندی خطاهای شناختی</h2>
+                            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-8">
+                                ۱۷ خطای شناختی بر اساس کارکرد مشترک آن‌ها در ۶ گروه اصلی دسته‌بندی شده‌اند. لیست زیر، تعداد خطاها در هر گروه را مشخص می‌کند:
+                            </p>
+                            <div class="bg-white rounded-lg shadow-xl p-6 max-w-xl mx-auto border-4" style="border-color: #2e294e;">
+                                <ul class="space-y-4 text-lg">
+                                    <li class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                        <span class="font-semibold" style="color: #f46036;">گروه ۲: خطاهای قضاوت (پرش به نتیجه)</span>
+                                        <span class="font-bold text-2xl" style="color: #d7263d;">۴ خطا</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                        <span class="font-semibold" style="color: #d7263d;">گروه ۱: خطاهای ادراکی (فیلتر کردن)</span>
+                                        <span class="font-bold text-2xl" style="color: #f46036;">۳ خطا</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                        <span class="font-semibold" style="color: #2e294e;">گروه ۳: خطاهای بزرگی (اغراق)</span>
+                                        <span class="font-bold text-2xl" style="color: #f46036;">۳ خطا</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                        <span class="font-semibold" style="color: #c5d86d;">گروه ۵: خطاهای زمان و حسرت</span>
+                                        <span class="font-bold text-2xl" style="color: #f46036;">۳ خطا</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                        <span class="font-semibold" style="color: #1b998b;">گروه ۴: خطاهای مسئولیت (سرزنش)</span>
+                                        <span class="font-bold text-2xl" style="color: #f46036;">۲ خطا</span>
+                                    </li>
+                                    <li class="flex justify-between items-center">
+                                        <span class="font-semibold" style="color: #618dbe;">گروه ۶: خطاهای مقایسه</span>
+                                        <span class="font-bold text-2xl" style="color: #f46036;">۲ خطا</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <section class="mb-12">
+                            <!-- FIX: Changed from ml-3 to mr-3 for RTL -->
+                            <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+                                <span class="text-3xl mr-3">🔍</span>
+                                گروه ۱: خطاهای ادراکی (فیلتر کردن)
+                            </h2>
+                            <p class="mb-6 text-gray-600">این خطاها نحوه درک ما از واقعیت را با فیلتر کردن اطلاعات مثبت یا تمرکز بیش از حد بر اطلاعات منفی تغییر می‌دهند.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۵. نادیده‌گرفتن جنبه‌های مثبت</h3>
+                                    <p>کوچک شمردن توانایی‌ها، موفقیت‌ها یا خوبی‌هایی که وجود دارند.</p>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۶. فیلتر منفی</h3>
+                                    <p>دیدن فقط نیمهٔ خالی لیوان و نادیده گرفتن نکات مثبت.</p>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۸. تفکر دو قطبی</h3>
+                                    <p>دیدن دنیا به صورت صفر و صد، سیاه یا سفید.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="mb-12">
+                            <!-- FIX: Changed from ml-3 to mr-3 for RTL -->
+                            <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+                                <span class="text-3xl mr-3">⚖️</span>
+                                گروه ۲: خطاهای قضاوت (پرش به نتیجه)
+                            </h2>
+                            <p class="mb-6 text-gray-600">این خطاها زمانی رخ می‌دهند که ما بدون شواهد کافی، به نتایج منفی می‌رسیم؛ چه در مورد افکار دیگران و چه در مورد احساسات خودمان.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱. ذهن‌خوانی</h3>
+                                    <p>فرض کردن اینکه می‌دانیم دیگران دربارهٔ ما چه فکر می‌کنند.</p>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۲. پیش‌گویی</h3>
+                                    <p>پیش‌بینی آینده بدون داشتن شواهد کافی.</p>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱۵. استدلال هیجانی</h3>
+                                    <p>ساختن یک باور فقط بر پایهٔ احساسات، نه شواهد.</p>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱۶. ناتوانی در پذیرش شواهد مثبت</h3>
+                                    <p>داشتن یک فکر منفی و رد کردن هر دلیلی که خلاف آن را نشان می‌دهد.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="mb-12">
+                            <!-- FIX: Changed from ml-3 to mr-3 for RTL -->
+                            <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+                                <span class="text-3xl mr-3">⛰️</span>
+                                گروه ۳: خطاهای بزرگی (اغراق و برچسب)
+                            </h2>
+                            <p class="mb-6 text-gray-600">این خطاها شامل بزرگ‌نمایی جنبه‌های منفی، تعمیم دادن یک اتفاق کوچک به کل زندگی، یا زدن برچسب‌های کلی و ناعادلانه است.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۳. فاجعه‌سازی</h3>
+                                    <p>بزرگ‌نمایی منفی رویدادها؛ از کاه کوه ساختن.</p>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۴. برچسب‌زنی</h3>
+                                    <p>دادن یک لیبل کلی به خود یا دیگران (مثلاً: «من بی‌عرضه‌ام»).</p>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۷. تعمیم افراطی</h3>
+                                    <p>وقوع یک اتفاق را به همهٔ زمان‌ها تعمیم دادن (مثل: «من همیشه بدشانسم»).</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="mb-12">
+                            <!-- FIX: Changed from ml-3 to mr-3 for RTL -->
+                            <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+                                <span class="text-3xl mr-3">👤</span>
+                                گروه ۴: خطاهای مسئولیت (سرزنش)
+                            </h2>
+                            <p class="mb-6 text-gray-600">این خطاها به نحوه تقسیم ناعادلانه مسئولیت مربوط می‌شوند؛ یا همه تقصیرها را به گردن خود می‌اندازیم یا همه را مقصر می‌دانیم.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱۰. شخصی‌سازی</h3>
+                                    <p>تقصیر همه چیز را به گردن خود انداختن.</p>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱۱. مقصر دانستن دیگران</h3>
+                                    <p>تمام مسئولیت‌ها را فقط به گردن دیگران انداختن.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="mb-12">
+                            <!-- FIX: Changed from ml-3 to mr-3 for RTL -->
+                            <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+                                <span class="text-3xl mr-3">⏳</span>
+                                گروه ۵: خطاهای زمان و حسرت
+                            </h2>
+                            <p class="mb-6 text-gray-600">این گروه از خطاها بر ماندن در گذشته (حسرت و ای کاش) یا نگرانی بیش از حد در مورد آینده (نکندها و بایدها) تمرکز دارند.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۹. بایدها</h3>
+                                    <p>«بایدهای گذشته» احساس حسرت و «بایدهای آینده» اضطراب ایجاد می‌کنند.</p>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱۳. همیشه پشیمان بودن</h3>
+                                    <p>غرق شدن در «کاش...»های گذشته و هدر دادن انرژی و زمان حال.</p>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱۴. نکنه‌ها</h3>
+                                    <p>افکاری پر از نگرانی بی‌پاسخ؛ مثل: «نکنه حالم بد بشه؟»</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="mb-12">
+                            <!-- FIX: Changed from ml-3 to mr-3 for RTL -->
+                            <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+                                <span class="text-3xl mr-3">🆚</span>
+                                گروه ۶: خطاهای مقایسه
+                            </h2>
+                            <p class="mb-6 text-gray-600">این خطاها از مقایسه ناعادلانه خود با دیگران یا قضاوت‌های متغیر و سلیقه‌ای ناشی می‌شوند.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱۲. مقایسهٔ ناعادلانه</h3>
+                                    <p>مقایسهٔ خود با افرادی که شرایط یا امکانات متفاوتی دارند.</p>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h3 class="font-bold text-lg mb-2" style="color: #f46036;">۱۷. برخورد قضاوتی</h3>
+                                    <p>قضاوت سلیقه‌ای و متغیر نسبت به شرایط مشابه.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="mb-12">
+                            <h2 class="text-3xl font-bold text-center mb-6" style="color: #2e294e;">نکات کلیدی</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white rounded-lg shadow-md p-6 border-r-4" style="border-color: #1b998b;">
+                                    <h3 class="font-bold text-lg mb-2">مقایسه عادلانه</h3>
+                                    <p class="text-gray-600">تنها مقایسه عادلانه‌ای که مجاز به انجام آن هستیم، مقایسه امروز خودمان با گذشته خودمان است.</p>
+                                </div>
+                                <div class="bg-white rounded-lg shadow-md p-6 border-r-4" style="border-color: #1b998b;">
+                                    <h3 class="font-bold text-lg mb-2">آگاهی، قدم اول</h3>
+                                    <p class="text-gray-600">شناخت و آگاهی از این خطاها، اولین و مهم‌ترین قدم برای به چالش کشیدن و مدیریت آن‌هاست.</p>
+                                </div>
+                            </div>
+                        </section>
+                         
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="flex items-center justify-center gap-x-4 pt-8 border-t mt-12">
+                            <button id="back-to-log-btn" class="px-8 py-3 rounded-lg font-semibold bg-gray-200 hover:bg-gray-300 transition-all w-full md:w-auto">بازگشت به گام ۳</button>
+                            <button id="go-to-challenge-btn" class="px-8 py-3 rounded-lg font-semibold bg-green-600 text-white shadow-md hover:bg-green-700 transition-all w-full md:w-auto">
+                                ادامه به گام ۵: چالش افکار
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const renderIdentifyThoughtsPage = () => {
+                const pageContainer = document.getElementById('page-content-container');
+                if (!pageContainer) return;
+                
+                pageContainer.innerHTML = htmlTemplates_IdentifyThoughts;
+                
+                document.getElementById('go-to-challenge-btn').addEventListener('click', () => {
+                    // NEW: Unlock and navigate
+                    unlockStep('thoughtChallenge');
+                    currentStepId = 'thoughtChallenge';
+                    mainRouter();
+                });
+                
+                document.getElementById('back-to-log-btn').addEventListener('click', () => {
+                    currentStepId = 'thoughtLog';
+                    mainRouter();
+                });
+            };
+            
+
+            // --- SECTION 8: MODULE: THOUGHT CHALLENGE (Step 5) ---
+            
+            // NEW: This page is now dynamic. It finds the entry to challenge.
+            const renderThoughtChallengePage = () => {
+                const pageContainer = document.getElementById('page-content-container');
+                if (!pageContainer) return;
+
+                // NEW: Find the first incomplete entry
+                const entryToChallenge = thoughtLog.find(e => !e.negativeThoughts.every(t => t.alternativeThought && t.conclusion));
+                currentEntryId = entryToChallenge ? entryToChallenge.id : null; // Set for save function
+
+                let pageHtml;
+
+                if (!entryToChallenge) {
+                    // All entries are complete!
+                    pageHtml = `
+                    <div class="bg-white p-8 rounded-2xl shadow-xl text-center">
+                        <h1 class="text-3xl font-extrabold text-green-600 mb-6">تبریک!</h1>
+                        <p class="text-lg text-gray-700 mb-8">
+                            شما تمام یادداشت‌های ثبت شده‌ی خود را با موفقیت به چالش کشیده‌اید.
+                        </p>
+                        <p class="text-gray-600">
+                            برای ادامه، می‌توانید به گام ۳ برگردید و یادداشت جدیدی ثبت کنید.
+                        </p>
+                        <div class="mt-8 pt-6 border-t">
+                             <button id="back-to-log-button" class="px-8 py-3 rounded-lg font-semibold bg-blue-600 text-white shadow-md hover:bg-blue-700 transition-all w-full md:w-auto">
+                                بازگشت به گام ۳: ثبت افکار
+                             </button>
+                        </div>
+                    </div>
+                    `;
+                } else {
+                    // Found an entry to challenge
+                    const challengeHtml = entryToChallenge.negativeThoughts
+                        .filter(thought => !thought.alternativeThought || !thought.conclusion) // Only show incomplete thoughts
+                        .map((thought, index) => `
+                        <div class="bg-white p-6 rounded-xl shadow-md border space-y-6">
+                            <div>
+                                <p class="text-sm font-semibold text-gray-500">۳. فکر منفی خودکار (امتیاز: ${thought.score}/10)</p>
+                                <p class="p-3 bg-red-50 border-r-4 border-red-400 rounded-md mt-1 text-gray-800 break-words">${thought.description}</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <h3 class="font-bold text-lg text-gray-700 mb-4">بررسی شواهد (کمک به یافتن فکر جایگزین)</h3>
+                                <div class="space-y-4 text-sm">
+                                    <div class="space-y-1">
+                                        <label for="challenge-distortion-${index}" class="font-semibold text-gray-600">آیا این فکر یک خطای شناختی است یا یک واقعیت؟</label>
+                                        <textarea id="challenge-distortion-${index}" data-thought-id="${thought.id}" rows="2" class="challenge-input w-full p-2 border rounded-lg mt-1">${thought.challenge_distortion || ''}</textarea>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label for="challenge-experience-${index}" class="font-semibold text-gray-600">آیا قبلا در این موقعیت بوده‌ام؟ چگونه آن را مدیریت کردم؟</label>
+                                        <textarea id="challenge-experience-${index}" data-thought-id="${thought.id}" rows="2" class="challenge-input w-full p-2 border rounded-lg mt-1">${thought.challenge_experience || ''}</textarea>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label for="challenge-others-${index}" class="font-semibold text-gray-600">دیگران در این موقعیت چه کار خواهند کرد؟</label>
+                                        <textarea id="challenge-others-${index}" data-thought-id="${thought.id}" rows="2" class="challenge-input w-full p-2 border rounded-lg mt-1">${thought.challenge_others || ''}</textarea>
+                                    </div>
+                                     <div class="space-y-1">
+                                        <label for="challenge-another-way-${index}" class="font-semibold text-gray-600">چه شکل دیگری می‌توان به این موقعیت فکر کرد؟</label>
+                                        <textarea id="challenge-another-way-${index}" data-thought-id="${thought.id}" rows="2" class="challenge-input w-full p-2 border rounded-lg mt-1">${thought.challenge_anotherWay || ''}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4 space-y-2">
+                                 <label for="alternative-thought-${index}" class="block font-bold text-lg text-gray-700">۴. افکار جایگزین</label>
+                                 <textarea id="alternative-thought-${index}" data-thought-id="${thought.id}" rows="3" class="challenge-input w-full p-2 border-2 border-green-200 rounded-lg focus:ring-green-500 focus:border-green-500">${thought.alternativeThought || ''}</textarea>
+                            </div>
+                            <div class="space-y-2">
+                                <label for="conclusion-${index}" class="block font-bold text-lg text-gray-700">۵. نتیجه گیری</label>
+                                 <textarea id="conclusion-${index}" data-thought-id="${thought.id}" rows="3" class="challenge-input w-full p-2 border-2 border-blue-200 rounded-lg focus:ring-blue-500 focus:border-blue-500">${thought.conclusion || ''}</textarea>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    pageHtml = `
+                    <div class="space-y-6">
+                        <h1 class="text-3xl font-extrabold text-blue-800 mb-2">گام ۵: چالش و جایگزینی افکار</h1>
+                        <p class="text-lg text-gray-600 mb-6">در ادامه، اولین یادداشت تکمیل‌نشده‌ی شما نمایش داده شده است. افکار منفی آن را به چالش بکشید.</p>
+                        
+                        <div class="bg-white p-6 rounded-xl shadow-md border">
+                            <p class="text-sm font-semibold text-gray-500">۱. موقعیت</p>
+                            <p class="mt-1 text-gray-800 break-words">${entryToChallenge.situation}</p> 
+                            <hr class="my-4">
+                            <p class="text-sm font-semibold text-gray-500">۲. احساسات</p>
+                            <p class="mt-1 text-gray-800">${entryToChallenge.feelings.map(f => `${f.name}: ${f.score}/10`).join(' - ')}</p>
+                        </div>
+                        
+                        <div id="challenge-items-container" class="space-y-6">${challengeHtml}</div>
+                        
+                        <div class="flex items-center justify-center gap-x-4 pt-8 border-t mt-8">
+                            <button id="back-to-log-button" class="px-8 py-3 rounded-lg font-semibold bg-gray-200 hover:bg-gray-300 transition-all w-full md:w-auto">بازگشت به گام ۳</button>
+                            <button id="save-challenge-button" class="px-8 py-3 rounded-lg font-semibold bg-green-500 text-white shadow-md hover:bg-green-600 transition-all w-full md:w-auto">ذخیره و ادامه</button>
+                       </div>
+                    </div>
+                    `;
+                }
+
+                pageContainer.innerHTML = pageHtml;
+                attachThoughtChallengeListeners();
+            };
+            
+            const handleUpdateChallenge = () => {
+                if (currentEntryId === null) return; // No entry to save
+
+                const entryIndex = thoughtLog.findIndex(e => e.id === currentEntryId);
+                if (entryIndex === -1) return;
+
+                // Find all inputs and textareas related to the challenge
+                document.querySelectorAll('.challenge-input').forEach(input => {
+                    const thoughtId = parseFloat(input.dataset.thoughtId);
+                    const thoughtIndex = thoughtLog[entryIndex].negativeThoughts.findIndex(t => t.id === thoughtId);
+                    if (thoughtIndex === -1) return;
+                    
+                    // Determine which field to save to
+                    if (input.id.startsWith('challenge-distortion-')) thoughtLog[entryIndex].negativeThoughts[thoughtIndex].challenge_distortion = input.value;
+                    else if (input.id.startsWith('challenge-experience-')) thoughtLog[entryIndex].negativeThoughts[thoughtIndex].challenge_experience = input.value;
+                    else if (input.id.startsWith('challenge-others-')) thoughtLog[entryIndex].negativeThoughts[thoughtIndex].challenge_others = input.value;
+                    else if (input.id.startsWith('challenge-another-way-')) thoughtLog[entryIndex].negativeThoughts[thoughtIndex].challenge_anotherWay = input.value;
+                    else if (input.id.startsWith('alternative-thought-')) thoughtLog[entryIndex].negativeThoughts[thoughtIndex].alternativeThought = input.value;
+                    else if (input.id.startsWith('conclusion-')) thoughtLog[entryIndex].negativeThoughts[thoughtIndex].conclusion = input.value;
+                });
+
+                saveUserData();
+                showMessage("مرحله با موفقیت تکمیل و ذخیره شد.");
+                
+                // NEW: Re-render the same page. It will automatically find the *next* incomplete entry or show "Congrats".
+                renderThoughtChallengePage();
+            };
+            
+            const attachThoughtChallengeListeners = () => {
+                const backBtn = document.getElementById('back-to-log-button');
+                if (backBtn) {
+                    backBtn.addEventListener('click', () => {
+                        currentStepId = 'thoughtLog';
+                        mainRouter();
+                    });
+                }
+                
+                const saveBtn = document.getElementById('save-challenge-button');
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', handleUpdateChallenge);
+                }
+            };
+
+            // --- SECTION 9: MODULE: EDIT MODAL (Shared) ---
+            
+            const htmlTemplates_EditModal = `
+                <div class="modal-overlay fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+                    <div class="modal-container bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 transform scale-95 transition-all duration-300">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">ویرایش یادداشت</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="font-semibold" for="edit-situation">موقعیت</label>
+                                <textarea id="edit-situation" rows="3" class="w-full p-2 border rounded-lg mt-1"></textarea>
+                            </div>
+                            <div>
+                                <label class="font-semibold">احساسات</label>
+                                <div class="grid grid-cols-3 gap-4 mt-1">
+                                    <div class="text-center"><label for="edit-feeling-sad">غم</label><input type="number" id="edit-feeling-sad" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
+                                    <div class="text-center"><label for="edit-feeling-happy">شادی</label><input type="number" id="edit-feeling-happy" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
+                                    <div class="text-center"><label for="edit-feeling-anxious">اضطراب</label><input type="number" id="edit-feeling-anxious" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="font-semibold">افکار منفی خودکار</label>
+                                <div id="edit-thoughts-container"></div>
+                                <button id="add-edit-thought-button" class="mt-4 text-sm text-blue-600 font-semibold hover:text-blue-800">+ افزودن فکر دیگر</button>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-4 border-t pt-6 mt-6">
+                            <button id="cancel-edit" class="px-6 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all">انصراف</button>
+                            <button id="save-update" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all">ذخیره تغییرات</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const openEditModal = (id) => {
+                 const entry = thoughtLog.find(e => e.id === id);
+                if (!entry) return;
+                
+                const thoughtsHtml = entry.negativeThoughts.map(thought => `
+                    <div class="edit-thought-group border-t pt-4 mt-4 space-y-2 relative" data-thought-id="${thought.id}">
+                        <textarea class="w-full p-2 border rounded-lg">${thought.description}</textarea>
+                        <input type="number" min="0" max="10" value="${thought.score}" class="w-full p-2 border text-center rounded-lg number-input">
+                        <button class="remove-thought-btn absolute -top-2 right-0 text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center text-2xl font-bold">&times;</button>
+                    </div>`).join('');
+                
+                editModalContainer.innerHTML = htmlTemplates_EditModal;
+                
+                document.getElementById('edit-situation').value = entry.situation;
+                document.getElementById('edit-feeling-sad').value = entry.feelings.find(f=>f.name==='غم')?.score || 0;
+                document.getElementById('edit-feeling-happy').value = entry.feelings.find(f=>f.name==='شادی')?.score || 0;
+                document.getElementById('edit-feeling-anxious').value = entry.feelings.find(f=>f.name==='اضطراب')?.score || 0;
+                document.getElementById('edit-thoughts-container').innerHTML = thoughtsHtml;
+
+                editModalContainer.classList.remove('hidden');
+                setTimeout(() => { 
+                    editModalContainer.querySelector('.modal-overlay').classList.add('opacity-100');
+                    editModalContainer.querySelector('.modal-container').classList.add('scale-100');
+                }, 10);
+                
+                document.getElementById('save-update').addEventListener('click', () => handleUpdateThought(id));
+                document.getElementById('cancel-edit').addEventListener('click', closeEditModal);
+                editModalContainer.querySelector('.modal-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeEditModal() });
+                
+                document.getElementById('add-edit-thought-button').addEventListener('click', () => {
+                    const container = document.getElementById('edit-thoughts-container');
+                    const newThoughtGroup = document.createElement('div');
+                    newThoughtGroup.className = 'edit-thought-group border-t pt-4 mt-4 space-y-2 relative';
+                    newThoughtGroup.innerHTML = `
+                        <textarea class="w-full p-2 border rounded-lg" placeholder="فکر خود را بنویسید..."></textarea>
+                        <input type="number" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input" placeholder="شدت فکر (۰-۱۰)">
+                        <button class="remove-thought-btn absolute -top-2 right-0 text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center text-2xl font-bold">&times;</button>
+                    `;
+                    container.appendChild(newThoughtGroup);
+                    newThoughtGroup.querySelector('.remove-thought-btn').addEventListener('click', () => newThoughtGroup.remove());
+                });
+                
+                editModalContainer.querySelectorAll('.remove-thought-btn').forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.parentElement.remove()));
+            };
+
+            const closeEditModal = () => {
+                const overlay = editModalContainer.querySelector('.modal-overlay');
+                if (overlay) {
+                    overlay.classList.remove('opacity-100');
+                    overlay.querySelector('.modal-container').classList.remove('scale-100');
+                    setTimeout(() => { 
+                        editModalContainer.classList.add('hidden');
+                        editModalContainer.innerHTML = '';
+                    }, 300);
+                }
+            };
+            
+            const handleUpdateThought = (id) => {
+                const situation = document.getElementById('edit-situation').value;
+                const thoughtNodes = document.querySelectorAll('.edit-thought-group');
+                const newNegativeThoughts = [];
+
+                const entryIndex = thoughtLog.findIndex(e => e.id === id);
+                if (entryIndex === -1) return; 
+                const originalThoughts = thoughtLog[entryIndex].negativeThoughts;
+
+                thoughtNodes.forEach(node => {
+                    const description = node.querySelector('textarea').value;
+                    const score = node.querySelector('input[type="number"]').value;
+                    const thoughtId = node.dataset.thoughtId; 
+                    
+                    if (!description || !score) return; 
+                    
+                    if (thoughtId && thoughtId !== "undefined") {
+                        const originalThought = originalThoughts.find(t => t.id == thoughtId);
+                        if (originalThought) {
+                            newNegativeThoughts.push({
+                                ...originalThought,
+                                description: description,
+                                score: parseInt(score)
+                            });
+                        }
+                    } else {
+                        newNegativeThoughts.push({
+                            id: Date.now() + Math.random(),
+                            description,
+                            score: parseInt(score),
+                            challenge_distortion: '', challenge_experience: '', challenge_others: '', challenge_anotherWay: '',
+                            alternativeThought: '', conclusion: ''
+                        });
+                    }
+                });
+
+                if (!situation || newNegativeThoughts.length === 0) {
+                    showMessage("موقعیت و حداقل یک فکر منفی نمی‌توانند خالی باشند.", true);
+                    return;
+                }
+
+                thoughtLog[entryIndex].situation = situation;
+                thoughtLog[entryIndex].negativeThoughts = newNegativeThoughts; 
+                thoughtLog[entryIndex].feelings = [
+                    { name: 'غم', score: parseInt(document.getElementById('edit-feeling-sad').value) || 0 },
+                    { name: 'شادی', score: parseInt(document.getElementById('edit-feeling-happy').value) || 0 },
+                    { name: 'اضطراب', score: parseInt(document.getElementById('edit-feeling-anxious').value) || 0 }
+                ];
+                
+                saveUserData();
+                closeEditModal();
+                renderThoughtLogPage();
+                showMessage("یادداشت به‌روزرسانی شد.");
+            };
+            
+
+            // --- SECTION 10: APP DEFINITION & ROUTER ---
+            
+            // NEW: This is now the single source of truth for the user journey
+            const journeySteps = [
+                {
+                    id: 'screening',
+                    title: 'گام ۱: تست غربالگری',
+                    icon: icons.screening,
+                    renderFunction: renderScreeningPage,
+                },
+                {
+                    id: 'pathIntro',
+                    title: 'گام ۲: راهنمای مطالعه',
+                    icon: icons.intro,
+                    renderFunction: renderPathIntroPage,
+                },
+                {
+                    id: 'thoughtLog',
+                    title: 'گام ۳: ثبت افکار',
+                    icon: icons.log,
+                    renderFunction: renderThoughtLogPage,
+                },
+                {
+                    id: 'identifyThoughts',
+                    title: 'گام ۴: شناخت خطاها',
+                    icon: icons.identify,
+                    renderFunction: renderIdentifyThoughtsPage,
+                },
+                {
+                    id: 'thoughtChallenge',
+                    title: 'گام ۵: چالش افکار',
+                    icon: icons.challenge,
+                    renderFunction: renderThoughtChallengePage,
+                }
+            ];
+            
+            const mainRouter = () => {
+                // 1. Load/Refresh State for globals: currentUser, unlockedSteps, etc.
+                loadUserData(); 
+
+                if (!currentUser) {
+                    // 2. Not logged in: Render Auth Form directly into appContainer
+                    appContainer.innerHTML = htmlTemplates_Auth;
+                    renderAuthForm(); 
+                    return;
+                }
+                
+                // 3. Logged in: Render main application shell
+                // Ensure layout is rendered
+                if (!document.getElementById('sidebar')) {
+                    renderAppLayout();
+                }
+
+                // 4. Render the sidebar navigation
+                renderSidebarNav(); 
+
+                // 5. Find and render the current page
+                const step = journeySteps.find(s => s.id === currentStepId);
+                
+                if (step && unlockedSteps.includes(step.id)) {
+                    step.renderFunction(); 
+                } else {
+                    // Fallback: Go to first unlocked step
+                    currentStepId = unlockedSteps[0] || 'screening';
+                    journeySteps.find(s => s.id === currentStepId).renderFunction(); 
+                }
+                
+                saveUserData();
+            };
+            
+            // --- Initial Load ---
+            mainRouter();
+        });
+    </script>
+
+    <!-- 4. FOOTER -->
+    <footer class="w-full bg-white text-gray-500 text-center py-3 border-t border-gray-200 text-xs flex-shrink-0">
+        <p>Adel Marzban = code engineering | Hamid Shamseh = psychological methods</p>
+        <p class="mt-1">adelmarzban.github.io | powered with google gemini</p>
+    </footer>
+
+</body>
+</html>
