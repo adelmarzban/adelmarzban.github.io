@@ -644,7 +644,7 @@
                             <div class="flex flex-col space-y-2"><label for="thought-situation" class="font-semibold">۱. موقعیت</label><textarea id="thought-situation" rows="4" class="w-full p-3 border rounded-xl"></textarea></div>
                             <div class="flex flex-col space-y-2"><label class="font-semibold">۲. احساسات (۰-۱۰)</label><div class="space-y-3 pt-2">
                                 <div class="flex items-center justify-between"><label>غم</label><input type="number" id="feeling-sad" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input"></div>
-                                <div class="flex items-center justify-between"><label>شادی</label><input type="number" id="feeling-happy" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input"></div>
+                                <div class="flex items-center justify-between"><label>خشم</label><input type="number" id="feeling-happy" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input"></div>
                                 <div class="flex items-center justify-between"><label>اضطراب</label><input type="number" id="feeling-anxious" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input"></div>
                             </div></div>
                             <div class="flex flex-col space-y-2"><label class="font-semibold">۳. افکار منفی خودکار</label>
@@ -741,7 +741,7 @@
                     id: Date.now(), situation, negativeThoughts,
                     feelings: [
                         { name: 'غم', score: parseInt(document.getElementById('feeling-sad').value) || 0 },
-                        { name: 'شادی', score: parseInt(document.getElementById('feeling-happy').value) || 0 },
+                        { name: 'خشم', score: parseInt(document.getElementById('feeling-happy').value) || 0 },
                         { name: 'اضطراب', score: parseInt(document.getElementById('feeling-anxious').value) || 0 }
                     ]
                 };
@@ -1258,7 +1258,7 @@
                                 <label class="font-semibold">احساسات</label>
                                 <div class="grid grid-cols-3 gap-4 mt-1">
                                     <div class="text-center"><label for="edit-feeling-sad">غم</label><input type="number" id="edit-feeling-sad" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
-                                    <div class="text-center"><label for="edit-feeling-happy">شادی</label><input type="number" id="edit-feeling-happy" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
+                                    <div class="text-center"><label for="edit-feeling-happy">خشم</label><input type="number" id="edit-feeling-happy" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
                                     <div class="text-center"><label for="edit-feeling-anxious">اضطراب</label><input type="number" id="edit-feeling-anxious" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
                                 </div>
                             </div>
@@ -1291,7 +1291,7 @@
                 
                 document.getElementById('edit-situation').value = entry.situation;
                 document.getElementById('edit-feeling-sad').value = entry.feelings.find(f=>f.name==='غم')?.score || 0;
-                document.getElementById('edit-feeling-happy').value = entry.feelings.find(f=>f.name==='شادی')?.score || 0;
+                document.getElementById('edit-feeling-happy').value = entry.feelings.find(f=>f.name==='خشم')?.score || 0;
                 document.getElementById('edit-feeling-anxious').value = entry.feelings.find(f=>f.name==='اضطراب')?.score || 0;
                 document.getElementById('edit-thoughts-container').innerHTML = thoughtsHtml;
 
@@ -1378,7 +1378,7 @@
                 thoughtLog[entryIndex].negativeThoughts = newNegativeThoughts; 
                 thoughtLog[entryIndex].feelings = [
                     { name: 'غم', score: parseInt(document.getElementById('edit-feeling-sad').value) || 0 },
-                    { name: 'شادی', score: parseInt(document.getElementById('edit-feeling-happy').value) || 0 },
+                    { name: 'خشم', score: parseInt(document.getElementById('edit-feeling-happy').value) || 0 },
                     { name: 'اضطراب', score: parseInt(document.getElementById('edit-feeling-anxious').value) || 0 }
                 ];
                 
