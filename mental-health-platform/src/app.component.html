@@ -1,0 +1,82 @@
+
+<div class="flex flex-col min-h-screen">
+  <div class="flex-grow w-full">
+    @if (isLoggedIn()) {
+      <div class="flex w-full h-full">
+        <!-- Sidebar (Right) -->
+        <aside 
+          class="w-64 bg-white shadow-lg p-6 flex flex-col flex-shrink-0 fixed md:relative h-full transform md:translate-x-0 transition-transform duration-300 ease-in-out z-30 right-0 top-0"
+          [class.translate-x-full]="!isSidebarOpen()">
+          <div class="flex items-center justify-between mb-10">
+            <h2 class="text-2xl font-extrabold text-blue-800 text-center">پلتفرم سلامت</h2>
+            <button (click)="closeSidebar()" class="md:hidden p-1 text-gray-600 hover:text-black">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+          
+          <nav class="flex flex-col gap-y-2">
+            @for (step of journeySteps; track step.id) {
+              @let isUnlocked = unlockedSteps().includes(step.id);
+              @let isActive = step.id === currentStepId();
+              @let isCompleted = isUnlocked && !isActive && unlockedSteps().indexOf(step.id) < unlockedSteps().indexOf(currentStepId());
+
+              <a 
+                [routerLink]="isUnlocked ? ['/' + step.id] : []"
+                class="flex items-center w-full p-3 rounded-lg font-semibold transition-all text-right"
+                [class.bg-blue-100]="isActive"
+                [class.text-blue-700]="isActive"
+                [class.text-gray-700]="!isActive && isUnlocked"
+                [class.hover:bg-gray-100]="!isActive && isUnlocked"
+                [class.text-gray-400]="!isUnlocked"
+                [class.opacity-70]="!isUnlocked"
+                [class.pointer-events-none]="!isUnlocked">
+                
+                @if (isActive) {
+                  <span [innerHTML]="step.icon"></span>
+                } @else if (isCompleted) {
+                  <span [innerHTML]="ICONS.completed"></span>
+                } @else if (isUnlocked) {
+                  <span [innerHTML]="step.icon"></span>
+                } @else {
+                  <span [innerHTML]="ICONS.locked"></span>
+                }
+                <span class="flex-1">{{ step.title }}</span>
+              </a>
+            }
+          </nav>
+
+          <div class="mt-auto pt-6 border-t border-gray-200">
+            <p class="text-sm text-gray-500 mb-3 text-center truncate">{{ userEmail() }}</p>
+            <button (click)="logout()" class="w-full px-4 py-2 bg-red-500 text-white rounded-lg shadow-sm hover:bg-red-600 text-sm font-semibold transition-all">
+              خروج از حساب
+            </button>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 w-full main-content md:mr-64 overflow-y-auto">
+          <div class="bg-white shadow-md p-4 flex items-center justify-between md:hidden sticky top-0 z-10">
+            <button (click)="openSidebar()" class="p-2 text-gray-700">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <h3 class="font-bold text-lg text-blue-800">{{ currentStep()?.title }}</h3>
+          </div>
+          <div class="p-4 md:p-8 max-w-7xl mx-auto">
+            <router-outlet></router-outlet>
+          </div>
+        </main>
+        
+        <div (click)="closeSidebar()" class="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden" [class.hidden]="!isSidebarOpen()"></div>
+      </div>
+    } @else {
+      <router-outlet></router-outlet>
+    }
+  </div>
+
+  <footer class="w-full bg-white text-gray-500 text-center py-3 border-t border-gray-200 text-xs flex-shrink-0">
+    <p>Adel Marzban = code engineering | Hamid Shamseh = psychological methods</p>
+    <p class="mt-1">adelmarzban.github.io | powered with google gemini</p>
+  </footer>
+
+  <app-notification></app-notification>
+</div>

@@ -1,0 +1,47 @@
+
+<div class="container mx-auto max-w-6xl">
+  <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl">
+      <header class="text-center mb-10 border-b pb-8">
+          <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color: #2e294e;">گام ۴: خطاهای شناختی چیست؟</h1>
+      </header>
+
+      <section class="bg-gray-50 rounded-lg p-6 mb-12 flex flex-col md:flex-row items-center justify-between">
+          <div class="md:w-2/3 mb-6 md:mb-0 md:mr-8">
+              <p class="text-lg mb-4">
+                  خطاهای شناختی، الگوهای فکری هستند که پشتوانهٔ منطقی و شواهد کافی ندارند. به همین دلیل به آن‌ها «خطای فکری» گفته می‌شود.
+              </p>
+              <p class="text-gray-600">
+                  همهٔ انسان‌ها این خطاها را تجربه می‌کنند، اما در افرادی با عزت‌نفس پایین، افسردگی یا اضطراب شایع‌تر هستند. شناخت این خطاها اولین قدم برای مدیریت آن‌هاست.
+              </p>
+          </div>
+          <div class="flex flex-col items-center text-center">
+              <span class="text-8xl md:text-9xl font-bold" style="color: #d7263d;">۱۷</span>
+              <span class="text-xl font-semibold text-gray-700 mt-2">خطای شناختی رایج</span>
+          </div>
+      </section>
+
+      <!-- Groups -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+            <span class="text-3xl ml-3">🔍</span>
+            گروه ۱: خطاهای ادراکی (فیلتر کردن)
+        </h2>
+        <p class="mb-6 text-gray-600">این خطاها نحوه درک ما از واقعیت را با فیلتر کردن اطلاعات مثبت یا تمرکز بیش از حد بر اطلاعات منفی تغییر می‌دهند.</p>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-4 mt-8 flex items-center" style="color: #d7263d;">
+            <span class="text-3xl ml-3">⚖️</span>
+            گروه ۲: خطاهای قضاوت (پرش به نتیجه)
+        </h2>
+        <p class="mb-6 text-gray-600">این خطاها زمانی رخ می‌دهند که ما بدون شواهد کافی، به نتایج منفی می‌رسیم؛ چه در مورد افکار دیگران و چه در مورد احساسات خودمان.</p>
+      </section>
+      
+      <div class="flex items-center justify-center gap-x-4 pt-8 border-t mt-12">
+          <button (click)="goToPreviousStep()" class="px-8 py-3 rounded-lg font-semibold bg-gray-200 hover:bg-gray-300 transition-all w-full md:w-auto">بازگشت به گام ۳</button>
+          <button (click)="goToNextStep()" class="px-8 py-3 rounded-lg font-semibold bg-green-600 text-white shadow-md hover:bg-green-700 transition-all w-full md:w-auto">
+              ادامه به گام ۵: چالش افکار
+          </button>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,146 @@
+
+<div class="space-y-8">
+  <!-- New Thought Form -->
+  <div class="bg-white p-8 rounded-2xl shadow-xl border">
+    <h1 class="text-3xl font-extrabold text-blue-800 mb-6">گام ۳: ثبت افکار (جدول ۳ ستونی)</h1>
+    <form [formGroup]="newThoughtForm" (ngSubmit)="saveNewThought()" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="flex flex-col space-y-2">
+        <label for="thought-situation" class="font-semibold">۱. موقعیت</label>
+        <textarea id="thought-situation" formControlName="situation" rows="4" class="w-full p-3 border rounded-xl"></textarea>
+      </div>
+      
+      <div formGroupName="feelings" class="flex flex-col space-y-2">
+        <label class="font-semibold">۲. احساسات (۰-۱۰)</label>
+        <div class="space-y-3 pt-2">
+          <div class="flex items-center justify-between">
+            <label>غم</label>
+            <input type="number" formControlName="sad" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input">
+          </div>
+          <div class="flex items-center justify-between">
+            <label>خشم</label>
+            <input type="number" formControlName="happy" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input">
+          </div>
+          <div class="flex items-center justify-between">
+            <label>اضطراب</label>
+            <input type="number" formControlName="anxious" min="0" max="10" class="w-20 p-2 border rounded-lg text-center number-input">
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex flex-col space-y-2">
+        <label class="font-semibold">۳. افکار منفی خودکار</label>
+        <div formArrayName="negativeThoughts" class="space-y-4">
+          @for (thoughtGroup of newNegativeThoughts.controls; track $index) {
+            <div [formGroupName]="$index" class="space-y-2 border-t pt-4 mt-4 relative">
+              <textarea formControlName="description" rows="3" class="w-full p-2 border rounded-xl" placeholder="فکر خود را بنویسید..."></textarea>
+              <input formControlName="score" type="number" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input" placeholder="شدت فکر (۰-۱۰)">
+              @if ($index > 0) {
+                <button type="button" (click)="removeThoughtFromNewForm($index)" class="absolute -top-2 right-0 text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center text-2xl font-bold">&times;</button>
+              }
+            </div>
+          }
+        </div>
+        <button type="button" (click)="addThoughtToNewForm()" class="mt-4 text-sm text-blue-600 font-semibold self-start hover:text-blue-800">+ افزودن فکر دیگر</button>
+      </div>
+      
+      <div class="md:col-span-3 text-center mt-8 pt-6 border-t">
+        <button type="submit" [disabled]="newThoughtForm.invalid" class="px-10 py-4 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-all w-full md:w-auto disabled:opacity-50">
+          ثبت یادداشت
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Log Entries -->
+  <div class="bg-gray-100 p-4 md:p-8 rounded-2xl shadow-inner">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">یادداشت‌های ثبت شده</h2>
+    <div class="space-y-4">
+      @for (entry of thoughtLog(); track entry.id) {
+        <div class="bg-white p-5 rounded-xl shadow-md border grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+          <div class="space-y-2"><h4 class="font-bold text-gray-600 border-b pb-1">موقعیت</h4><p class="text-gray-800 break-words">{{entry.situation}}</p></div>
+          <div class="space-y-2"><h4 class="font-bold text-gray-600 border-b pb-1">احساس / امتیاز</h4>
+            @for (feeling of entry.feelings; track feeling.name) {
+              <span>{{feeling.name}}: <span class="font-bold text-blue-600">{{feeling.score}}/10</span></span><br>
+            }
+          </div>
+          <div class="space-y-2"><h4 class="font-bold text-gray-600 border-b pb-1">افکار منفی / امتیاز</h4>
+            <ul class="list-disc pr-5 space-y-2 text-gray-800">
+              @for (thought of entry.negativeThoughts; track thought.id) {
+                <li class="break-words">{{thought.description}} <span class="font-semibold text-red-600">({{thought.score}}/10)</span></li>
+              }
+            </ul>
+          </div>
+          
+          <div class="absolute top-3 left-3">
+            <div class="relative">
+              <button (click)="toggleKebabMenu(entry.id, $event)" class="p-2 rounded-full hover:bg-gray-100" [innerHTML]="ICONS.kebab"></button>
+              @if (activeKebabMenu() === entry.id) {
+                <div class="absolute left-0 top-full bg-white rounded-lg shadow-lg border z-10 w-36 p-2">
+                  <button (click)="openEditModal(entry)" class="w-full text-right px-3 py-2 text-sm rounded hover:bg-gray-100 text-blue-600">ویرایش</button>
+                  <button (click)="deleteThought(entry.id)" class="w-full text-right px-3 py-2 text-sm rounded hover:bg-gray-100 text-red-500">حذف</button>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="absolute bottom-3 left-3">
+            @if (isEntryCompleted(entry)) {
+              <span class="inline-flex items-center gap-x-1.5 rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700">✓ تکمیل شده</span>
+            } @else {
+              <span class="inline-flex items-center gap-x-1.5 rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-500">در انتظار</span>
+            }
+          </div> 
+        </div>
+      } @empty {
+        <p class="text-center text-gray-500 col-span-full">هنوز یادداشتی ثبت نشده است.</p>
+      }
+    </div>
+    @if(thoughtLog().length > 0) {
+        <div class="text-center mt-8 pt-6 border-t">
+          <button (click)="goToChallenge()" class="px-10 py-4 bg-purple-600 text-white font-bold rounded-lg shadow-md hover:bg-purple-700 transition-all w-full md:w-auto">
+              ادامه به گام ۵: چالش افکار
+          </button>
+        </div>
+    }
+  </div>
+</div>
+
+<!-- Edit Modal -->
+@if (editingEntryId(); as id) {
+  <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-40">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">ویرایش یادداشت</h2>
+      <form [formGroup]="editThoughtForm" (ngSubmit)="updateThought()" class="space-y-4">
+        <div>
+          <label class="font-semibold" for="edit-situation">موقعیت</label>
+          <textarea formControlName="situation" id="edit-situation" rows="3" class="w-full p-2 border rounded-lg mt-1"></textarea>
+        </div>
+        <div formGroupName="feelings">
+          <label class="font-semibold">احساسات</label>
+          <div class="grid grid-cols-3 gap-4 mt-1">
+            <div class="text-center"><label for="edit-feeling-sad">غم</label><input formControlName="sad" type="number" id="edit-feeling-sad" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
+            <div class="text-center"><label for="edit-feeling-happy">خشم</label><input formControlName="happy" type="number" id="edit-feeling-happy" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
+            <div class="text-center"><label for="edit-feeling-anxious">اضطراب</label><input formControlName="anxious" type="number" id="edit-feeling-anxious" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input"></div>
+          </div>
+        </div>
+        <div>
+          <label class="font-semibold">افکار منفی خودکار</label>
+          <div formArrayName="negativeThoughts" class="space-y-4">
+             @for (thoughtGroup of editNegativeThoughts.controls; track $index) {
+                <div [formGroupName]="$index" class="space-y-2 border-t pt-4 mt-4 relative">
+                  <textarea formControlName="description" class="w-full p-2 border rounded-lg"></textarea>
+                  <input formControlName="score" type="number" min="0" max="10" class="w-full p-2 border text-center rounded-lg number-input">
+                  <button type="button" (click)="removeThoughtFromEditForm($index)" class="absolute -top-2 right-0 text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center text-2xl font-bold">&times;</button>
+                </div>
+              }
+          </div>
+          <button type="button" (click)="addThoughtToEditForm()" class="mt-4 text-sm text-blue-600 font-semibold hover:text-blue-800">+ افزودن فکر دیگر</button>
+        </div>
+        <div class="flex justify-end gap-4 border-t pt-6 mt-6">
+          <button type="button" (click)="closeEditModal()" class="px-6 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all">انصراف</button>
+          <button type="submit" [disabled]="editThoughtForm.invalid" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50">ذخیره تغییرات</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

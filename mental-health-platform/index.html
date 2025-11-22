@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>Mental Health Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Vazirmatn', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Fix for number input spin buttons in Firefox */
+    input[type=number] { -moz-appearance: textfield; }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    body::after {
+        content: "Adel Is Testing";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: clamp(3rem, 8vw, 10rem);
+        font-weight: 800;
+        color: rgba(0, 0, 0, 0.04);
+        z-index: 10000;
+        pointer-events: none;
+        white-space: nowrap;
+        user-select: none;
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://aistudiocdn.com/rxjs@^7.8.2?conditions=es2015",
+    "rxjs/operators": "https://aistudiocdn.com/rxjs@^7.8.2/operators?conditions=es2015",
+    "rxjs/ajax": "https://aistudiocdn.com/rxjs@^7.8.2/ajax?conditions=es2015",
+    "rxjs/webSocket": "https://aistudiocdn.com/rxjs@^7.8.2/webSocket?conditions=es2015",
+    "rxjs/testing": "https://aistudiocdn.com/rxjs@^7.8.2/testing?conditions=es2015",
+    "rxjs/fetch": "https://aistudiocdn.com/rxjs@^7.8.2/fetch?conditions=es2015",
+    "@angular/compiler": "https://next.esm.sh/@angular/compiler@^21.0.0?external=rxjs",
+    "@angular/platform-browser": "https://next.esm.sh/@angular/platform-browser@^21.0.0?external=rxjs",
+    "@angular/core": "https://next.esm.sh/@angular/core@^21.0.0?external=rxjs",
+    "@angular/common/http": "https://next.esm.sh/@angular/common@^21.0.0/http?external=rxjs",
+    "@angular/common": "https://next.esm.sh/@angular/common@^21.0.0?external=rxjs",
+    "@angular/router": "https://next.esm.sh/@angular/router@^21.0.0?external=rxjs",
+    "@angular/forms": "https://next.esm.sh/@angular/forms@^21.0.0?external=rxjs"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-gray-100 font-sans">
+  <app-root></app-root>
+</body>
+</html>
